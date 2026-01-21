@@ -6,6 +6,30 @@
 
 ---
 
+## Important: Source Repository Mapping
+
+When cloning or recreating this project for other clients, use the correct source branches:
+
+| Repository | Branch | Description | Status |
+|------------|--------|-------------|--------|
+| `Jigsaw_2.0_dev` | `main` | Original 2.0 architecture (Vite) | **OBSOLETE** - Do not use |
+| `Jigsaw_2.0_dev` | `eric-1.5-bmad-planning` | Current working branch | **ACTIVE** |
+| `Jigsaw_2.0_dev` | `jigsaw-1.6-stable` | Stable 1.6 (npm, no canvas) | Stable |
+| `Jigsaw_2.0_dev/jigsaw-1.6/frontend/` | N/A (folder) | Next.js 16 source with pnpm | **Use for RSA clones** |
+| `Jigsaw-1.6-RSA` | `main` | Cleaned demo for deployment | Active |
+
+### For New Client Demos
+
+The RSA repo was created from `~/Jigsaw_2.0_dev/jigsaw-1.6/frontend/` which contains:
+- Next.js 16.0.10 + React 19.2.0
+- pnpm package manager
+- @xyflow/react for canvas
+- Working `pnpm-lock.yaml` (critical for dependency resolution)
+
+**Do NOT use the `main` branch of Jigsaw_2.0_dev** - it's an obsolete Vite-based architecture.
+
+---
+
 ## What Was Completed
 
 1. **Clean repository created** from Jigsaw 1.6 source
