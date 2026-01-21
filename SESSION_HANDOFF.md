@@ -120,9 +120,40 @@ Jigsaw-1.6-RSA/
 - @xyflow/react requires pnpm (not npm)
 - Ensure Vercel is using pnpm install
 
+### Module not found: @swc/helpers or scheduler (RESOLVED)
+**Problem:** After switching from npm to pnpm, the app failed with:
+```
+Module not found: Can't resolve '@swc/helpers/_/_interop_require_default'
+Module not found: Can't resolve 'scheduler'
+```
+
+**Root cause:** pnpm's lockfile had broken dependency resolution - packages existed in `.pnpm/` store but weren't properly hoisted.
+
+**Solution applied (2026-01-21):**
+1. Copied working `pnpm-lock.yaml` from `~/Jigsaw_2.0_dev/jigsaw-1.6/frontend/`
+2. Deleted `node_modules/`
+3. Ran `pnpm install`
+
+**If issue recurs:**
+```bash
+cd ~/Jigsaw-1.6-RSA
+rm -rf node_modules pnpm-lock.yaml
+cp ~/Jigsaw_2.0_dev/jigsaw-1.6/frontend/pnpm-lock.yaml .
+pnpm install
+```
+
 ---
 
 ## Contact
 
 Repository owner: nicopt-io
 Session completed by: Claude Opus 4.5
+
+---
+
+## Session Log
+
+### 2026-01-21 - Dependency Resolution Fix
+- **Issue:** `@swc/helpers` and `scheduler` module resolution errors after npm→pnpm switch
+- **Resolution:** Replaced lockfile with working version from source project
+- **Status:** App now starts successfully with `pnpm dev`
