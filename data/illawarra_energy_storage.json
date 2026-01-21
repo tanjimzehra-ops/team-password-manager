@@ -1,0 +1,2507 @@
+{
+  "system_id": 2208,
+  "name": "Illawarra Energy Storage",
+  "logic_model": {
+    "impact": "ENERGY STORAGE PROVIDES LOWER COST, NEAR TERM, SCALEABLE CONTRIBUTION TO AUSTRALIA'S SHARED LOW CARBON ENERGY PORTFOLIO, INDUSTRY DEVELOPMENT, COMMUNITY LIVEABILITY & WELLBEING",
+    "dimension": "Filtered & licensed through the convergence of investment & participation, regulation, cultural and social values, place experiences, traditions and behaviours",
+    "challenge": "Australia pursuing low carbon energy generation in combination with increased on-shore value add production, digitisation and improved livelihoods",
+    "outcomes": [
+      {
+        "id": "634",
+        "order": 0,
+        "content": "Natural Environment",
+        "description": "Reduced net greenhouse gas emissions through maximum use of existing infrastructure and improved rehabilitation of legacy mining environmental locations"
+      },
+      {
+        "id": "635",
+        "order": 1,
+        "content": "Market / Product - Services Mix",
+        "description": "Sustainable, equitable, reduced cost/cost effective, low carbon power delivery to industry, services and households"
+      },
+      {
+        "id": "636",
+        "order": 2,
+        "content": "Capable, Productive Population & Assets",
+        "description": "Well located and productive storage, knowledge, technologies and economic contribution"
+      },
+      {
+        "id": "637",
+        "order": 3,
+        "content": "Community Wellbeing, Liveability",
+        "description": "Strong corporate entities, local and sectoral employment and new, sustainable business opportunities from non carbon energy production, driving a just transition."
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "638",
+        "order": 0,
+        "content": "Grid level, longer duration storage",
+        "description": "Grid level, longer duration storage"
+      },
+      {
+        "id": "639",
+        "order": 1,
+        "content": "Microgrid and community storage",
+        "description": "Microgrid and community storage"
+      },
+      {
+        "id": "3028",
+        "order": 2,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "640",
+        "order": 3,
+        "content": "Location, infrastructure & logistics",
+        "description": "Location, infrastructure & logistics"
+      },
+      {
+        "id": "3027",
+        "order": 4,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "641",
+        "order": 5,
+        "content": "Design & Construction",
+        "description": "Design & Construction"
+      },
+      {
+        "id": "642",
+        "order": 6,
+        "content": "Heavy plant procurement",
+        "description": "Heavy plant procurement"
+      },
+      {
+        "id": "643",
+        "order": 7,
+        "content": "Local trade-based and SME delivery opportunities",
+        "description": "Local trade-based and SME delivery opportunities"
+      },
+      {
+        "id": "644",
+        "order": 8,
+        "content": "Connectivity, operations, repair & maintenance",
+        "description": "Connectivity, operations, repair & maintenance"
+      },
+      {
+        "id": "645",
+        "order": 9,
+        "content": "Full spectrum monitoring, evaluation & management",
+        "description": "Full spectrum monitoring, evaluation & management"
+      },
+      {
+        "id": "646",
+        "order": 10,
+        "content": "End of life infrastructure & materials recycled",
+        "description": "End of life infrastructure & materials recycled"
+      }
+    ],
+    "resources": [
+      {
+        "id": "2575",
+        "order": 0,
+        "content": "Population demographics, participation",
+        "description": "Population demographics, participation"
+      },
+      {
+        "id": "647",
+        "order": 1,
+        "content": "Productive & sustainable capacity, use and value of legacy mining and energy assets, ecosystems & natural resources",
+        "description": "Productive & sustainable capacity, use and value of legacy mining and energy assets, ecosystems & natural resources"
+      },
+      {
+        "id": "648",
+        "order": 2,
+        "content": "Financial investment & operational revenue",
+        "description": "Financial investment & operational revenue"
+      },
+      {
+        "id": "649",
+        "order": 3,
+        "content": "Policy & practice sense making, fit to place & people",
+        "description": "Policy & practice sense making, fit to place & people"
+      },
+      {
+        "id": "650",
+        "order": 4,
+        "content": "Build on and develop new institutions, social, technical and economic entities, connections and networks",
+        "description": "Build on and develop new institutions, social, technical and economic entities, connections and networks"
+      },
+      {
+        "id": "651",
+        "order": 5,
+        "content": "Identify, encourage and facilitate integrated tangible & intangible investment & support",
+        "description": "Identify, encourage and facilitate integrated tangible & intangible investment & support"
+      },
+      {
+        "id": "652",
+        "order": 6,
+        "content": "Encourage and facilitate learning, creativity & innovation",
+        "description": "Encourage and facilitate learning, creativity & innovation"
+      },
+      {
+        "id": "653",
+        "order": 7,
+        "content": "Access to education, business & employment opportunities",
+        "description": "Access to education, business & employment opportunities"
+      },
+      {
+        "id": "654",
+        "order": 8,
+        "content": "Engage, regulate, govern and manage with transparency, quality information, conversation contemporary process, and inclusion",
+        "description": "Engage, regulate, govern and manage with transparency, quality information, conversation contemporary process, and inclusion"
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "634",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 1,
+        "xaxis": "635",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "636",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 3,
+        "xaxis": "637",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "634"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "635"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 2,
+        "xaxis": "636"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "637"
+      }
+    ],
+    "delivery_pathways": [
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "2575",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 1,
+        "xaxis": "647",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "648",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 3,
+        "xaxis": "649",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 4,
+        "xaxis": "650",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 5,
+        "xaxis": "651",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 6,
+        "xaxis": "652",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 7,
+        "xaxis": "653",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 8,
+        "xaxis": "654",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "2575"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "647"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 2,
+        "xaxis": "648"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "649"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 4,
+        "xaxis": "650"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 5,
+        "xaxis": "651"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 6,
+        "xaxis": "652"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 7,
+        "xaxis": "653"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 8,
+        "xaxis": "654"
+      }
+    ],
+    "external_influences": [
+      {
+        "content": "Land use: Opportunity is recycling old assets.\nRisk is enviro impacts of hydro.\nCompeting priorities for land use.",
+        "order": 0,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "638"
+      },
+      {
+        "content": "Risk: require new infrastrucrure (eg mine shafts), Opportunity: battery  aligned with existing infra",
+        "order": 0,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "638"
+      },
+      {
+        "content": "Risk: competition for land use.",
+        "order": 0,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "638"
+      },
+      {
+        "content": "Opportunity: R&D strength through UOW\nOpportunity: import & assemble capability",
+        "order": 0,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "638"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "638"
+      },
+      {
+        "content": "Risk: Consideration required in planning (connects with land use, sensitive use areas)",
+        "order": 0,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "638"
+      },
+      {
+        "content": "Risk: Consideration required in planning (connects with land use, sensitive use areas)",
+        "order": 0,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "638"
+      },
+      {
+        "content": "Opportunity: UOW/TAFE skills, capacity and capability",
+        "order": 0,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "638"
+      },
+      {
+        "content": "Opportunity: long-term energy security",
+        "order": 0,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "638"
+      },
+      {
+        "content": "Lower risk (smaller impacts) - captured in EIS.",
+        "order": 1,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "639"
+      },
+      {
+        "content": "Lower risk - mostly in place. Emerging technology",
+        "order": 1,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "639"
+      },
+      {
+        "content": "Opportunity: Emerging technology, battery incentives, education (social licence)",
+        "order": 1,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "639"
+      },
+      {
+        "content": "Opportunity: import & assemble capability",
+        "order": 1,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "639"
+      },
+      {
+        "content": "Opportunity: UOW VEN test case",
+        "order": 1,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "639"
+      },
+      {
+        "content": "Lower Risk (smaller impact): Consideration required in planning (connects with land use, sensitive use areas)\nOpportunity: microgrid done well reduces need for larger scale energy programs",
+        "order": 1,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "639"
+      },
+      {
+        "content": "Risk: Consideration required in planning (connects with land use, sensitive use areas)",
+        "order": 1,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "639"
+      },
+      {
+        "content": "Opportunity: Education (e.g. Electrify 2515), greater workforce value add local economy. High volume, efficient",
+        "order": 1,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "639"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "3028"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "3028"
+      },
+      {
+        "content": "Consideration around on location - size of asset, connection to grid, proximity to user",
+        "order": 3,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "640"
+      },
+      {
+        "content": "Proximity to existing infrastructure/land use + sensitivity of the location",
+        "order": 3,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "640"
+      },
+      {
+        "content": "Risk: Consideration required in planning (connects with land use, sensitive use areas)",
+        "order": 3,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "640"
+      },
+      {
+        "content": "Risk: Consideration required in planning (connects with land use, sensitive use areas)",
+        "order": 3,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "640"
+      },
+      {
+        "content": "Risk: lack of energy literacy will have detrimental social licence impacts",
+        "order": 3,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "640"
+      },
+      {
+        "content": "Approval of location",
+        "order": 3,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "640"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "3027"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "3027"
+      },
+      {
+        "content": "Consideration on location",
+        "order": 5,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "641"
+      },
+      {
+        "content": "Activating local supply chain / networks",
+        "order": 5,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "641"
+      },
+      {
+        "content": "Consideration on location",
+        "order": 5,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "641"
+      },
+      {
+        "content": "Activating local supply chain / networks",
+        "order": 5,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "641"
+      },
+      {
+        "content": "Activating local supply chain / networks",
+        "order": 5,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "641"
+      },
+      {
+        "content": "Opportunity to involve in community-specific design",
+        "order": 5,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "641"
+      },
+      {
+        "content": "Equitable access (design, planning, install)",
+        "order": 5,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "641"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "642"
+      },
+      {
+        "content": "Proximity / location (eg BlueScope)",
+        "order": 6,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "642"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "643"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "644"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "645"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "2597",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 1,
+        "xaxis": "2611",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "2612",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 3,
+        "xaxis": "2613",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 4,
+        "xaxis": "2614",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 5,
+        "xaxis": "2615",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 6,
+        "xaxis": "2616",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 7,
+        "xaxis": "2617",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 8,
+        "xaxis": "2618",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 9,
+        "xaxis": "2619",
+        "yaxis": "646"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "2597"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "2611"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 2,
+        "xaxis": "2612"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "2613"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 4,
+        "xaxis": "2614"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 5,
+        "xaxis": "2615"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 6,
+        "xaxis": "2616"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 7,
+        "xaxis": "2617"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 8,
+        "xaxis": "2618"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 9,
+        "xaxis": "2619"
+      }
+    ]
+  },
+  "external_values": [
+    {
+      "id": "2597",
+      "order": 0,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2611",
+      "order": 1,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2612",
+      "order": 2,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2613",
+      "order": 3,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2614",
+      "order": 4,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2615",
+      "order": 5,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2616",
+      "order": 6,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2617",
+      "order": 7,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2618",
+      "order": 8,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "2619",
+      "order": 9,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "",
+        "parent_id": "638",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "639",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "640",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "641",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "642",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "643",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "644",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "645",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "646",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3028",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3027",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_outcome": [
+      {
+        "content": "Reduced net greenhouse gas emissions through maximum use of existing infrastructure and improved rehabilitation of legacy mining environmental locations",
+        "parent_id": "634",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Sustainable, equitable, reduced cost/cost effective, low carbon power delivery to industry, services and households",
+        "parent_id": "635",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Well located and productive storage, knowledge, technologies and economic contribution",
+        "parent_id": "636",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Strong corporate entities, local and sectoral employment and new, sustainable business opportunities from non carbon energy production, driving a just transition.",
+        "parent_id": "637",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": [
+      {
+        "content": "",
+        "parent_id": "632",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "632",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      }
+    ]
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "",
+        "parent_id": "2575",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "647",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "648",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "649",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "650",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "651",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "652",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "653",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "654",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "",
+        "parent_id": "2575",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "647",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "648",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "649",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "650",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "651",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "652",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "653",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "654",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [
+      {
+        "content": "",
+        "parent_id": "638",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "639",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "640",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "641",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "642",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "643",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "644",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "645",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "646",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3028",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3027",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_external_value": [
+      {
+        "content": "Ecology & Natural Resources",
+        "parent_id": "2597",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Infrastructure, Utilities & Logistics",
+        "parent_id": "2611",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Defence Ecosystem",
+        "parent_id": "2612",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Housing & Built Environment",
+        "parent_id": "2613",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Physical Production, Value Adding, Export & Import",
+        "parent_id": "2614",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Retail, Trade and Business",
+        "parent_id": "2615",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "First Nations and Cultural",
+        "parent_id": "2616",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Sports, Arts, Recreation and Visitation",
+        "parent_id": "2617",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Education & Development Services",
+        "parent_id": "2618",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Public Admin, Health, Wellbeing & Safety Services",
+        "parent_id": "2619",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      }
+    ]
+  },
+  "_metadata": {
+    "extracted_at": "2025-12-31T17:28:30.831412",
+    "sector": "Energy Storage",
+    "total_rows": 453,
+    "stats": {
+      "outcomes": 4,
+      "value_chain": 11,
+      "resources": 9,
+      "contribution_map_cells": 48,
+      "delivery_pathways_cells": 108,
+      "external_influences_cells": 120
+    }
+  }
+}

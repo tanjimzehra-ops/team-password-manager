@@ -1,0 +1,1915 @@
+{
+  "system_id": 2483,
+  "name": "Unknown",
+  "logic_model": {
+    "impact": "",
+    "dimension": "",
+    "challenge": "",
+    "outcomes": [
+      {
+        "id": "5372",
+        "order": 0,
+        "content": "Product-Service",
+        "description": "Kiraa is premium business analytics solution which augments human analysts with novel AI technology."
+      },
+      {
+        "id": "5373",
+        "order": 1,
+        "content": "Product-Market Fit",
+        "description": "There is high demand for analytical solutions in medium size enterprises across Australia and North America"
+      },
+      {
+        "id": "5374",
+        "order": 2,
+        "content": "Value delivered-created",
+        "description": "We deliver can deliver clear customer value through cost reduction and drive competitive advantage through accelerated decision-making"
+      },
+      {
+        "id": "5375",
+        "order": 3,
+        "content": "Kiraa Success",
+        "description": "Our brand has a reputation for delivering high value, high quality, high outcomes for customers, leading to revenue and margin growth."
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "5376",
+        "order": 0,
+        "content": "Translation of our business knowledge & experience into the perceptive analytics AI platform",
+        "description": "Translation of our business knowledge & experience into the perceptive analytics AI platform"
+      },
+      {
+        "id": "5377",
+        "order": 1,
+        "content": "Design & development of high value use cases and UX",
+        "description": "Design & development of high value use cases and UX"
+      },
+      {
+        "id": "5457",
+        "order": 2,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "5378",
+        "order": 3,
+        "content": "Market positioning, awareness & client conversion",
+        "description": "Market positioning, awareness & client conversion"
+      },
+      {
+        "id": "5379",
+        "order": 4,
+        "content": "Client onboarding, integrations & management",
+        "description": "Client onboarding, integrations & management"
+      },
+      {
+        "id": "5380",
+        "order": 5,
+        "content": "Commercialisation of scalable use cases",
+        "description": "Commercialisation of scalable use cases"
+      },
+      {
+        "id": "5381",
+        "order": 6,
+        "content": "Whole system monitoring, intelligence & insights",
+        "description": "Whole system monitoring, intelligence & insights"
+      },
+      {
+        "id": "5382",
+        "order": 7,
+        "content": "Client performance & productivity benefit, AI empirical research, papers & presentation",
+        "description": "Client performance & productivity benefit, AI empirical research, papers & presentation"
+      },
+      {
+        "id": "5383",
+        "order": 8,
+        "content": "Technical, experiential & value enhancement & innovation",
+        "description": "Technical, experiential & value enhancement & innovation"
+      }
+    ],
+    "resources": [
+      {
+        "id": "5386",
+        "order": 0,
+        "content": "Industry knowledge, design capability, IP & patents",
+        "description": "Industry knowledge, design capability, IP & patents"
+      },
+      {
+        "id": "5387",
+        "order": 1,
+        "content": "Revenue, surplus, reinvestment & investment",
+        "description": "Revenue, surplus, reinvestment & investment"
+      },
+      {
+        "id": "5394",
+        "order": 2,
+        "content": "Supply contracts profile",
+        "description": "Focus on key markets and activities and outsource all non core activities"
+      },
+      {
+        "id": "5811",
+        "order": 3,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "5388",
+        "order": 4,
+        "content": "Attraction, development & retention of talent",
+        "description": "Attraction, development & retention of talent"
+      },
+      {
+        "id": "5389",
+        "order": 5,
+        "content": "Networks, alliances & partnerships",
+        "description": "Networks, alliances & partnerships"
+      },
+      {
+        "id": "5390",
+        "order": 6,
+        "content": "Tecnology & business infrastructure",
+        "description": "Tecnology & business infrastructure"
+      },
+      {
+        "id": "5391",
+        "order": 7,
+        "content": "Robust, fit for purpose business processes",
+        "description": "Robust, fit for purpose business processes"
+      },
+      {
+        "id": "5392",
+        "order": 8,
+        "content": "Data",
+        "description": "Data"
+      },
+      {
+        "id": "5393",
+        "order": 9,
+        "content": "Strong contemporary management, governance, risk & oportuity management",
+        "description": "Strong contemporary management, governance, risk & oportuity management"
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "Subject Matter Experts Acquire in the key strategic fields identified of Sales, Procurement, Finance, Freight, Working Capital",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Identify a customer who is willing to sign a letter of intention. If not willing to commit to this then unlikely to support.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Subject matter experts design article templates which are required to then write articles contextually relevant to the persona",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Reputational benefit delivered to customers and leaders who are able to claim a success",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Every happy customer increases the exit value to shareholders",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Need to consider various commercial options to attract customers. As we are early stage, we are seen as a risky proposition, so our strategy must be to appear bigger than we are",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Attacking high value problems is seen as a sign of strength that the product may be more substantial than just an agent.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5377"
+      },
+      {
+        "content": "We need to plan the delivery of the case study as there is opportunity to create value for both customers and us by timing results well",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Every case study significantly increases the exit value to shareholders.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5377"
+      },
+      {
+        "content": "the kiraa brand represents the culmination of the promises to customers",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5457"
+      },
+      {
+        "content": "We have the opportunity to create thought leadership to demonstrate solutions to industry directly",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Brand credibility significantly increases with testimonials",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Brand and high ACV create a highly compelling cashflow",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Target specific high value use cases in the five identified areas of Sales, Procurement, Finance, Freight, and Working Capital",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Find a successful commercialisation pathway, and once established, simplify, rinse and repeat",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Success with one GTM strategy allows us to scale easier by focusing on one channel",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Onboard customers quickly and seize momentum",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Recruit business analyst subject matter experts",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Regular campaign on employee engagement",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Build collaboration partnerships with CSU academics",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Shared academic publication on CAG",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Help drive productivity in Australia by rewarding entrepreneurship and innovation",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5372"
+      },
+      {
+        "content": "Key point of difference - being able to High Payback",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Recruit people who deeply understand the real business problems through lived experience",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5380"
+      },
+      {
+        "content": "All employees must be customer facing and engage regularly with them",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Publication of cross-industry case studies strengthens segment brand credibility",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Continue to optimize the algorithm to make file sizes even smaller",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373",
+        "yaxis": "5383"
+      },
+      {
+        "content": "This rounds out academic and lived experience",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5373"
+      },
+      {
+        "content": "Design the solution to scale, over-resource at the start to get customers self-sufficient quickly",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5379"
+      },
+      {
+        "content": "The faster we onboard, the more customers we can acquire",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Deep industry solutions which solve high value pain points are highly profitable niches",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5380"
+      },
+      {
+        "content": "5 High Value Profitable niches maximises return to shareholders on exit (keep variables cost to $10k/customer)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Customer success is highly correlated with brand success",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5381"
+      },
+      {
+        "content": "$10k direct customer support costs \n\n- Transformation\n- Support Role\n\nThese costs increase in proportion with customer numbers.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Maximise the value of the patent",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5382"
+      },
+      {
+        "content": "$15k of bonuses to encourage right behaviours\n\n- bonus in overheads",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Continue refining the technology",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374",
+        "yaxis": "5383"
+      },
+      {
+        "content": "We have 18 months to maximise value",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375",
+        "yaxis": "5383"
+      },
+      {
+        "content": "A high success model where we partner with organisations for mutual benefit",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5374"
+      },
+      {
+        "content": "Shared Value for Society",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5375"
+      }
+    ],
+    "delivery_pathways": [
+      {
+        "content": "Sign customers who can generate at least $100k ARR in the 5 high value use cases",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Recruit sales resources and invest in marketing capability to drive demand ($1m people)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Ensure brand commmunicates the 'essence' of who we are and our vision for the future ($600k marketing)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Marketing and Promotion as innovation partner",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Identify candidate business analysts who can help solve high value problems",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Focus on Manufacturing, Retail and Logistics companies - 20 - 200pp, >$50m",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Build compelling case studies solving high value industry problems",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Leverage business analysts to help develop marketing copy for high value use cases",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Seamless conduit between customer success team and business analyst",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Use business analyst resources to evaluate customer problems for widespread applicability",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Business Analyst to help develop case study material and promotional content",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Personal pieces from Errol providing Business Analytics thought leadership",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Promote solution through industry publications",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Select customer partners who are willing to promote success (hungry)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5386"
+      },
+      {
+        "content": "Focus on areas where the team has capability (manufacturing, retail and logistics) and connect with industry partners outside that",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Use Subject Matter Experts to provide insights to marketing / lead generation",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Focus on high potential aligned individuals with domain expertise",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Focus on a handful of simplified scaleable solutions, not deep niches",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Leverage subject matter experts for marketing and prompotions outreach",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Domain expertise and technical expertise \"team\"",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Share social media content with investors to provide industry credibility",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Focus on brand development in high priority industry with target customer profiles",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Engage Hunt and Hawk to identify high value cut through messages - core +hook",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Minimise time to value - allowing customers to see value as quickly as possible <30 days",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Once in a customer, look to upsell other advancing solutions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Focus marketing effort on leader",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387"
+      },
+      {
+        "content": "Generate cash to fund R&D activities",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Ensure all customers are willing to participate in case study and trade publications",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Stage contracts based on staged delivery, engagement and satisfaction",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5387",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Marketing with H&H and selected industry partners",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5457"
+      },
+      {
+        "content": "",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Make employee value proposition part of the brand story (Gold Coast)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Promote innovation with Tech enabler to create 'halo' effect",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Recruit people who are curious about what could be possible have a passion for the problem they are solving - no passengers",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Associated Kiraa with solving high value problems in the brand messaging - look at value created",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Build technology solutions that solve the problem for tomorrow - not bespoke solutions\n- solution for many, universal solution",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Outsource activities that are not directly affecting customer or product to allow the team to stay small and focused - core business",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5377"
+      },
+      {
+        "content": "We create relationships with Industry Associations, Consultants and trusted partners to deliver non core services",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Build technology that could scale for the US - pick common high value problems with widespread applicability",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Develop standard onboarding process and engagement strategy to ensure all levels of customer are engaged",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Ensure team spends time on high value activities, and minimise admin or non customer/product work through outside capability",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Ensure all employees have customer engagement metric in KPIs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Leverage PhD and Students to carry out investigation and legwork",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Publish articles with industry partners and use university collaboration to author works",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Engage external valuations to provide third party view of solution",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5394"
+      },
+      {
+        "content": "Customer onboarding and engagement strategy to plan success",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Two tier employment solution - partner high potential young energy with wise and experienced mentors to provide guardrails and support",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Minimum expectations of customer engagement",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Allow subject matter experts to post social media to showcase their own work",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Identify additional opportunities through academic pathways to develop and upskill employees",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Create a culture of accountability and striving through cycle meetings and EVP",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5388"
+      },
+      {
+        "content": "Ensure onboarding experience is a positive brand epxerience",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Use technology partners to simpllify and scale as quickly as possible",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Focus on solving big problems, not niche problems for a specific customer transferbility",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Constant reinforcement and education about customer's businesses\nCultural anchor",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Constant stream of customer updates to keep investors engaged",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Brand focuses on making better decisions faster.  focus on speed, agilty and execution",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5457"
+      },
+      {
+        "content": "The kiraa EVP is a core part of the brand proposition. All employees are sales people.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5457"
+      },
+      {
+        "content": "treat investors as customers of the kiraa brand, use their networks to build brand credibility",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Focus on high value, standard industry wide problem, not custom solutions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Small \"hit team\" approach to customers whereby subject matter experts and sales people are teamed up to provide compelling solutions to customers, delivered by an expert",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Promote kiraa through to existing investors and seek warm introductions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5378"
+      },
+      {
+        "content": "Target time to value - onboard customers within a week",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Highly coordinated, self-managed team culture where we expect people deliver tasks with minimal management",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Report onboarding to investors for accountability",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5379"
+      },
+      {
+        "content": "Reinforce kiraa's value to the Australian productivyt story",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393"
+      },
+      {
+        "content": "Use kiraa's way of working as an example of elevated prodcutvitiy",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392"
+      },
+      {
+        "content": "Focus on personalised actionable insights - making good decisions quickly",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391"
+      },
+      {
+        "content": "Solutions that can suit small and medium size businesses with high value problems",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390"
+      },
+      {
+        "content": "Associate kiraa with helping humans, not focus on replacing them",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389"
+      },
+      {
+        "content": "Pick the right high value problems that scale",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Report customer metrics to investors",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Leverage association with CSU and industry bodies",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Publish though leadership articles on CAG use cases",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5393",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Kiraa brand message focus on human problems",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Pick the right customer profile and don't get trapped in the IT vortex",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Publish and communicate cutting edge thought leadership",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Look for publication opportunities with academics",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5389",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Invest in making the solution more scaleable, faster and smaller",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Focus high value use cases and solving those, rather than bespoke technical solutions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Use Kiraa for as much of our own internal uses cases as possible",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5383"
+      },
+      {
+        "content": "Employees love our customers and customers love our employees",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Minimum Business Analyst customer engagement expectations and reporting back to team at cycle meetings",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Engage students as members of the team for short engagements",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5392",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Deliver tested, trusted solutions, not rush jobs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Customer Transformation role, customer experience manager, Customer Support Role",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Innovation development",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Technology to stay as true to patent as possible",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5391",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Get onto AWS / Google credits programs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Present \"CAG\" paper at an intenrational workshop",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5390",
+        "yaxis": "5382"
+      },
+      {
+        "content": "3 Sales Australian resources for 2026, plus forward investment in US Capability for 2027 Launch\n($2 million)",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5378"
+      },
+      {
+        "content": "5 Subject Matter Experts @$200k = $1 million",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5376"
+      },
+      {
+        "content": "",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5457"
+      },
+      {
+        "content": "Derived by investment in subject matter experts",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5377"
+      },
+      {
+        "content": "Development Resources\n$1 million",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5380"
+      },
+      {
+        "content": "Customer Success investment $1 million",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5811",
+        "yaxis": "5381"
+      }
+    ],
+    "external_influences": [
+      {
+        "content": "codified methods may leak to competitors, accelerating industry standards.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5376"
+      },
+      {
+        "content": "SMEs attract partner networks (consultants, training firms).",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Early Success Signals Seriousness, boosting credibility with investors.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5376"
+      },
+      {
+        "content": "SMEs may feel challenged or displaced by new ideas.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5376"
+      },
+      {
+        "content": "Reliance on a few SMEs increases risk of knowledge bottlenecks.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5376"
+      },
+      {
+        "content": "High growth may cause stress and fractures",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5376"
+      },
+      {
+        "content": "pilot learnings shape broader market expectations.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5377"
+      },
+      {
+        "content": "pilots drive demand for integration partners.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5377"
+      },
+      {
+        "content": "$100k pilots validate commercial traction",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5377"
+      },
+      {
+        "content": "customers may fear automation reducing jobs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5377"
+      },
+      {
+        "content": "focus on a narrow set of use cases may limit innovation diversity",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5377"
+      },
+      {
+        "content": "intensive prototyping may consume resources inefficiently.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5377"
+      },
+      {
+        "content": "thought leadership content educates competitors as well as prospects",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5457"
+      },
+      {
+        "content": "brand attracts influencers, analysts, and partners.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5457"
+      },
+      {
+        "content": "follower growth signals legitimacy to investor",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5457"
+      },
+      {
+        "content": "perception of “AI hype” could trigger scepticism or mistrust.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5457"
+      },
+      {
+        "content": "strong brand dominance may crowd out smaller players",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5457"
+      },
+      {
+        "content": "heavy digital marketing and travel for events add footprint.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5457"
+      },
+      {
+        "content": "shared pilot announcements may inspire rival GTMs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5378"
+      },
+      {
+        "content": "partnerships expand distribution and industry networks",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5378"
+      },
+      {
+        "content": "public customer endorsements boost investor confidence",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5378"
+      },
+      {
+        "content": "customer staff may resist visibility of pilot failures",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5378"
+      },
+      {
+        "content": "few reference customers can become over-relied upon",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5378"
+      },
+      {
+        "content": "scaling GTM campaigns increase operational emissions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5378"
+      },
+      {
+        "content": "onboarding playbooks could become templates for the industry",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5379"
+      },
+      {
+        "content": "onboarding playbooks could become templates for the industry",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5379"
+      },
+      {
+        "content": "rapid onboarding demonstrates product-market readiness",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5379"
+      },
+      {
+        "content": "rapid rollouts may overwhelm end-users",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5379"
+      },
+      {
+        "content": "reliance on one onboarding model may not fit all industries",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5379"
+      },
+      {
+        "content": "high support intensity consumes staff and resources",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5379"
+      },
+      {
+        "content": "problem libraries elevate the whole industry baseline.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5380"
+      },
+      {
+        "content": "sector-wide solution blueprints attract alliances",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5380"
+      },
+      {
+        "content": "solving “10 high value problems” signals market leadership",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5380"
+      },
+      {
+        "content": "industry solutions may standardise away local practice",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5380"
+      },
+      {
+        "content": "standardised approaches risk monoculture dependencies",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5380"
+      },
+      {
+        "content": "cross-industry scaling increases compute and energy load",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5380"
+      },
+      {
+        "content": "best-practice usage patterns spread peer-to-peer",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5381"
+      },
+      {
+        "content": "strong satisfaction drives advocacy and community growth",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5381"
+      },
+      {
+        "content": "high usage rates become a proof-point for investors",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5381"
+      },
+      {
+        "content": "employee monitoring via analytics could be misused",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5381"
+      },
+      {
+        "content": "over-focus on KPI usage can neglect nuanced customer needs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5381"
+      },
+      {
+        "content": "Continuous engagement requires sustained digital infrastructure",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5381"
+      },
+      {
+        "content": "academic papers freely share methods, enabling competitors.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5382"
+      },
+      {
+        "content": "collaborations foster student pipelines and joint ventures",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5382"
+      },
+      {
+        "content": "publications validate scientific credibility to VCs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5382"
+      },
+      {
+        "content": "academic researchers may be co-opted into commercial agendas",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5382"
+      },
+      {
+        "content": "reliance on few prestigious partners skews visibility",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5382"
+      },
+      {
+        "content": "publishing cycle resource-intensive (conferences, compute).",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5382"
+      },
+      {
+        "content": "Open contributions accelerate adoption beyond our control.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455",
+        "yaxis": "5383"
+      },
+      {
+        "content": "shared development strengthens the broader technical stack",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456",
+        "yaxis": "5383"
+      },
+      {
+        "content": "collaborations position as core innovator",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630",
+        "yaxis": "5383"
+      },
+      {
+        "content": "academic review invites criticism",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631",
+        "yaxis": "5383"
+      },
+      {
+        "content": "dominance in standards body may raise lock-in perceptions",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632",
+        "yaxis": "5383"
+      },
+      {
+        "content": "community compute use raises aggregate energy demand",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633",
+        "yaxis": "5383"
+      },
+      {
+        "content": "leadership insights propagate across industries and sectors",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5455"
+      },
+      {
+        "content": "Stronger decision-making ripples into supply chains and partners",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5456"
+      },
+      {
+        "content": "national productivity improvements strengthen policy case",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5630"
+      },
+      {
+        "content": "decisions driven by AI may trigger accountability concerns.",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5631"
+      },
+      {
+        "content": "over-centralised decision systems risk systemic bias",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5632"
+      },
+      {
+        "content": "caled adoption of AI-driven insights increases data centre load",
+        "order": -1,
+        "column": -1,
+        "xaxis": "5633"
+      }
+    ]
+  },
+  "external_values": [
+    {
+      "id": "5455",
+      "order": 0,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "5456",
+      "order": 1,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "5630",
+      "order": 2,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "5631",
+      "order": 3,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "5632",
+      "order": 4,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    },
+    {
+      "id": "5633",
+      "order": 5,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "Recruit 5 Subject Matter Experts - translated into 10 HV cases",
+        "parent_id": "5376",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Identify 10 High Value compelling Use Cases",
+        "parent_id": "5377",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Onboard & activate customers within 5 Days",
+        "parent_id": "5379",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Establish New Customers Instances within 1 Day",
+        "parent_id": "5380",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "100% Customer Retention\nCSC is reducing 7.5 hrs to 1 hr support efficiency - informed/capable customer",
+        "parent_id": "5381",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "MOGE Spend \n15% of Sales\n\n(marketing and other general)",
+        "parent_id": "5383",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Sales Cycle of 12 weeks \n28 Aus, US initiating activity & recruitment sales \nCAC\n$ ARR",
+        "parent_id": "5378",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "5 Published Case Studies",
+        "parent_id": "5382",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Obtain Letters of Intention from 10 Customers\n28 in total",
+        "parent_id": "5457",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_outcome": [
+      {
+        "content": "Product   $10k/customer/year \nHuman Component\n$10k/customer/year",
+        "parent_id": "5372",
+        "parent_order": -1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Pipeline Conversion",
+        "parent_id": "5373",
+        "parent_order": -1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Net Promoter Score\nMarket Penetration\nRevenue\n($150 - $10 product - $10 support - $15 = 76%)",
+        "parent_id": "5375",
+        "parent_order": -1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "",
+        "parent_id": "5374",
+        "parent_order": -1,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": [
+      {
+        "content": "",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "Contribute to an increase in Australia's productivity",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "80% Monthly Active Users",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "5384",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      }
+    ]
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "Scaleable Technology",
+        "parent_id": "5390",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Targeted Recruitment Strategy",
+        "parent_id": "5388",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Kiraa Brand Assets",
+        "parent_id": "5389",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Investor Trust",
+        "parent_id": "5393",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "High Performance Culture",
+        "parent_id": "5392",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Outsource non-core activities to experts",
+        "parent_id": "5394",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Process Expertise",
+        "parent_id": "5391",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Expertise in Manufacturing, Logistics and Retail",
+        "parent_id": "5386",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Personal Networks to Drive Demand",
+        "parent_id": "5387",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Current financial reserves $450k",
+        "parent_id": "5811",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "5 Business Analysts - Sales, Procurement, Financial, Freight and Working Capital",
+        "parent_id": "5386",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Use cases for 5 high value problems where kiraa is clearly best positioned to solve",
+        "parent_id": "5390",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Compelling GTM strategy backed by target market for lead generation",
+        "parent_id": "5387",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "A highly credible, trusted company that investors feel comfortable recommending to others",
+        "parent_id": "5393",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Kiraa brand recognition as trusted, innovative industry solution",
+        "parent_id": "5389",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Target $1m of revenue per employee",
+        "parent_id": "5391",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "A team of highly engaged, passionate where people aspire to work with",
+        "parent_id": "5388",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Work with a handful of high value, credible third parties for delivery of specialised services",
+        "parent_id": "5394",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "High engaged, reliable, high performance workplace culture - a place where people aspire to work",
+        "parent_id": "5392",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Planned Financial Reserve of $5 million",
+        "parent_id": "5811",
+        "parent_order": -1,
+        "parent_tag": "Resource"
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [
+      {
+        "content": "Success in translating domain knowledge into algorithms depends on having qualified subject-matter experts who can be retained long term, drawing on deep industry experience that is directly relevant to the target domains. These experts must be able to codify tacit knowledge into structured, usable algorithms while working in close collaboration with engineers and data scientists. Sustaining this contribution also requires the right incentives and a balanced workload to keep SMEs engaged and effective.",
+        "parent_id": "5376",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Designing and developing high-value use cases relies on clearly identifying customer pain points that are worth solving, supported by access to diverse data sets for prototyping. Success depends on engaging design partners who are willing to co-invest in pilots, iterating quickly to deliver proof-of-value, and communicating ROI in a way that makes the customer benefits tangible and compelling.",
+        "parent_id": "5377",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Developing an effective go-to-market strategy depends on strong reference customer relationships and a market that is ready for AI-driven analytics adoption. High-quality sales enablement and a supportive partner ecosystem are essential, alongside clear incentives for customers to co-brand announcements. Success also hinges on aligning with broader industry narratives around productivity, resilience, and innovation.",
+        "parent_id": "5378",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Contributing to the development of analytical dataframe technology depends on forging strong partnerships with universities and research groups, while ensuring that the technical work is both rigorous and novel. Preparing contributions for peer review and aligning with academic standards are key, alongside managing the balance between protecting intellectual property and publishing openly. These collaborations not only advance the field but also reinforce investor confidence in academically validated innovation.",
+        "parent_id": "5382",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Managing customer satisfaction relies on a platform that is highly usable and intuitive, delivering insights that are both deep and contextually relevant. Seamless integration with daily workflows and existing tools drives adoption, while continuous feedback loops keep the product aligned with user needs. Responsiveness from support and product teams further ensures trust and sustained engagement.",
+        "parent_id": "5381",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Customer onboarding and operationalisation depend on well-designed processes and clear documentation, supported by self-service tools and automation that streamline setup. The availability of dedicated customer success staff, along with training and enablement resources for end users, ensures adoption. Robust support channels—such as chat, knowledge bases, and community forums—further strengthen the onboarding experience and long-term success.",
+        "parent_id": "5379",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Developing scalable industry solutions requires a broad base of customer discovery through interviews and workshops, complemented by input from industry-specific advisory boards or councils. Competitive intelligence helps identify white spaces, while a clear prioritisation framework ensures the most valuable problems are tackled first. Success also depends on creating solutions that are repeatable and standardised across firms, enabling scale and wider impact.",
+        "parent_id": "5380",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Driving progress in analytical dataframe technology requires strong and continuous academic–industry partnerships, backed by access to joint grants and funding mechanisms. Openness of the platform to collaborative research, together with a consistent publication pipeline and active community engagement, helps build momentum. Above all, establishing a reputation as a genuine contributor rather than just a consumer of knowledge secures lasting influence and trust.",
+        "parent_id": "5383",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Building brand credibility requires strong thought-leadership content such as articles, videos, and case studies, amplified by visibility through conferences, podcasts, PR, and analyst relations. Authentic storytelling tied to early customer outcomes strengthens trust, while consistent messaging and tone reinforce recognition. Network effects from champions and early adopters further accelerate credibility and market reach.",
+        "parent_id": "5457",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_external_value": [
+      {
+        "content": "Knowledge\nSpillover",
+        "parent_id": "5455",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Ecosystem \nGrowth",
+        "parent_id": "5456",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Success\nSignalling",
+        "parent_id": "5630",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Workforce and Community Risks",
+        "parent_id": "5631",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Concentration",
+        "parent_id": "5632",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      },
+      {
+        "content": "Sustainability",
+        "parent_id": "5633",
+        "parent_order": -1,
+        "parent_tag": "External Value"
+      }
+    ]
+  },
+  "_metadata": {
+    "extracted_at": "2025-12-31T16:25:25.216048",
+    "sector": "Unknown",
+    "total_rows": 304,
+    "stats": {
+      "outcomes": 4,
+      "value_chain": 9,
+      "resources": 10,
+      "contribution_map_cells": 40,
+      "delivery_pathways_cells": 96,
+      "external_influences_cells": 60
+    }
+  }
+}

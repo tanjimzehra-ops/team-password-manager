@@ -1,0 +1,284 @@
+{
+  "system_id": 9001,
+  "name": "Central Highlands Council",
+  "logic_model": {
+    "impact": "To provide residents and visitors opportunities to participate in and enjoy a vibrant local economy, rewarding community life, cultural heritage and a natural environment that is world class",
+    "dimension": "Provide leadership to ensure that local government and other services are provided to satisfy the social, economic and environmental needs of the present-day community, whilst endeavouring to ensure the best possible outcomes for future generations",
+    "challenge": "Balancing responsible infrastructure investment and service delivery with financial sustainability in a large rural municipality (801,000 hectares) encompassing national parks, wilderness heritage areas, and diverse community needs while maintaining strong economic development",
+    "outcomes": [
+      {
+        "id": "chc-o1",
+        "order": 0,
+        "content": "Vibrant Local Economy",
+        "description": "Supporting economic development including tourism (world-class fly and trout fishing), agriculture, horticulture, and local distilleries to provide employment opportunities for residents"
+      },
+      {
+        "id": "chc-o2",
+        "order": 1,
+        "content": "Rewarding Community Life",
+        "description": "Ensuring local government and other services satisfy social needs of present-day community through quality infrastructure, recreation facilities, and community programs while ensuring best outcomes for future generations"
+      },
+      {
+        "id": "chc-o3",
+        "order": 2,
+        "content": "Cultural Heritage",
+        "description": "Supporting First Nations culture and history including dual naming initiatives (yingina/Great Lake, trawtha mukuminya/Gowan Brae), Council-supported Native Garden in Bothwell, and preservation of cultural heritage"
+      },
+      {
+        "id": "chc-o4",
+        "order": 3,
+        "content": "World Class Natural Environment",
+        "description": "Protecting and managing natural environment including national parks and world recognised wilderness heritage areas that make up significant portion of Council's 801,000 hectare area"
+      },
+      {
+        "id": "chc-o5",
+        "order": 4,
+        "content": "Financial Stability",
+        "description": "Maintaining well managed and responsible budgets, staying within Long Term Financial Plan projections, ensuring Council remains financially stable and effective through prudent rate setting and reserve management"
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "chc-v1",
+        "order": 0,
+        "content": "Road Infrastructure",
+        "description": "Road construction, maintenance, resealing and safety improvements including Black Spot programs. Major 2024/25 projects: Thousand Acre Lane widening/stabilisation ($1.46M), Hollow Tree Road stabilisation ($197k), Bothwell Town Streets resealing ($157k), Wayatinah resealing ($148k), unsealed roads re-sheeting ($496k)"
+      },
+      {
+        "id": "chc-v2",
+        "order": 1,
+        "content": "Bridge Infrastructure",
+        "description": "Bridge construction, maintenance and widening programs to ensure safe passage across waterways. Major 2024/25 project: Wentworth Bridge widening ($241k)"
+      },
+      {
+        "id": "chc-v3",
+        "order": 2,
+        "content": "Environmental Services",
+        "description": "Weed management programs (broom control 80% effectiveness), river recovery initiatives with native vegetation restoration (1,500+ native plants established), and environmental protection programs supporting wilderness heritage areas"
+      },
+      {
+        "id": "chc-v4",
+        "order": 3,
+        "content": "Tourism Development",
+        "description": "Supporting world-class fly and trout fishing opportunities, visitor center operations, tourism events and infrastructure to attract visitors and support local economic development in partnership with tourism operators"
+      },
+      {
+        "id": "chc-v5",
+        "order": 4,
+        "content": "Community & Recreation Services",
+        "description": "Recreation facilities management and enhancement. Major 2024/25 projects: Hamilton Recreation Ground power upgrade ($250k), Wayatinah toilets/playground refurbishment ($176k), Gretna Cricket Club changerooms ($66k)"
+      },
+      {
+        "id": "chc-v6",
+        "order": 5,
+        "content": "Community Engagement & Events",
+        "description": "Supporting community events (Hamilton Show, ANZAC Day services at 7 locations, Australia Day, Great Lake Tie-in, Rural Alive and Well), Highland Digest publication support ($10.9k annually), and community information dissemination via website and Facebook"
+      },
+      {
+        "id": "chc-v7",
+        "order": 6,
+        "content": "Development & Environmental Management",
+        "description": "Development application processing, environmental approvals, planning services and regulatory compliance for development activities across the Central Highlands municipality"
+      },
+      {
+        "id": "chc-v8",
+        "order": 7,
+        "content": "Asset Management",
+        "description": "Strategic management of Council's infrastructure assets including roads ($112.9M), bridges ($9.0M), buildings ($10.5M), drainage ($2.7M) and land holdings ($6.9M plus $3.1M under roads) through Long-Term Asset Management Plans"
+      },
+      {
+        "id": "chc-v9",
+        "order": 8,
+        "content": "Financial Management & Governance",
+        "description": "Budget development and monitoring, financial reporting, rate collection, reserves management ($1.64M across 5 reserves), Long Term Financial Plan implementation, audit panel oversight, and risk management"
+      }
+    ],
+    "resources": [
+      {
+        "id": "chc-r1",
+        "order": 0,
+        "content": "Staff & Personnel",
+        "description": "Council employees including key management personnel, supported by continuous training programs (CERT 3 in Civil Operations, small plant competency training). Workforce Development Coordinator supports local jobseekers and employer connections"
+      },
+      {
+        "id": "chc-r2",
+        "order": 1,
+        "content": "Infrastructure Assets",
+        "description": "Roads ($112.9M), bridges ($9.0M), buildings ($10.5M including recreation facilities, community halls, visitor center), land ($6.9M), land under roads ($3.1M), drainage infrastructure ($2.7M). Total infrastructure asset base supporting service delivery across 801,000 hectare municipality"
+      },
+      {
+        "id": "chc-r3",
+        "order": 2,
+        "content": "Plant & Equipment",
+        "description": "Operational fleet for road and infrastructure maintenance. Major 2024/25 acquisitions: JCB Backhoe ($242k), Kenworth Prime Mover ($391k), Toyota Hilux ($58k), excavator replacement tracks ($19k). Fleet enables efficient service delivery and asset maintenance"
+      },
+      {
+        "id": "chc-r4",
+        "order": 3,
+        "content": "Financial Resources",
+        "description": "Revenue from rates, charges, fees and grants. Financial reserves ($1.64M total): Plant Replacement ($453k), Bridges ($377k), Long Service Leave ($401k), Regional Refuse Site ($80k), Quarry ($180k). Investment in water corporation ($8.7M). 5.1% budget increase (2025/26) based on 3.1% cost index plus 2% per Long Term Financial Plan"
+      },
+      {
+        "id": "chc-r5",
+        "order": 4,
+        "content": "Strategic Planning Framework",
+        "description": "Strategic Plan 2015-2024, Annual Budget process (with Budget Workshops April 2025), Long Term Financial Plan and Strategy, Long-Term Asset Management Plans, all continuously reviewed by Audit Panel to guide council operations, investment decisions and ensure financial sustainability"
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [],
+    "delivery_pathways": [],
+    "external_influences": []
+  },
+  "external_values": [],
+  "kpis": {
+    "by_value": [],
+    "by_outcome": [
+      {
+        "content": "Tourism infrastructure support: Visitor Centre operations (volunteer-managed), promoting world-class fly and trout fishing, local products on consignment, attracting visitors to Central Highlands",
+        "parent_id": "chc-o1",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Community events supporting economic development: Hamilton Show (annual March event), Great Lake Tie-in, Miena Seisiún Concert & Dance, Tasmanian Camp Drafting, enhancing visitation and local business opportunities",
+        "parent_id": "chc-o1",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Road capital investment $2.46M (2024/25): Thousand Acre Lane widening/stabilisation $1.46M, Hollow Tree Road $197k, Bothwell resealing $157k, Wayatinah resealing $148k, unsealed roads $496k - supporting safe community transport and accessibility",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Bridge infrastructure upgrades $241k (2024/25): Wentworth Bridge widening improving infrastructure reliability and safety for community access",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Road safety improvements: Old Mans Head Black Spot program $107k, Cramps Bay junction upgrade $33k, Patrick Street Bothwell asphalt verge works $76k - enhancing community safety",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Recreation facilities enhancement $250k (2024/25): Hamilton Recreation Ground power upgrade enabling improved community recreation and sporting activities",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Community facilities upgrades: Wayatinah toilets/playground refurbishment $176k, Gretna Cricket Club changerooms $66k, Wayatinah Sports & Golf Club $4k - improving community amenities",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Community information dissemination: Highland Digest annual support $10.9k providing valuable avenue for community news and information to Central Highlands residents",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Community engagement: Council website and Facebook page regularly updated, newsletters with rate notices, Mayor's monthly Highland Digest column, ensuring transparent community communication",
+        "parent_id": "chc-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "ANZAC Day services: 7 locations across Central Highlands (2024/25) commemorating cultural heritage and supporting community participation in remembrance events",
+        "parent_id": "chc-o3",
+        "parent_order": 2,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "First Nations cultural heritage: Dual naming initiatives (yingina/Great Lake, trawtha mukuminya/Gowan Brae and additional Aboriginal place names), Council-supported Native Garden in Bothwell preserving and celebrating indigenous culture",
+        "parent_id": "chc-o3",
+        "parent_order": 2,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Broom control effectiveness 80% (2024/25): Weed management program protecting natural ecosystems from invasive species across wilderness heritage areas",
+        "parent_id": "chc-o4",
+        "parent_order": 3,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Native plants established 1,500+ (2024/25): River recovery and habitat restoration programs supporting environmental protection in national parks and wilderness areas",
+        "parent_id": "chc-o4",
+        "parent_order": 3,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Derwent Catchment Project nursery expansion $15.5k (2024/25): Supporting environmental restoration capacity and native vegetation propagation for catchment recovery",
+        "parent_id": "chc-o4",
+        "parent_order": 3,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Total financial reserves $1.64M stable (2017-2025): Plant Replacement $453k, Bridges $377k, Long Service Leave $401k, Regional Refuse $80k, Quarry $180k - demonstrating responsible long-term financial management",
+        "parent_id": "chc-o5",
+        "parent_order": 4,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Plant & equipment replacement reserve maintained $453k annually (2017-2025): Ensuring infrastructure service delivery continuity through planned asset renewal (2024/25 acquisitions: Backhoe $242k, Prime Mover $391k)",
+        "parent_id": "chc-o5",
+        "parent_order": 4,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Bridge infrastructure reserve maintained $377k annually (2017-2025): Forward planning for bridge maintenance and upgrades ensuring long-term infrastructure sustainability",
+        "parent_id": "chc-o5",
+        "parent_order": 4,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Budget management: 5.1% budget increase (2025/26) based on 3.1% Council Cost Index plus 2% per Long Term Financial Plan, maintaining responsible rate increases while ensuring service delivery",
+        "parent_id": "chc-o5",
+        "parent_order": 4,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": []
+  },
+  "capabilities": {
+    "current_by_resource": [],
+    "necessary_by_resource": []
+  },
+  "factors": {
+    "by_value": [],
+    "by_external_value": []
+  },
+  "_metadata": {
+    "extracted_at": "2026-01-07",
+    "sector": "Local Government",
+    "region": "Tasmania",
+    "municipality": "Central Highlands Council",
+    "source": "Annual Report 2024-2025 (100 pages)",
+    "extraction_method": "Systematic chunk-by-chunk analysis with AI-assisted strategic mapping",
+    "total_rows": 0,
+    "stats": {
+      "outcomes": 5,
+      "value_chain": 9,
+      "resources": 5,
+      "kpis_by_outcome": 18,
+      "kpis_by_value": 0,
+      "kpis_by_dimension": 0,
+      "contribution_map_cells": 0,
+      "delivery_pathways_cells": 0,
+      "external_influences_cells": 0
+    },
+    "kpi_distribution": {
+      "chc-o1_vibrant_economy": 2,
+      "chc-o2_community_life": 7,
+      "chc-o3_cultural_heritage": 2,
+      "chc-o4_environment": 3,
+      "chc-o5_financial_stability": 4
+    }
+  }
+}

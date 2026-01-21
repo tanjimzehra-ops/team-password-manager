@@ -1,0 +1,185 @@
+{
+  "agents": [
+    {
+      "id": "claudia",
+      "name": "Claudia",
+      "type": "orchestrator",
+      "purpose": "Asistente principal y orquestador de agentes especializados",
+      "downstream": ["tasmania-demo", "jigsaw-dev", "byterover-dev", "brainstorm", "research", "meeting-analyzer"]
+    },
+    {
+      "id": "tasmania-demo",
+      "name": "Tasmania Demo",
+      "type": "agent",
+      "workstream": "01-tasmania",
+      "priority": "P0",
+      "status": "operativo",
+      "purpose": "Agente para demos y entregas del proyecto Central Highlands Council",
+      "upstream": ["claudia"],
+      "downstream": ["proposal-gen", "crm-agent"]
+    },
+    {
+      "id": "proposal-gen",
+      "name": "Proposal Generator",
+      "type": "agent",
+      "workstream": "01-tasmania",
+      "priority": "P1",
+      "status": "planificado",
+      "purpose": "Genera propuestas comerciales para councils australianos",
+      "upstream": ["tasmania-demo"]
+    },
+    {
+      "id": "crm-agent",
+      "name": "CRM Agent",
+      "type": "agent",
+      "workstream": "01-tasmania",
+      "priority": "P1",
+      "status": "planificado",
+      "purpose": "Gestiona relaciones con clientes y seguimiento de leads",
+      "upstream": ["tasmania-demo"]
+    },
+    {
+      "id": "jigsaw-dev",
+      "name": "Jigsaw Dev",
+      "type": "agent",
+      "workstream": "02-jigsaw",
+      "priority": "P0",
+      "status": "operativo",
+      "purpose": "Desarrollo del sistema Jigsaw 2.0 de planificación estratégica",
+      "upstream": ["claudia"],
+      "downstream": ["frontend-ui", "supabase-expert"]
+    },
+    {
+      "id": "frontend-ui",
+      "name": "Frontend UI",
+      "type": "agent",
+      "workstream": "02-jigsaw",
+      "priority": "P1",
+      "status": "planificado",
+      "purpose": "Especialista en React, TypeScript y componentes UI",
+      "upstream": ["jigsaw-dev"]
+    },
+    {
+      "id": "supabase-expert",
+      "name": "Supabase Expert",
+      "type": "agent",
+      "workstream": "02-jigsaw",
+      "priority": "P1",
+      "status": "planificado",
+      "purpose": "Experto en Supabase, migraciones y queries",
+      "upstream": ["jigsaw-dev"]
+    },
+    {
+      "id": "byterover-dev",
+      "name": "ByteRover Dev",
+      "type": "agent",
+      "workstream": "03-byterover",
+      "priority": "P0",
+      "status": "operativo",
+      "purpose": "Desarrollo del sistema de memoria persistente ByteRover",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "mera-agent",
+      "name": "MERA Agent",
+      "type": "agent",
+      "workstream": "04-mera",
+      "priority": "P2",
+      "status": "planificado",
+      "purpose": "Agente especializado para el proyecto MERA de energía limpia",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "kiraa-agent",
+      "name": "Kiraa Agent",
+      "type": "agent",
+      "workstream": "05-kiraa",
+      "priority": "P2",
+      "status": "planificado",
+      "purpose": "Agente para el proyecto Kiraa de tecnología AI",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "levur-agent",
+      "name": "Levur Agent",
+      "type": "agent",
+      "workstream": "06-levur",
+      "priority": "P2",
+      "status": "planificado",
+      "purpose": "Agente para el proyecto LEVUR de biotecnología",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "brainstorm",
+      "name": "Brainstorm",
+      "type": "agent",
+      "workstream": "00-utils",
+      "priority": "P1",
+      "status": "operativo",
+      "purpose": "Exploración de ideas y análisis creativo antes de implementar",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "research",
+      "name": "Research Agents",
+      "type": "agent",
+      "workstream": "00-utils",
+      "priority": "P1",
+      "status": "operativo",
+      "purpose": "Coordinador de investigaciones paralelas sobre diferentes aspectos",
+      "upstream": ["claudia"]
+    },
+    {
+      "id": "meeting-analyzer",
+      "name": "Meeting Analyzer",
+      "type": "agent",
+      "workstream": "00-utils",
+      "priority": "P1",
+      "status": "operativo",
+      "purpose": "Analiza transcripciones de reuniones extrayendo action items y decisiones",
+      "upstream": ["claudia"]
+    }
+  ],
+  "commands": [
+    {
+      "id": "prime",
+      "name": "/prime",
+      "type": "command",
+      "trigger": "Al iniciar sesión",
+      "output": "Carga contexto completo del día, estado de proyectos y prioridades",
+      "relatedAgents": ["claudia"]
+    },
+    {
+      "id": "daily",
+      "name": "/daily",
+      "type": "command",
+      "trigger": "Cada mañana",
+      "output": "Resumen del día anterior y prioridades para hoy",
+      "relatedAgents": ["claudia"]
+    },
+    {
+      "id": "cierra",
+      "name": "/cierra",
+      "type": "command",
+      "trigger": "Al cerrar sesión",
+      "output": "Documenta progreso, commitea cambios y persiste contexto",
+      "relatedAgents": ["claudia"]
+    },
+    {
+      "id": "brief",
+      "name": "/brief",
+      "type": "command",
+      "trigger": "Bajo demanda",
+      "output": "Estado rápido del proyecto actual",
+      "relatedAgents": ["claudia"]
+    },
+    {
+      "id": "session",
+      "name": "/session",
+      "type": "command",
+      "trigger": "Retomar trabajo",
+      "output": "Recupera contexto de la sesión actual",
+      "relatedAgents": ["claudia"]
+    }
+  ]
+}

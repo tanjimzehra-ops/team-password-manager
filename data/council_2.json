@@ -1,0 +1,1484 @@
+{
+  "system_id": 9002,
+  "name": "Central Highlands Council - Strategic Plan",
+  "logic_model": {
+    "impact": "Central Highlands - Prosperity, Liveability & Resilience",
+    "dimension": "Build on strengths and provide ways for Central Highlanders and Central Highlands communities to connect with their own health and wellbeing, the services they need, and a healthy and well future",
+    "challenge": "A rural Council building & utilising its small resource base to achieve best results",
+    "outcomes": [
+      {
+        "id": "chc2-o1",
+        "order": 0,
+        "content": "Leadership, Governance, Delivery Efficiency, Opportunity & Risk Management",
+        "description": "Strong, locally representative leadership and governance which applies its responsibilities to productively manage, apply and facilitate resources to deliver services, supports and its strategic objectives - KPIs - legislative compliance, delivery of strategic objectives, \ncommunity participation, support, viable, sustainable resource base\nLegislative & standards compliance, policy change"
+      },
+      {
+        "id": "chc2-o2",
+        "order": 1,
+        "content": "Environment & Amenity",
+        "description": "A beautiful, diverse place which sustains its natural ecosystems, provides an attractive built environment, quality infrastructure, facilities & services while supporting rural lifestyles, economic production and recreational experiences - KPIs - environmental quality, ecosystems, biodiversity, livability, infrastructure scope, standards & condition, community use\nCommunity communication, representation & engagement"
+      },
+      {
+        "id": "chc2-o3",
+        "order": 2,
+        "content": "Strong, Productive, Diverse Economy",
+        "description": "Producing renewable food, fibres, energy, recreation & environmental services & experiences for local, national and export markets generating investment, revenue, jobs & incomes which enable the productive delivery and creation of products and service - KPIs - economic output, employment, levels, income & sources\nStrategy, Policy & Operational Planning"
+      },
+      {
+        "id": "chc2-o4",
+        "order": 3,
+        "content": "Community Participation, Prosperity & Wellbeing",
+        "description": "People living in, contributing to & sharing in the benefits of Central Highlands services, infrastructure, economy & experiences to achieve fulfilling lives and wellbeing - KPIs - SEIFA, population growth, demographic profile, safety, health, workforce participation, unemployment, volunteering, care profile, events profile\nRevenue generation & financial management"
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "chc2-v1",
+        "order": 0,
+        "content": "Legislative & standards compliance, policy change",
+        "description": ""
+      },
+      {
+        "id": "chc2-v2",
+        "order": 1,
+        "content": "Community communication, representation & engagement",
+        "description": ""
+      },
+      {
+        "id": "chc2-v3",
+        "order": 2,
+        "content": "Strategy, Policy & Operational Planning",
+        "description": ""
+      },
+      {
+        "id": "chc2-v4",
+        "order": 3,
+        "content": "Revenue generation & financial management",
+        "description": ""
+      },
+      {
+        "id": "chc2-v5",
+        "order": 4,
+        "content": "Land use planning & development approval",
+        "description": ""
+      },
+      {
+        "id": "chc2-v6",
+        "order": 5,
+        "content": "Organisational, intergovernmental & business relations, advocacy & facilitation",
+        "description": ""
+      },
+      {
+        "id": "chc2-v7",
+        "order": 6,
+        "content": "Recurrent operations & services",
+        "description": ""
+      },
+      {
+        "id": "chc2-v8",
+        "order": 7,
+        "content": "Capital investment & leverage",
+        "description": ""
+      },
+      {
+        "id": "chc2-v9",
+        "order": 8,
+        "content": "Commercial activities",
+        "description": ""
+      },
+      {
+        "id": "chc2-v10",
+        "order": 9,
+        "content": "Monitoring, reporting & evaluation",
+        "description": ""
+      }
+    ],
+    "resources": [
+      {
+        "id": "chc2-r1",
+        "order": 0,
+        "content": "Legislation & intergovernmental policies, administration & practices",
+        "description": ""
+      },
+      {
+        "id": "chc2-r2",
+        "order": 1,
+        "content": "Natural environment & conditions",
+        "description": ""
+      },
+      {
+        "id": "chc2-r3",
+        "order": 2,
+        "content": "Economic & population profile, characteristics & capabilities",
+        "description": ""
+      },
+      {
+        "id": "chc2-r4",
+        "order": 3,
+        "content": "Strategic & operational asset & financial management practices",
+        "description": ""
+      },
+      {
+        "id": "chc2-r5",
+        "order": 4,
+        "content": "Attraction, development & retention of talent",
+        "description": ""
+      },
+      {
+        "id": "chc2-r6",
+        "order": 5,
+        "content": "Alliances, networks and partnerships",
+        "description": ""
+      },
+      {
+        "id": "chc2-r7",
+        "order": 6,
+        "content": "Technology, equipment & processes",
+        "description": ""
+      },
+      {
+        "id": "chc2-r8",
+        "order": 7,
+        "content": "Community facility & engineering Infrastructure & services",
+        "description": ""
+      },
+      {
+        "id": "chc2-r9",
+        "order": 8,
+        "content": "Community wellbeing, health care, emergency response & education services",
+        "description": ""
+      },
+      {
+        "id": "chc2-r10",
+        "order": 9,
+        "content": "Data & decision making mechanisms",
+        "description": ""
+      },
+      {
+        "id": "chc2-r11",
+        "order": 10,
+        "content": "Contemporary leadership, governance, risk and opportunity management",
+        "description": ""
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "Scanning of changes to identify new opportunities.  Financial and operations auditing.  Operations systems support, HR development & compliance",
+        "order": 0,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Monitoring the natural & developed environments to ensure quality & identify any compliance factors Awareness and utilisation of new policies and standards & opportunities to protect & improve",
+        "order": 0,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Awareness and utilisation of new policies, standards & opportunities to protect & improve economy & its benefits",
+        "order": 0,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Awareness and utilisation of new policies and standards & opportunities to protect & improve flow-on impact",
+        "order": 0,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Provide opportunities for participation, listening to and positively engaging with community to resolve issues and identify opportunities. Marketing & promoting CH, representing its interests to government & investors",
+        "order": 1,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Support & work with community organisations to actively contribute to conservation & rehabilitation",
+        "order": 1,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Committee structure to support & facilitate economic development",
+        "order": 1,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Structured, ongoing communication\nActively engaging with a wide spectrum of community organisations. Awareness of their roles and inclusion in key initiatives, events",
+        "order": 1,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Environmental scanning, analysis and integrated strategic and operational alignment.  Integrate across state, local & community responsibilities",
+        "order": 2,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Integrate climate change & environment protection, risk mitigation, adaptation & resilience factors into local context",
+        "order": 2,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Use CH socio-economic futures strategy to support development & value adding",
+        "order": 2,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Use CH Health & Wellbeing Plan to frame, deliver and facilitate services Facilitate service and social infrastructure to optimise use & benefits",
+        "order": 2,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Ensure land use planning identifies and facilitates beneficial use and development whilst managing risks and hazards to protect the community & sustainability.  Buildings and their use compliant",
+        "order": 3,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Complete local structure planning for all communities, taking into account community values to appropriately protect the environment and improve liveability & amenity.",
+        "order": 3,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Identify and facilitate development that leverages our key economic advantages, capabilities and promote sustainable downstream value-add and synergy.",
+        "order": 3,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Ensure land use planning improves the attraction and cohesion of our towns and rural communities, encourages employment opportunities for all and steadily increases the standard of living across generations.",
+        "order": 3,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Actively develop & utilise the mix of available revenue sources to productively deliver priority services and infrastructure profile",
+        "order": 4,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Evaluate the benefit-cost link between investment in physical assets, environment and social & economic wellbeing",
+        "order": 4,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Advance renewables rating model, PILOR & social acceptability support to deliver a mix of strategic & community investment",
+        "order": 4,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Co-investment from government, industry & community, grants to complement CH expenditure & investment",
+        "order": 4,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Support the community to contribute to CH liveability, wellbeing and future.\nImproved service levels, coordination & co-investment to achieve best community result",
+        "order": 5,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Vertical integration of action & investment between Federal, State, Local Community to ensure a sustainable, value adding profile",
+        "order": 5,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "VET in schools, reflects local opportunities, business experience.\nPost school VET locally through existing school campuses",
+        "order": 5,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "VET in schools, integration of State, Provider & Local Community capabilities and funds to enhance health & wellbeing care services & supports",
+        "order": 5,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Assess quality & condition of assets and services to ensure they productively meet standards, needs and balanced within the scope & scale of Councils financial capability",
+        "order": 6,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Road, bridge, path, solid waste & drainage systems operations & maintenance which supports all season, safe mobility & activity, protect resources and mitigate risks.\nPublic buildings and grounds, streetscapes, lighting, public conveniences, urban design which promote connectivity & activity",
+        "order": 6,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Improve connections with local suppliers to create opportunities to provide services to community & council",
+        "order": 6,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Facilitation of and access to high quality care, medical & support services which meet acute needs, life stage & emergency challenges and needs, supporting independence. Accessible, safe, fit for purpose public amenities, buildings, grounds & facilities with high utilisation rates",
+        "order": 6,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Optimise  the portfolio of new technology, plant & asset investment, maintenance & upgrades mix to meet compliance standards, use, user experience & lifecycle cost\nSpecific purpose grants, JV",
+        "order": 7,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Ensuring risk detection &operational assets and community infrastructure protects and enhances environmental and amenity values",
+        "order": 7,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Develop activity precincts to promote use and development, All season access infrastructure, Visitor facilities to promote year-round activity.",
+        "order": 7,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Scope of recreational, health & emergency services infrastructure & standards enable social & recreational inclusion, participation & voluntary services.",
+        "order": 7,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Carefully identify & critically analyse  gaps in assets and specialist services which deliver foundational community benefit or leverage further development & community returns",
+        "order": 8,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Visitor facilities which create amenity and also flow-on economic benefit to the community - caravan park, camping (potential seasonal accommodation)",
+        "order": 8,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Local facilities identified as important by the community operated with a level of cost recovery - Independent Living units, cemetery, pool etc",
+        "order": 8,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Recurrent and specific purpose reporting & analysis to monitor performance & support continuous improvement",
+        "order": 9,
+        "column": 0,
+        "xaxis": "chc2-o1",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Utilise asset condition register in conjunction with risk and use patterns to optimise cost & benefit",
+        "order": 9,
+        "column": 1,
+        "xaxis": "chc2-o2",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Ongoing economic profiling & analysis to identify & explore community opportunities",
+        "order": 9,
+        "column": 2,
+        "xaxis": "chc2-o3",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Utilise facilities condition register in conjunction with use patterns to optimise cost & benefit\nWith community partners evaluate service profile match o needs",
+        "order": 9,
+        "column": 3,
+        "xaxis": "chc2-o4",
+        "yaxis": "chc2-v10"
+      }
+    ],
+    "delivery_pathways": [
+      {
+        "content": "Compliance management & updating, influencing change",
+        "order": 0,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Assessment of water quality, Derwent Catchment Project, NRM measures",
+        "order": 0,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Identify opportunities from policy changes",
+        "order": 0,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Benefit-cost approach to asset ownership, retention & development",
+        "order": 0,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "promote and provide access to professional development training",
+        "order": 0,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "LGAT & regional engagement",
+        "order": 0,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Asset condition re-assessment, prepare 10 year investment & management plan",
+        "order": 0,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Awareness of policy changes and implications",
+        "order": 0,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Reporting standards requirements compliance",
+        "order": 0,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Active participation in governance of LGAT, regional & industry organisations - focus on future environmental, economic & social conditions, opportunities & risk",
+        "order": 0,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v1"
+      },
+      {
+        "content": "Community engagement\nCouncil administration & support",
+        "order": 1,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Liaise with community organisations & land managers",
+        "order": 1,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Advocate for the community in service, & facility development to meet liveability requirements\nPlan work with local tourism, regional & promotion groups",
+        "order": 1,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "External/grant funding to support volunteer & emergency services",
+        "order": 1,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Awareness leading to people volunteering and engaging positively as a community",
+        "order": 1,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Renewable energy PILOR allocation group formed & working\nGovernment agency links achieving results",
+        "order": 1,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Use of social media to connect Council to community",
+        "order": 1,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Gain insight into priorities to help consider right facility and infrastructure profile",
+        "order": 1,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Community organisation & event support\nStructured communications to gain insight into priorities",
+        "order": 1,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Extend community data profiles with local  information",
+        "order": 1,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Regular attendance at community meetings\nBenefit - cost of key potential initiatives",
+        "order": 1,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v2"
+      },
+      {
+        "content": "Annual plan implementation management\nStrategic issue scanning & Identification for inclusion",
+        "order": 2,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Assess climate risk impact - mitigation,\n transition impacts & funding opportunities\nWork with STR Waste Authority",
+        "order": 2,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Plan for growth & investment in line with CH socio-economic futures strategy",
+        "order": 2,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Forward financial plan update",
+        "order": 2,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "HR Plan & professional development program for councilors & employees.  Potential extension to community committees\nActively assess resource sharing opportunities",
+        "order": 2,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Engage key interests across CH",
+        "order": 2,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Equipment replacement program & schedule - efficiency gains focus",
+        "order": 2,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Develop 10 year asset management plan\nMaintenance program & schedule management",
+        "order": 2,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Community & youth engagement & partnership program\nImplement CH Health & Wellbeing Plan & Emergency Management Plan",
+        "order": 2,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Monitoring activity progress & budget compliance",
+        "order": 2,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Translating key opportunities & risks into policy & strategy\nReview and ensure continued relevance",
+        "order": 2,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v3"
+      },
+      {
+        "content": "Review financial plan, policies, update strategies",
+        "order": 3,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Manage community, activity grants",
+        "order": 3,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Work with Renewable Energy sector to develop balanced strategic & community interest funding model, Active grant seeking",
+        "order": 3,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Resource sharing, collaboration with community organisations \nCommunity grants program",
+        "order": 3,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Ensure technology & systems are productive",
+        "order": 3,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Own - hire equipment reassessment - \nproductivity focus",
+        "order": 3,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Actively advocate & lobby for PILOR investment in services & facilities\nActively pursue grant applications which add value",
+        "order": 3,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Develop asset condition index for all asset classes\nAssess benefit-cost to frame funding allocations",
+        "order": 3,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Best use of reserves & revenue in view of investment & recurrent operations",
+        "order": 3,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v4"
+      },
+      {
+        "content": "Assess & administer applications, \nCompliance",
+        "order": 4,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Sensitive, important location, ecosystem & waterway/quality protection",
+        "order": 4,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Support establishment of sustainable policy\nNew Special Purpose Zone approval\nResidential precinct development,\nRural living promotion",
+        "order": 4,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Resource sharing across Councils",
+        "order": 4,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Remove site & precinct upfront barriers to development",
+        "order": 4,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Promote interests to SLUP \nConsider & respond to development profile",
+        "order": 4,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v5"
+      },
+      {
+        "content": "Structured and specific issue engagement plan & schedule within CH and outside organisations",
+        "order": 5,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Work with land managers to control weeds, prepare emergency management plan, Work with Southern Tas Regional Waste Authority",
+        "order": 5,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Implement Socio-economic Futures Strategy\nAdvocate to business and government",
+        "order": 5,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Federal  precinct grant program application",
+        "order": 5,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Bringing key players to table,",
+        "order": 5,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Purposeful joint consideration & activity structuring",
+        "order": 5,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Lobby for support, \nLink to Activity precincts",
+        "order": 5,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Advocate for improved scale of community & emergency response services & access\nImplement Health & Wellbeing Plan",
+        "order": 5,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Working with major developers, active progress CH community & economic development to support and lobby to government in matters of community interest",
+        "order": 5,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v6"
+      },
+      {
+        "content": "Implementation, quality & budget compliance, productivity improvement",
+        "order": 6,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Roadside weed control,\nWaste management, collection, transfer, minimisation, re-use, circular",
+        "order": 6,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Develop supplier panel",
+        "order": 6,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Review plant asset management plan",
+        "order": 6,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Own vs hire evaluation for assets",
+        "order": 6,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Manage annual road, bridge, building, facilities and grounds maintenance, minor upgrade program & incidents arising",
+        "order": 6,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Foster & support activities, events & access \nSupport for provision & extension of medical services, immunisation & on-site effluent disposal",
+        "order": 6,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Program cost review\nUnit rate cost benchmarks",
+        "order": 6,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Ensure transparency re the link & contribution to CH Strategic plan, health & wellbeing, socio-economic futures plans",
+        "order": 6,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v7"
+      },
+      {
+        "content": "Implementation, quality &budget compliance, impact evaluation",
+        "order": 7,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Invest in precinct development",
+        "order": 7,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Grants to leverage council funding",
+        "order": 7,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Support fire communications & alerts infrastructure",
+        "order": 7,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Manage annual road, bridge, building facilities and grounds capital works program",
+        "order": 7,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Advise on upgrading spaces to contemporary standards & encouraging use",
+        "order": 7,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Asset condition profile, use patterns and benefit-cost analysis",
+        "order": 7,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Ensure transparency re the link & contribution to CH Strategic plan, health & wellbeing, socio-economic futures plans",
+        "order": 7,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v8"
+      },
+      {
+        "content": "Utilisation, returns & cost recovery management",
+        "order": 8,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Link community & business benefits",
+        "order": 8,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Activate Economic Development special committee",
+        "order": 8,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Perform private works contracts",
+        "order": 8,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Advise on & support funding strategy linking Department of Health, industry & Council resourcing to provide essential medical care & response services",
+        "order": 8,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Review operations of community facilities, their benefit & cost as the basis of viability decisions",
+        "order": 8,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v9"
+      },
+      {
+        "content": "Specific project reports, operations reporting, Annual Report",
+        "order": 9,
+        "column": 0,
+        "xaxis": "chc2-r1",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Environmental monitoring\nEmergency fire alerts",
+        "order": 9,
+        "column": 1,
+        "xaxis": "chc2-r2",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "chc2-r3",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "chc2-r4",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 4,
+        "xaxis": "chc2-r5",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 5,
+        "xaxis": "chc2-r6",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "System support to decision making analysis",
+        "order": 9,
+        "column": 6,
+        "xaxis": "chc2-r7",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Progress & budget compliance reporting\nVariations and issues arising reporting",
+        "order": 9,
+        "column": 7,
+        "xaxis": "chc2-r8",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Progress & budget compliance reporting\nVariations and issues arising reporting\nHealth condition of  food premises, public places and recreational waterways",
+        "order": 9,
+        "column": 8,
+        "xaxis": "chc2-r9",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Data capture & analysis",
+        "order": 9,
+        "column": 9,
+        "xaxis": "chc2-r10",
+        "yaxis": "chc2-v10"
+      },
+      {
+        "content": "Ensure progress to plan & budget\nEnsure timely actions",
+        "order": 9,
+        "column": 10,
+        "xaxis": "chc2-r11",
+        "yaxis": "chc2-v10"
+      }
+    ],
+    "external_influences": []
+  },
+  "external_values": [
+    {
+      "id": "chc2-e1",
+      "order": 0,
+      "content": "Insert label here",
+      "description": "Insert label here"
+    },
+    {
+      "id": "chc2-e2",
+      "order": 1,
+      "content": "Insert label here",
+      "description": "Insert label here"
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "Compliance, use of policy & standards to progress opportunities & manage risks",
+        "parent_id": "chc2-v1",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Community participation in process, feedback,\nsatisfaction",
+        "parent_id": "chc2-v2",
+        "parent_order": 1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Systemic, organisation wide plans, clear focus, awareness of external factors\nAchievement of objectives, delivery efficiency.\nCommunity alignment",
+        "parent_id": "chc2-v3",
+        "parent_order": 2,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Revenue level, sources, equity\nBudget compliance, productivity,\nInvestment capability",
+        "parent_id": "chc2-v4",
+        "parent_order": 3,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Development profile, number of applications, appeals, average determination time & time utilisation, compliance",
+        "parent_id": "chc2-v5",
+        "parent_order": 4,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Profile of supportive, meaningful relationships. joint investment, & service profile & outcome results",
+        "parent_id": "chc2-v6",
+        "parent_order": 5,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Key asset condition, service quality, fit for purpose, accidents, incidents, operations productivity.\nInfrastructure which supports development",
+        "parent_id": "chc2-v7",
+        "parent_order": 6,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "% of asset value in updating assets. Jointly investing in assets with other entities to achieve standards, community benefit & future value/return",
+        "parent_id": "chc2-v8",
+        "parent_order": 7,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Cost recovery, Return on investment, Community benefit-cost ratio",
+        "parent_id": "chc2-v9",
+        "parent_order": 8,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Ability to monitor performance, and positively adapt to circumstances",
+        "parent_id": "chc2-v10",
+        "parent_order": 9,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_outcome": [
+      {
+        "content": "Legislative compliance, delivery of strategic objectives, \ncommunity participation, support, viable, sustainable resource base",
+        "parent_id": "chc2-o1",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Environmental quality - ecosystems, biodiversity, pollutant levels\nAmenity - liveability, infrastructure scope, standards & condition, community use",
+        "parent_id": "chc2-o2",
+        "parent_order": 1,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Economic output, diversity, employment, levels, income & sources",
+        "parent_id": "chc2-o3",
+        "parent_order": 2,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Socio-economicic indices (SEIFA), Pop growth, demographics, safety, health, workforce participation, unemployment, volunteering, care profile, events profile",
+        "parent_id": "chc2-o4",
+        "parent_order": 3,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": []
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "",
+        "parent_id": "chc2-r1",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r2",
+        "parent_order": 1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r3",
+        "parent_order": 2,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r4",
+        "parent_order": 3,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r5",
+        "parent_order": 4,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r6",
+        "parent_order": 5,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r7",
+        "parent_order": 6,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r8",
+        "parent_order": 7,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r9",
+        "parent_order": 8,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r10",
+        "parent_order": 9,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "chc2-r11",
+        "parent_order": 10,
+        "parent_tag": "Resource"
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "Outcome and equity focused policies guiding & linking strategy & operations",
+        "parent_id": "chc2-r1",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Ecosystem protection, enhancement\nPotential for environmental services\nClimate change adaptation, utilisation",
+        "parent_id": "chc2-r2",
+        "parent_order": 1,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Increased population & workforce, younger profile",
+        "parent_id": "chc2-r3",
+        "parent_order": 2,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Broaden and grow income across economy & Council",
+        "parent_id": "chc2-r4",
+        "parent_order": 3,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Increased technical proportion within labour force",
+        "parent_id": "chc2-r5",
+        "parent_order": 4,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Stronger, more aligned partnerships and their contribution",
+        "parent_id": "chc2-r6",
+        "parent_order": 5,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Productive use of technology & equipment",
+        "parent_id": "chc2-r7",
+        "parent_order": 6,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Productive delivery of safe, all-season capacity",
+        "parent_id": "chc2-r8",
+        "parent_order": 7,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Highly utilised, fit for purpose and cost effective",
+        "parent_id": "chc2-r9",
+        "parent_order": 8,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Evidence based, collaborative, evaluated",
+        "parent_id": "chc2-r10",
+        "parent_order": 9,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Add capability here",
+        "parent_id": "chc2-r11",
+        "parent_order": 10,
+        "parent_tag": "Resource"
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [],
+    "by_external_value": []
+  },
+  "_metadata": {
+    "extracted_at": "2026-01-08",
+    "sector": "Local Government",
+    "region": "Tasmania",
+    "source": "Strategic Plan CSVs - Council Strategy_01_03_2026 22_14_32",
+    "stats": {
+      "outcomes": 4,
+      "value_chain": 10,
+      "resources": 11,
+      "contribution_map_cells": 40,
+      "delivery_pathways_cells": 110,
+      "kpis_by_value": 10,
+      "kpis_by_outcome": 4
+    }
+  }
+}

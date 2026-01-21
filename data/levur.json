@@ -1,0 +1,1670 @@
+{
+  "system_id": 2251,
+  "name": "Unknown",
+  "logic_model": {
+    "impact": "",
+    "dimension": "",
+    "challenge": "",
+    "outcomes": [
+      {
+        "id": "3164",
+        "order": 0,
+        "content": "LEVUR Product",
+        "description": "Nature identical oils sustainably produced through precision fermentation."
+      },
+      {
+        "id": "3165",
+        "order": 1,
+        "content": "LEVUR Product-Market Fit",
+        "description": "Sustainable oils that are higher quality, higher consistency and price competitive to drop into existing supply chains for FMCG, Cosmetics, Nutraceuticals and Pharmaceutical companies."
+      },
+      {
+        "id": "3166",
+        "order": 2,
+        "content": "LEVUR Value Delivered & Created",
+        "description": "Oils are created to specification and are a direct substitute for unsustainable oils to help companies secure supply, reach sustainability targets and meet regulatory requirements."
+      },
+      {
+        "id": "3167",
+        "order": 3,
+        "content": "LEVUR Success",
+        "description": "Capability, reputation and scale which delivers sustainable substitutions and target revenues and margins to Levur, its customers and investors AND creates significant climate impact."
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "3173",
+        "order": 0,
+        "content": "SYNBIO LIPDS EXPERTISE & KNOWLEDGE \n\n Experts in Precision Fermentation / Synbio Lipids\n\nProprietary Platform for strain identification and development \n\nEquipment usage capability.\n\nDeveloping proprietary processes and knowledge bank.",
+        "description": "SYNBIO LIPDS EXPERTISE & KNOWLEDGE \n\n Experts in Precision Fermentation / Synbio Lipids\n\nProprietary Platform for strain identification and development \n\nEquipment usage capability.\n\nDeveloping proprietary processes and knowledge bank."
+      },
+      {
+        "id": "3174",
+        "order": 1,
+        "content": "MARKET RESEARCH & INSIGHTS\n\nBUSINESS DEVELOPMENT\n(SALES & MARKETING)\n\nIdentifying customer and industry problems to solve & opportunities for Levur.\n\nReverse-engineering molecule solutions with end-product benefits in mind.\n\nCreate samples of end products (tangible)",
+        "description": "MARKET RESEARCH & INSIGHTS\n\nBUSINESS DEVELOPMENT\n(SALES & MARKETING)\n\nIdentifying customer and industry problems to solve & opportunities for Levur.\n\nReverse-engineering molecule solutions with end-product benefits in mind.\n\nCreate samples of end products (tangible)"
+      },
+      {
+        "id": "3177",
+        "order": 2,
+        "content": "CUSTOMER INTEGRATION \n\nEarly engagement with Customers to understand problems and opportunities.\n\nCo-creation of solutions with Customers.\n\nOfftake agreements upfront.",
+        "description": "CUSTOMER INTEGRATION \n\nEarly engagement with Customers to understand problems and opportunities.\n\nCo-creation of solutions with Customers.\n\nOfftake agreements upfront."
+      },
+      {
+        "id": "3169",
+        "order": 3,
+        "content": "STRAIN DESIGN & BUILD\n\nIdentify customer or market need & define target molecule profile.\nExperiment methodology.\nDesign DNA. \nIdentify feedstock required.\nIntegrate into proprietary yeast.\nRegulatory Req.\nCatalogue all molecule profiles identified and learnings.\nTesting and optimisation with yield in mind.",
+        "description": "STRAIN DESIGN & BUILD\n\nIdentify customer or market need & define target molecule profile.\nExperiment methodology.\nDesign DNA. \nIdentify feedstock required.\nIntegrate into proprietary yeast.\nRegulatory Req.\nCatalogue all molecule profiles identified and learnings.\nTesting and optimisation with yield in mind."
+      },
+      {
+        "id": "3168",
+        "order": 4,
+        "content": "INITIAL PRODUCT DEVELOPMENT - \nSCALING\nFermentation yield/ efficiency. etc\nAssess scalability/ commercial viability wtih lab reactor: purity/value/yield\nIs it worth further investment?\nIdentify right feedstock & refine process through testing and optimisation.\nConsider purification method.",
+        "description": "INITIAL PRODUCT DEVELOPMENT - \nSCALING\nFermentation yield/ efficiency. etc\nAssess scalability/ commercial viability wtih lab reactor: purity/value/yield\nIs it worth further investment?\nIdentify right feedstock & refine process through testing and optimisation.\nConsider purification method."
+      },
+      {
+        "id": "3176",
+        "order": 5,
+        "content": "FEEDSTOCK\n\nIdentify and source feedstock for molecule yield, consistency, quality and commercial viability.\n\nCircularity: potential waste-feedstock solution.\n\nPotential to create proprietary feedstock methodology.",
+        "description": "FEEDSTOCK\n\nIdentify and source feedstock for molecule yield, consistency, quality and commercial viability.\n\nCircularity: potential waste-feedstock solution.\n\nPotential to create proprietary feedstock methodology."
+      },
+      {
+        "id": "3170",
+        "order": 6,
+        "content": "FERMENTATION \n& EXTRACTION\n\nIdentify ideal feedstock & refine process through testing and optimisation. \n\nConsider: production location, logistics & supply chain management\n\nPotential for proprietary fermentation methodology.",
+        "description": "FERMENTATION \n& EXTRACTION\n\nIdentify ideal feedstock & refine process through testing and optimisation. \n\nConsider: production location, logistics & supply chain management\n\nPotential for proprietary fermentation methodology."
+      },
+      {
+        "id": "3171",
+        "order": 7,
+        "content": "DOWNSTREAM PROCESSING  \n\nOil extraction and refinement: Harvest the oil through C02, hexane, solvent, or mechanical French press. \n\nOpp. to create proprietary DSP methodology.\n\nConsider supply chain management.",
+        "description": "DOWNSTREAM PROCESSING  \n\nOil extraction and refinement: Harvest the oil through C02, hexane, solvent, or mechanical French press. \n\nOpp. to create proprietary DSP methodology.\n\nConsider supply chain management."
+      },
+      {
+        "id": "3172",
+        "order": 8,
+        "content": "END PRODUCT DEVELOPING AND TESTING \n\nConsumer Good: formulation, testing and\nproduction methodology \n(Does the oil work?)\n\nTech transfer: methodology & dossier - initial 3rd party to production scale",
+        "description": "END PRODUCT DEVELOPING AND TESTING \n\nConsumer Good: formulation, testing and\nproduction methodology \n(Does the oil work?)\n\nTech transfer: methodology & dossier - initial 3rd party to production scale"
+      },
+      {
+        "id": "3175",
+        "order": 9,
+        "content": "MONITORING & CONTINUOUS IMPROVEMENT\n\nFull eco- system analysis and evaluation\n\nDocumenting / Cataloguing and sharing methodologies, platform, molecules as IP and for continuous improvement.",
+        "description": "MONITORING & CONTINUOUS IMPROVEMENT\n\nFull eco- system analysis and evaluation\n\nDocumenting / Cataloguing and sharing methodologies, platform, molecules as IP and for continuous improvement."
+      },
+      {
+        "id": "3178",
+        "order": 10,
+        "content": "CLIENT & SUPPLY CHAIN MANAGEMENT\n\nSatisfaction, fit and future opportunities...",
+        "description": "CLIENT & SUPPLY CHAIN MANAGEMENT\n\nSatisfaction, fit and future opportunities..."
+      }
+    ],
+    "resources": [
+      {
+        "id": "3179",
+        "order": 0,
+        "content": "PROVEN AND PROTECTED IP\nWatermarked DNA\nProprietary Processes & Knowledge\n2 prov. Patents\nIP Moat\nContinuous patenting process.",
+        "description": "PROVEN AND PROTECTED IP\nWatermarked DNA\nProprietary Processes & Knowledge\n2 prov. Patents\nIP Moat\nContinuous patenting process."
+      },
+      {
+        "id": "3180",
+        "order": 1,
+        "content": "CAPITAL / CASH\nCustomer Revenue, Customer Co-creation Projects, Grants, Investment and reinvestment \nR&D tax credit, Licensing agreements, Project Services Fees.",
+        "description": "CAPITAL / CASH\nCustomer Revenue, Customer Co-creation Projects, Grants, Investment and reinvestment \nR&D tax credit, Licensing agreements, Project Services Fees."
+      },
+      {
+        "id": "3181",
+        "order": 2,
+        "content": "STRATEGIC COMMERCIAL PARTNERSHIPS\nCustomers, suppliers, contract manufacturers, ingredient suppliers, feedstock suppliers, waste to feedstock providers (eg. Soldier Fly Larvae)",
+        "description": "STRATEGIC COMMERCIAL PARTNERSHIPS\nCustomers, suppliers, contract manufacturers, ingredient suppliers, feedstock suppliers, waste to feedstock providers (eg. Soldier Fly Larvae)"
+      },
+      {
+        "id": "3182",
+        "order": 3,
+        "content": "TECHNICAL EXPERTISE\nHighly skilled technical team experienced in strain development and precision fermentation.\n\nCEO & FOUNDER\nAUST. EXPERT IN SYNBIO LIPIDS\n\nScientific, management & operational process underpinning credibility & productivity",
+        "description": "TECHNICAL EXPERTISE\nHighly skilled technical team experienced in strain development and precision fermentation.\n\nCEO & FOUNDER\nAUST. EXPERT IN SYNBIO LIPIDS\n\nScientific, management & operational process underpinning credibility & productivity"
+      },
+      {
+        "id": "3183",
+        "order": 4,
+        "content": "WORLD-CLASS LAB FACILITIES\n& $25m worth of equipment that enables us to move faster than competitors with better outcomes.",
+        "description": "WORLD-CLASS LAB FACILITIES\n& $25m worth of equipment that enables us to move faster than competitors with better outcomes."
+      },
+      {
+        "id": "3184",
+        "order": 5,
+        "content": "REGULATORY & CONSUMER SUSTAINABLITY TAILWINDS: \n\nRegulatory tailwinds \nburning platform for customers:\nSustainability Targets, Sourcing challenges etc. Supply Chain Scope 3\nCustomer Demand for sustainable products.",
+        "description": "REGULATORY & CONSUMER SUSTAINABLITY TAILWINDS: \n\nRegulatory tailwinds \nburning platform for customers:\nSustainability Targets, Sourcing challenges etc. Supply Chain Scope 3\nCustomer Demand for sustainable products."
+      },
+      {
+        "id": "3185",
+        "order": 6,
+        "content": "INDUSTRY PARTNERSHIPS:\nMac. Uni, Australian Genome foundry, Centre of Excellence, Bioplatforms Australia, Main Seq, KPMG, Cultiv8.",
+        "description": "INDUSTRY PARTNERSHIPS:\nMac. Uni, Australian Genome foundry, Centre of Excellence, Bioplatforms Australia, Main Seq, KPMG, Cultiv8."
+      },
+      {
+        "id": "3186",
+        "order": 7,
+        "content": "LEVUR PLATFORM\nBuild faster & measure what matters.\nContinuous innovation platform.\nData and optimisation.\nA catalogue of solutions.\nFocused, efficient data collection and information to support technical and business operations, enabling confident decision making",
+        "description": "LEVUR PLATFORM\nBuild faster & measure what matters.\nContinuous innovation platform.\nData and optimisation.\nA catalogue of solutions.\nFocused, efficient data collection and information to support technical and business operations, enabling confident decision making"
+      },
+      {
+        "id": "3187",
+        "order": 8,
+        "content": "MANAGEMENT & ADVISORY TEAM\nContemporary governance and management enabling opportunity & risk management in current, near & long term. \nExpert advisors in finance, regulatory, tech transfer/Scaling, IP, DSP.",
+        "description": "MANAGEMENT & ADVISORY TEAM\nContemporary governance and management enabling opportunity & risk management in current, near & long term. \nExpert advisors in finance, regulatory, tech transfer/Scaling, IP, DSP."
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3173"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3173"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3173"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3173"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3174"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3174"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3174"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3174"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "3164",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 1,
+        "xaxis": "3165",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "3166",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 3,
+        "xaxis": "3167",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "3164"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "3165"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 2,
+        "xaxis": "3166"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "3167"
+      }
+    ],
+    "delivery_pathways": [
+      {
+        "content": "Develop proprietary processes and knowledge bank.\n\nDevelop proprietary platform for strain identification and development. \n\nCreate continuous patenting process.",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Recruit new roles: to run projects: Strain Dev, Synbio, Fermentation, DSP.\n\n(grant/equity $)R&D Tax Credit: Ensure Team completes timesheets. \n\nR&D Commercially Focused: Mgt. communicate commercial outcomes for grants, investment, customers/projects.\n\nMatrix Team: Ascertain what needs to be in-house v. outsourced.",
+        "order": 0,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Key Suppliers: Technical Team to develop relationships with key suppliers and feedstock providers.\n\nAEA Project: Tech Team / CEO to establish waste-feedstock strategic partnerships through AEA Project.",
+        "order": 0,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Recruit Synthetic Biologists: to fast-track progress and manage new projects (eg. IGP OPO and BioSF MCT Commercialisation)\n\nContinuous Learning: Online, Industry Seminars, specific courses",
+        "order": 0,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Training: Ensure team is utilising equipment to its full potential.\n\nProprietary Processes: Create proprietary processes for development and screening of strains.",
+        "order": 0,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Regulatory Pathways: Understand regulatory requirements for key categories. \n\nEngage external Regulatory Expert. \n\nMonitor regulatory changes in key markets Understand consumer sustainability expectations.",
+        "order": 0,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Leverage knowledge & resources available: what can we learn from others who've done it? \n\nUtilise relationships and connections. \n\nEnsure Team attendance and participation at industry events.",
+        "order": 0,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Database: Create a process and protocols for collecting and documenting data. \n\nPlatform for strain identification and development Ipads & software in Lab: to document in real time.",
+        "order": 0,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3173"
+      },
+      {
+        "content": "CEO as CTO to drive the business and educate team and advisors.",
+        "order": 0,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3173"
+      },
+      {
+        "content": "Capture potential IP: Tech Team to document molecules that have commercial potential and could be patented.",
+        "order": 1,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Develop strategic roadmap: outlining priorities and timings; and investment required. \n\nCapital Strategy:  Seed and Beyond Grant Funding: Apply for relevant Grants for specific projects. \n\nProject Services: for short term revenue. Licencing Agreements: Capital light approach to create revenue stream. \n\nCreate a saleable cosmetic ingredient with Yeast: Revenue",
+        "order": 1,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3174"
+      },
+      {
+        "content": "CRM: Create customer pipeline across categories and strategy \n\nUnderstand Customer Problems to Solve: and create Synbio solutions. \n\nIndustry events (eg. ASCC): to network and create partnerships",
+        "order": 1,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Create samples: of end-products (tangible)Reverse engineer molecule solutions with end product benefits in mind. \n\nClear briefs. Weekly R&D Meeting/QTR Updates: -Ensure Tech Team understands the market opportunities so they can identify potentially valuable solutions. -Ensure BD team understands technical capability.",
+        "order": 1,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Tours: Leverage Labs & Equipment in Business Development.",
+        "order": 1,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Understanding of regulatory pathways in each category as a business development angle: eg EUDR/ Scope 3",
+        "order": 1,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3174"
+      },
+      {
+        "content": "CEO & COO to utilise partnerships for industry insights and connections.",
+        "order": 1,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Ensure there is a mechanism for sharing technical findings with CEO/COO for potential commercial opportunities. \n\nFeedback Loop: R&D Meeting?",
+        "order": 1,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3174"
+      },
+      {
+        "content": "BD: Utilise advisors' connections and expertise in business. development. \n\nFormalise Advisory Committee. \n\nGovernance requirements for Business.",
+        "order": 1,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3174"
+      },
+      {
+        "content": "Create bespoke Synbio ingredients that can be patented: multiple benefits etc. for customer differentiation.",
+        "order": 2,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Project Work: Customers to pay for project work and IP/rights to ingredient. Offtake Agreements: Secure Customers for offtake (if relevant).\n\nJV: Levur do R&D and Customer Produce and Sell.",
+        "order": 2,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Early engagement with Customers to understand problems and opportunities. \n\nCo-creation of solutions with Customers Create panel of suppliers: CMOs, testing facilities, cosmetic chemists, ingredient suppliers, feedstock providers.",
+        "order": 2,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Project Team: Create internal project teams to oversee project end-to-end. Tech Team to speak to Client R&D team and present to Customers. Tech Team to keep on top of developments in industry/category.",
+        "order": 2,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Understand regulatory pathway prior to committing to projects. Utilise Customer regulatory resources where possible.",
+        "order": 2,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Ensure feedback loop between Tech Team and Commercial - to identify opportunities.",
+        "order": 2,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Utilise advisors in relevant technical fields: tech transfer, DSP, manufacturing.",
+        "order": 2,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3177"
+      },
+      {
+        "content": "Watermarked DNA Continuous Patenting (Protocol?)",
+        "order": 3,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Identify customer or market need & define target molecule profile. \n\nRelationship with DNA Supplier.",
+        "order": 3,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Scientific, management & operational process underpinning credibility & productivity Experiment methodology. \nDesign DNA. \n\nIdentify feedstock required. Integrate into proprietary yeast. Testing and optimisation with yield in mind.",
+        "order": 3,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Utilise equipment to fast-track development, screening, testing. High throughput.",
+        "order": 3,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Ensure an understanding of key regulatory requirements that might affect Strain Dev and Engineering (eg GMO) - and have impacts downstream.",
+        "order": 3,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Tech Team to utilise relationships with industry partners to fasttrack development.",
+        "order": 3,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3169"
+      },
+      {
+        "content": "A catalogue of solutions: catalogue all molecule profiles identified and learnings. \n\nData and optimisation:  build faster & measure what matters. Continuous innovation platform.",
+        "order": 3,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3169"
+      },
+      {
+        "content": "Data-driven Decision Making: Focused, efficient data collection and information to support technical and business operations, enabling confident decision making \n\nEnsure regulatory and compliance requirements are communicated to Tech Team. \n\nEnsure expertise is brought in as required (eg. regulatory)",
+        "order": 3,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Assess scalability/ commercial viability with lab reactor: purity/value/yield - is it worth further investment? \n\nInvest in small batch reactor/tank to fasttrack development and testing\n\nBudget for external scaling testing.",
+        "order": 4,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Fermentation Partner: Investigate partnerships with fermentation specialists at this small scale.\n\nFeedstock Partnerships: Agri waste, agricultural, waste-feedstock.",
+        "order": 4,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Assess scalability/ commercial viability with lab reactor: purity/value/yield: Is it worth further investment? \n\nIdentify right feedstock & refine process through testing and optimisation.\n\nConsider purification methods.",
+        "order": 4,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Utilise high throughput equipment to assess strain efficiency and viability quickly.",
+        "order": 4,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Understand overarching regulatory requirements or constraints before commencing strain development.",
+        "order": 4,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Ensure all processes are documented and learnings shared.",
+        "order": 4,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3168"
+      },
+      {
+        "content": "Potential to create IP in waste-feedstock utilisation for Synbio lipids.\n\nPotential to create proprietary feedstock to oil methodology.",
+        "order": 5,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Utilise AEA Grant to develop waste-feedstock project.\n\nWaste-feedstock could significantly reduce costs of Synbio lipid production, dependent on supply chain.",
+        "order": 5,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Investigate potential feedstock suppliers/sources that will be commercially viable. Potential to partner with agri-waste producers to create circularity.",
+        "order": 5,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Identify and source feedstock for molecule yield, consistency, quality and commercial viability.",
+        "order": 5,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Utilise facilities and equipment to test feedstock prior to scaling/pilots.",
+        "order": 5,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Understand compliance and regulatory associated with feedstocks -including GMO and Scope 3. How does it affect Levur's positioning.",
+        "order": 5,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Synthetic Biologists to leverage learnings from industry / partners for efficiency.",
+        "order": 5,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3176"
+      },
+      {
+        "content": "Potential for proprietary fermentation and extraction methodology.",
+        "order": 6,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Pilot runs will be outsourced (Cauldron, Bio SG) and expensive: require capital.\n\nEither BioSF funding or investment required to scale fermentation.\n\nJV Opportunities: identify potential partners",
+        "order": 6,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Establish relationships with key fermentation companies: Cauldon and SG Bio- plus SE QLD Precision Fermentation facility.",
+        "order": 6,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Synthetic Biologists to upskill in understanding of scaling tech: fermentation and extraction.",
+        "order": 6,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Understand how lab testing (esp. 250ml machine) translates to pilot sized batches: accuracy.",
+        "order": 6,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Understand regulatory implications ahead of pilot runs.",
+        "order": 6,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Focused, efficient data collection and information to support technical and business operations, enabling confident decision making",
+        "order": 6,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Engage key advisors as required:- Regulatory- Tech Transfer- LCA/TCA",
+        "order": 6,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3170"
+      },
+      {
+        "content": "Opp. to create proprietary DSP methodology.",
+        "order": 7,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3171"
+      },
+      {
+        "content": "DSP likely will be outsourced to specialists and will be costly.",
+        "order": 7,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Potential to create partnership with DSP provider to create IP/Value.\n\nUnderstand Customer needs/preferences - eg. Solvents like Hexane acceptability & impact to 'natural' positioning.",
+        "order": 7,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Ensure understanding of DSP from the beginning of strain design and throughout project - start with the end in mind.",
+        "order": 7,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Utilise existing equipment to understand DSP requirements.",
+        "order": 7,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Understand DSP regulatory implications.",
+        "order": 7,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Leverage industry partnerships/connections to understand DSP.",
+        "order": 7,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Engage specialists as required on DSP",
+        "order": 7,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3171"
+      },
+      {
+        "content": "Potential to create IP; eg. branded Levur ingredients or celebrity brand with Voice Capital.\n\nMaintain core IP.",
+        "order": 8,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Consumer end-product: work with Customers on development, testing and production from end to end.",
+        "order": 8,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Team to understand application of technology/strain ahead of R&D.",
+        "order": 8,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Understand regulatory requirements for end-product category. Eg. testing requirements, GMO.",
+        "order": 8,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Continuous innovation platform. Data and optimisation. A catalogue of solutions.",
+        "order": 8,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Utilise cosmetic advisory committee to make connections and create commercial solutions.",
+        "order": 8,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3172"
+      },
+      {
+        "content": "Ensure anything that has potential as IP is documented.",
+        "order": 9,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Project Meetings with Customers: a feedback loop for improvement.\n\nEnsure meetings are documented and learnings shared and filed for future use.",
+        "order": 9,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Promote a culture of continuous improvement and a growth mindset: testing, learning and optimising.",
+        "order": 9,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Understand capabilities of equipment to fully utilise for optimal outcomes. \n\nAdvise Mgt of any capability gaps in equipment or knowledge.",
+        "order": 9,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Keep up to date on regulatory changes in Aust. in potential markets to ensure tech / products comply. Get ahead of regulatory changes as a competitive advantage.",
+        "order": 9,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Team to engage with relevant industry bodies and partners to learn and optimise their work.",
+        "order": 9,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3175"
+      },
+      {
+        "content": "Levur Proprietary Platform: ensure learnings, findings and molecules are documented immediately for reference.",
+        "order": 9,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "3179",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 1,
+        "xaxis": "3180",
+        "yaxis": "3178"
+      },
+      {
+        "content": "Ensure customer experience with Levur is seamless by building network of reliable partners throughout value chain.",
+        "order": 10,
+        "column": 2,
+        "xaxis": "3181",
+        "yaxis": "3178"
+      },
+      {
+        "content": "Ensure tech team engaged throughout project so technical challenges dealt with in real time.\n\nRecord keeping/ documentation key.",
+        "order": 10,
+        "column": 3,
+        "xaxis": "3182",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 4,
+        "xaxis": "3183",
+        "yaxis": "3178"
+      },
+      {
+        "content": "Work with Customers to ensure regulatory requirements/ documentation provided at each stage.",
+        "order": 10,
+        "column": 5,
+        "xaxis": "3184",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 6,
+        "xaxis": "3185",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 7,
+        "xaxis": "3186",
+        "yaxis": "3178"
+      },
+      {
+        "content": "Leverage expertise of Advisory Committee for advice when required.",
+        "order": 10,
+        "column": 8,
+        "xaxis": "3187",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "3179"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "3180"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 2,
+        "xaxis": "3181"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "3182"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 4,
+        "xaxis": "3183"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 5,
+        "xaxis": "3184"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 6,
+        "xaxis": "3185"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 7,
+        "xaxis": "3186"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 8,
+        "xaxis": "3187"
+      }
+    ],
+    "external_influences": [
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3173"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3174"
+      },
+      {
+        "content": "",
+        "order": 2,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3177"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3169"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3168"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3176"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3170"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3171"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3172"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3175"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "3188",
+        "yaxis": "3178"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "3188"
+      }
+    ]
+  },
+  "external_values": [
+    {
+      "id": "3188",
+      "order": 0,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "Establish relationships with Cauldron, SG Bio, SE QLD Fermentation for pilot runs.\n\nInvestigate cost of own fermenter.\n\nTCA \n\nLCA",
+        "parent_id": "3170",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "AEA Grant: Complete waste-feedstock project.\n\nFind alternative feedstock/s for commercialisation.\n\nMap supply chain / costings.",
+        "parent_id": "3176",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "CRM: Customer Pipeline Approach\n\nSecure: X Project Services customers\n\nSecure X: Customer for Cosmetic Ingredient\n\nSecure X: Customers for OPO and MCT Offtake.\n\nCosmetic Oil Ingredient Launched: by April 2026",
+        "parent_id": "3174",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Establish continuous Patenting Protocols\n\nBest practice processes & equipment usage.\n\nProject Meetings / R&D meetings to ensure governance and that tech team gets help as required.\n\nFocus on Platform / IP: This is where the value of Levur lies.",
+        "parent_id": "3169",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Secure a larger tank (100lt - 200lt) for testing prior to expensive pilots.\n\nPlatform: Create process to fast-track assessment and decision making.\n\nCreate Catalogue: of molecules and learnings.",
+        "parent_id": "3168",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Engineer strains suited to DSP requirements to maximise yield and quality. \n\nCreate commercially viable oil at DSP stage.",
+        "parent_id": "3171",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Establish Advisory Committee\n\nEstablish Project Team\n\n1 consumer product containing Levur oil in market by end 2025: proof of concept",
+        "parent_id": "3172",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Levur Platform established: IP secured\n\nX Patents filed by end of 2025.",
+        "parent_id": "3173",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Project Team Meetings: identify and solve problems\n\nImplement Stage Gate Process\n\nR&D Meetings: Share learnings and optimisation \n\nImplement: Platform/Software to document work in a database - for future reference.",
+        "parent_id": "3175",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Ensure Project Lead is key point of contact for customer.\n\nProject Plan: developed, shared and followed.",
+        "parent_id": "3178",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Establish means of sharing opportunities between Tech & BD. R&D Meeting?\n\nProject Lead & Project Team establishment. \n\nDeliver Projects to agreed timelines:\n-OPO: GrainCorp\n-MCT: Unilever\n\nDeliver Grant Project outcomes.\n \nCosmetic Oil Ingredient Launched: by April 2026",
+        "parent_id": "3177",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_outcome": [
+      {
+        "content": "",
+        "parent_id": "3164",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "",
+        "parent_id": "3167",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "",
+        "parent_id": "3165",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "",
+        "parent_id": "3166",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": [
+      {
+        "content": "",
+        "parent_id": "3126",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "3129",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "3129",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "3129",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "3129",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      }
+    ]
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "Pre-seed Investment\nCapabilities Cap Raise",
+        "parent_id": "3180",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Technical CEO and 4 Syn Biologists",
+        "parent_id": "3182",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "No specific regulatory expertise in house.\nUnderstanding of EUDR.\nUnderstanding of consumer sustainability expectations.",
+        "parent_id": "3184",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Early relationships established with GrainCorp, Unilever and GreenBlue Health.",
+        "parent_id": "3181",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Synthetic Biologists trained in equipment.",
+        "parent_id": "3183",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "2 Provisional Patents\nWatermarked DNA",
+        "parent_id": "3179",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Good relationships through CEO.",
+        "parent_id": "3185",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "CEO owns this: In development",
+        "parent_id": "3186",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Technical and Commercial Mgt. Team\nFractional CFOs.\nTechnical SynBio Advisors.",
+        "parent_id": "3187",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "IP Attorney Engagement: FB Rice\nSystem for documenting IP (internally)",
+        "parent_id": "3179",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Business Development\nCustomer Management\nPartnership Management\nContract Management",
+        "parent_id": "3181",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Business Development\nCustomer Management\nPartnership Management\nContract Management",
+        "parent_id": "3182",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Grant Writing\nCapital Raising\nBudget Management\nForecasting\nBusiness Development\nInvestor Management\nFinancial Reporting",
+        "parent_id": "3180",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Ability to use equipment\nTraining: equipment",
+        "parent_id": "3183",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Regulatory Understanding: Advisor engagement",
+        "parent_id": "3184",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Develop Platform:\nInputs from team\nEmbed in everyday",
+        "parent_id": "3186",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Develop Platform:\nInputs from team\nEmbed in everyday",
+        "parent_id": "3187",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Interpersonal skills, building relationships \nStakeholder management and communication",
+        "parent_id": "3185",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [
+      {
+        "content": "",
+        "parent_id": "3169",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3170",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3172",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3171",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3173",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3174",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3175",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3176",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3168",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3177",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3178",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_external_value": [
+      {
+        "content": "",
+        "parent_id": "3188",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      }
+    ]
+  },
+  "_metadata": {
+    "extracted_at": "2025-12-31T16:32:29.957785",
+    "sector": "Unknown",
+    "total_rows": 432,
+    "stats": {
+      "outcomes": 4,
+      "value_chain": 11,
+      "resources": 9,
+      "contribution_map_cells": 48,
+      "delivery_pathways_cells": 108,
+      "external_influences_cells": 12
+    }
+  }
+}

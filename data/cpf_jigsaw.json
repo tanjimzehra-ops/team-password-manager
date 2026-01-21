@@ -1,0 +1,2057 @@
+{
+  "system_id": 2578,
+  "name": "People globally routinely",
+  "logic_model": {
+    "impact": "People globally routinely & preferentially using cPF Jigsaw Logic to dynamically shape their preferred futures",
+    "dimension": "Bringing perspectives, disciplines, knowledge and tools together by creating a framework, safe place & AI brain for systemic, dynamic, empowering & purposeful approaches to creating preferred futures",
+    "challenge": "People attempting to meet challenges and pursue opportunities within a highly dynamic, interconnected, & contested world using partial, siloed, reductionist approaches - limiting success and misallocating resources",
+    "outcomes": [
+      {
+        "id": "1308",
+        "order": 0,
+        "content": "Product - Service",
+        "description": "Jigsaw is an intuitive, interactive app & methodology which enables you to logically, rapidly & systemically weave signals and ideas to orchestrate strategy, operations as an AI enhanced digital twin to dynamically manage the complexities and challenges of contemporary business & administration to deliver sustained results with strategic intent"
+      },
+      {
+        "id": "1309",
+        "order": 1,
+        "content": "Market / Product - Service Mix",
+        "description": "Transferable & scalable, Jigsaw excels where there is an active, innovative stance to delivering impact in dynamic, interconnected and contested corporate, private, non-profit, community enterprise and government environments where challenge & disruption are constants"
+      },
+      {
+        "id": "1310",
+        "order": 2,
+        "content": "Value delivered & created",
+        "description": "Success built on getting everything, everyone, their experience & commitment on the same \"why, what, how\" page, making sense of the storm of signals and challenges to confidently make decisions & jointly activate human & AI resources to fit, perform, adapt or disrupt - shaping, transitioning, managing & sustaining performance, productivity & compliance"
+      },
+      {
+        "id": "1311",
+        "order": 3,
+        "content": "Commercial Sustainability",
+        "description": "Exploiting disruption, dynamic patterns, opportunity & risk, cPF, our client and our channel partners achieve performance results at scale, delivering our strong reputation, sustained revenue & margin targets"
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "1312",
+        "order": 0,
+        "content": "Knowledge, understanding & experience in the practical and productive use of complex dynamic systems in environmental - social and economic management and their framing in jigsaw logic",
+        "description": "Knowledge, understanding & experience in the practical and productive use of complex dynamic systems in environmental - social and economic management and their framing in jigsaw logic"
+      },
+      {
+        "id": "1313",
+        "order": 1,
+        "content": "Embedding interdisciplinary management & AI techniques and methodology in jigsaw logic to enable contextual analysis, cause-effect explanation and design of impactful, productive actions",
+        "description": "Embedding interdisciplinary management & AI techniques and methodology in jigsaw logic to enable contextual analysis, cause-effect explanation and design of impactful, productive actions"
+      },
+      {
+        "id": "4865",
+        "order": 2,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "5246",
+        "order": 4,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "1314",
+        "order": 4,
+        "content": "Develop and expand use cases, guides and library of critical success factors, models, agents & tools to aid utilisation & value generation",
+        "description": "Develop and expand use cases, guides and library of critical success factors, models, agents & tools to aid utilisation & value generation"
+      },
+      {
+        "id": "1316",
+        "order": 5,
+        "content": "Support clients & channels to deliver/create, value add & benefit from Jigsaw",
+        "description": "Support clients & channels to deliver/create, value add & benefit from Jigsaw"
+      },
+      {
+        "id": "1315",
+        "order": 6,
+        "content": "Recruit & develop futures-oriented place, industry, business, community and personal interest channels",
+        "description": "Recruit & develop futures-oriented place, industry, business, community and personal interest channels"
+      },
+      {
+        "id": "3690",
+        "order": 7,
+        "content": "[Insert Label Here]",
+        "description": "[Insert Label Here]"
+      },
+      {
+        "id": "1317",
+        "order": 8,
+        "content": "Wide digital, event and personal market, promotion & CPD",
+        "description": "Wide digital, event and personal market, promotion & CPD"
+      },
+      {
+        "id": "1318",
+        "order": 9,
+        "content": "Enhance Jigsaw leading value delivered, utilisation and UX",
+        "description": "Enhance Jigsaw leading value delivered, utilisation and UX"
+      },
+      {
+        "id": "1319",
+        "order": 10,
+        "content": "Optimise the commercial and operational models and technology",
+        "description": "Optimise the commercial and operational models and technology"
+      },
+      {
+        "id": "1320",
+        "order": 11,
+        "content": "Analyse & evaluate global market and system fit & development pathways",
+        "description": "Analyse & evaluate global market and system fit & development pathways"
+      }
+    ],
+    "resources": [
+      {
+        "id": "1321",
+        "order": 0,
+        "content": "NEURAL NETWORK IP & AI BRAIN SECURELY EMBEDDED IN DYNAMIC SOFTWARE",
+        "description": "NEURAL NETWORK IP & AI BRAIN SECURELY EMBEDDED IN DYNAMIC SOFTWARE"
+      },
+      {
+        "id": "1322",
+        "order": 1,
+        "content": "REVENUE GENERATION, FUNDS ATTRACTION, INVESTMENT & RE-INVESTMENT",
+        "description": "REVENUE GENERATION, FUNDS ATTRACTION, INVESTMENT & RE-INVESTMENT"
+      },
+      {
+        "id": "1323",
+        "order": 2,
+        "content": "ENGAGED, HIGHLY SKILLED & CAPABLE TEAM, PEOPLE ARE ATTRACTED, DEVELOPED AND RETAINED",
+        "description": "ENGAGED, HIGHLY SKILLED & CAPABLE TEAM, PEOPLE ARE ATTRACTED, DEVELOPED AND RETAINED"
+      },
+      {
+        "id": "1324",
+        "order": 3,
+        "content": "APPROACHES, PROCESSES & SYSTEMS TO GUIDE PERFORMANCE AND PRODUCTIVITY",
+        "description": "APPROACHES, PROCESSES & SYSTEMS TO GUIDE PERFORMANCE AND PRODUCTIVITY"
+      },
+      {
+        "id": "1325",
+        "order": 4,
+        "content": "TECHNOLOGY & EQUIPMENT TO SUPPORT BUSINESS PERFORMANCE",
+        "description": "TECHNOLOGY & EQUIPMENT TO SUPPORT BUSINESS PERFORMANCE"
+      },
+      {
+        "id": "1326",
+        "order": 5,
+        "content": "ACCESS TO DATA AND INFORMATION ON WHICH TO BASE SUPPORT, OPERATIONAL AND BUSINESS DECISIONS",
+        "description": "ACCESS TO DATA AND INFORMATION ON WHICH TO BASE SUPPORT, OPERATIONAL AND BUSINESS DECISIONS"
+      },
+      {
+        "id": "1328",
+        "order": 6,
+        "content": "TRANSPARENT COMMUNICATION AND SAFE FEEDBACK MECHANISMS",
+        "description": "TRANSPARENT COMMUNICATION AND SAFE FEEDBACK MECHANISMS"
+      },
+      {
+        "id": "1329",
+        "order": 7,
+        "content": "STRONG, MUTUALLY BENEFICIAL NETWORKS, ALLIANCES & PARTNERSHIPS",
+        "description": "STRONG, MUTUALLY BENEFICIAL NETWORKS, ALLIANCES & PARTNERSHIPS"
+      },
+      {
+        "id": "1330",
+        "order": 8,
+        "content": "CONTEMPORARY, ROBUST GOVERNANCE, FINANCIAL AND MANAGEMENT SYSTEMS",
+        "description": "CONTEMPORARY, ROBUST GOVERNANCE, FINANCIAL AND MANAGEMENT SYSTEMS"
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "Understood & eagerly engaged with",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Adaptable/agile",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Lower fixed costs",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "participation in development",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "market ecosystem",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Action research",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Demonstrator",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Critical foundational, theory & methodology",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Connections & relevance to challenges- clear value proposition",
+        "order": 0,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Focus on challenges and sustainable resilient responses",
+        "order": 0,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Embedding not fad",
+        "order": 0,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Fit to context",
+        "order": 1,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Contemporary, relevance scalability, transferability & interdisciplinary",
+        "order": 1,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1313"
+      },
+      {
+        "content": "multiple perspective joined up reasoning & activation\ncurated, productive AI applicaiton",
+        "order": 1,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Adaptable to trends & shocks",
+        "order": 1,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Jigsaw relevance & learning",
+        "order": 3,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Client ownership, all on same page",
+        "order": 3,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "5246"
+      },
+      {
+        "content": "embedded",
+        "order": 3,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Companion in success",
+        "order": 4,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Match to target markets",
+        "order": 4,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1314"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1314"
+      },
+      {
+        "content": "NPS",
+        "order": 4,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1314"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Practical use, credibility",
+        "order": 5,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1316"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Foundation to jump from",
+        "order": 5,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1316"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1315"
+      },
+      {
+        "content": "project complemented by subscription",
+        "order": 6,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Scale & presence",
+        "order": 7,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Belonging",
+        "order": 7,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Product - market portfolio balancing",
+        "order": 7,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Simplifying complexity",
+        "order": 8,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Turing rocks over",
+        "order": 8,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Exploring new notions of value",
+        "order": 8,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Opportunity scan",
+        "order": 8,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Methodological & technical excellence not constrained",
+        "order": 9,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1318"
+      },
+      {
+        "content": "Awareness, conversion",
+        "order": 9,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1318"
+      },
+      {
+        "content": "Maximise use of foundations & technology",
+        "order": 10,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1319"
+      },
+      {
+        "content": "Portfolio mix",
+        "order": 10,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1319"
+      },
+      {
+        "content": "Portfolio strength & resilience",
+        "order": 10,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "1308",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Connections, reducing CAC - channel & client",
+        "order": 11,
+        "column": 1,
+        "xaxis": "1309",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Define what value looks like",
+        "order": 11,
+        "column": 2,
+        "xaxis": "1310",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Shaper",
+        "order": 11,
+        "column": 3,
+        "xaxis": "1311",
+        "yaxis": "1320"
+      }
+    ],
+    "delivery_pathways": [
+      {
+        "content": "",
+        "order": -1,
+        "column": -1,
+        "xaxis": "1326",
+        "yaxis": "4865"
+      },
+      {
+        "content": "",
+        "order": -1,
+        "column": -1,
+        "xaxis": "1330",
+        "yaxis": "4865"
+      },
+      {
+        "content": "AI orchestrator, research, analytics & reporting agents, training modules",
+        "order": -1,
+        "column": -1,
+        "xaxis": "1325",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Apply public and enterprise data - combining RAG & SLMs",
+        "order": -1,
+        "column": -1,
+        "xaxis": "1326",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Make it easy for channels & clients through UI, UE and results demonstration",
+        "order": -1,
+        "column": -1,
+        "xaxis": "1324",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Critically analyse market & value positioning - questions it is addressing by sector",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Channel recruitment portfolio development across highly motivated, disruption focused, dynamic sectors",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Promote value of agentic functionality & value",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Refine value positioning & messaging \nExtend promotional media and channel support material\nCRM",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "CRM",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Key Partners with capability & reach\nMarketing partner & segments, e.g. Investment, Impact, GBE, Policy & Practice",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Platform on which to collaborate, join up perspectives to create new value",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Investing & reinvesting human capital",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Formal & informal teams and champions",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Sharing use innovation",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "UX, integrating human and AI",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "How you use Jigsaw to achieve.......",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Transfer knowledge & techniques to software support materials & Qual/Quant AI agent/prompts\nNested systems",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Specialist groups?",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Multi-disciplinary team of sector specialists, BDOs and ICT/AI capabilities",
+        "order": 0,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Guiding development & optimisation of the use of AI in systems",
+        "order": 0,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Coding and integration of methodologies\nAuto analysis, reporting, alerts & recs from ERIC",
+        "order": 0,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1312"
+      },
+      {
+        "content": "AI training",
+        "order": 0,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Recruit and support strategic growth companies and industy support organisations, key government enablers",
+        "order": 0,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Partner engagement & management system",
+        "order": 0,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1312"
+      },
+      {
+        "content": "Extend AI and quant analysis, machine learning, ERIC links - alerts, Cause-effect?",
+        "order": 1,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1313"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Coding, integrating AI resource growth",
+        "order": 1,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Methodology, value add focus - Jigsaw Agent performance & productivity guides",
+        "order": 1,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1313"
+      },
+      {
+        "content": "MCP, APIs & speed. Optimising AI connections & use to reduce time, energy consumption, improve productivity/confidence.  Improved graphics",
+        "order": 1,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1313"
+      },
+      {
+        "content": "MCP & API links to organisational repositories & large-scale data sources, ABS",
+        "order": 1,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1313"
+      },
+      {
+        "content": "AI training",
+        "order": 1,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Multi-profession, challenge approach",
+        "order": 1,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Penetration testing, security",
+        "order": 1,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1313"
+      },
+      {
+        "content": "Templates, metodologies & AI UX",
+        "order": 3,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Team to action existing use cases",
+        "order": 3,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "5246"
+      },
+      {
+        "content": "parallel human & machine action learning",
+        "order": 3,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Demonstration applications",
+        "order": 3,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Successfully developed & applied with partners & channels",
+        "order": 3,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "5246"
+      },
+      {
+        "content": "Further development of context, connection protocols & back propagation",
+        "order": 4,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1314"
+      },
+      {
+        "content": "R&D tax Incentives",
+        "order": 4,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Practice based AI applications & training",
+        "order": 4,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Ensure architecture supports transferable and scalable applications - design disruptions",
+        "order": 4,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Suite of AI tools to provide balance and accuracy",
+        "order": 4,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Open access & internal data applications & integration",
+        "order": 4,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1314"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Engage a key growth phase partner, technical capability & reach",
+        "order": 4,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Security & accuracy focus",
+        "order": 4,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1314"
+      },
+      {
+        "content": "Match use cases & tech to primary growth targets, Specific purpose Agent applications",
+        "order": 5,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Test & activate sources & unit cost revenue drivers",
+        "order": 5,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1316"
+      },
+      {
+        "content": "identify & convert sector & disruption network partners",
+        "order": 5,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Design disruption & integrations",
+        "order": 5,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1316"
+      },
+      {
+        "content": "UI & UX to support uptake & retention",
+        "order": 5,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1316"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Network communications flow",
+        "order": 5,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Equitable, results-based distribution of revenues & support",
+        "order": 5,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1316"
+      },
+      {
+        "content": "Board & network advisory structure",
+        "order": 5,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1316"
+      },
+      {
+        "content": "AI to increase advisory productivity & value/price uplift",
+        "order": 6,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1315"
+      },
+      {
+        "content": "Recruit BDMs",
+        "order": 6,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1315"
+      },
+      {
+        "content": "Design product/segment opportunity, identify and convert key targets",
+        "order": 6,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1315"
+      },
+      {
+        "content": "RPS, KPMG, Aged care, GBEs Use ERIC capability within AI",
+        "order": 6,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1315"
+      },
+      {
+        "content": "Channel & client UX, UI development",
+        "order": 7,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Commercial model link",
+        "order": 7,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Training & support development, protocols",
+        "order": 7,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Sytemising",
+        "order": 7,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "3690"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "3690"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "3690"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Co-design active, dynamic growth model",
+        "order": 7,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "3690"
+      },
+      {
+        "content": "Engaging governance & management mdel",
+        "order": 7,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "3690"
+      },
+      {
+        "content": "White papers, presentations, training materials content",
+        "order": 8,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Collaborative member engagement in varied promotion",
+        "order": 8,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Use AI to support comms design & content delivery",
+        "order": 8,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Utilisation of multiple media platforms",
+        "order": 8,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1317"
+      },
+      {
+        "content": "Basis for scaling and valued engagement",
+        "order": 8,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1318"
+      },
+      {
+        "content": "Update tenant structure, CI",
+        "order": 9,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1318"
+      },
+      {
+        "content": "AI Brain, machine learning curating & UX",
+        "order": 9,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1318"
+      },
+      {
+        "content": "Test equity investor, Banks & Government Grant Funding agencies",
+        "order": 9,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1319"
+      },
+      {
+        "content": "Balance of advisory & subscription\nVariable offer subscription differentiation",
+        "order": 10,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1319"
+      },
+      {
+        "content": "Value establishment to promote use NOT copy",
+        "order": 10,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1319"
+      },
+      {
+        "content": "Margin share, licensing",
+        "order": 10,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "1321",
+        "yaxis": "1320"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 1,
+        "xaxis": "1322",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Multi-disciplinary & multi-sector, disruption environment focus \nMarketing, influencer, BDO recruitment",
+        "order": 11,
+        "column": 2,
+        "xaxis": "1323",
+        "yaxis": "1320"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 3,
+        "xaxis": "1324",
+        "yaxis": "1320"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 4,
+        "xaxis": "1325",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Disruption focused & impacted sector/enterprise Target marketing channel & clients",
+        "order": 11,
+        "column": 5,
+        "xaxis": "1326",
+        "yaxis": "1320"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 6,
+        "xaxis": "1328",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Collaborative with mix of sector experts & practitioners.  White papers\nKey marketing, conversion support partners recruitment",
+        "order": 11,
+        "column": 7,
+        "xaxis": "1329",
+        "yaxis": "1320"
+      },
+      {
+        "content": "Channel, partner revenue model",
+        "order": 11,
+        "column": 8,
+        "xaxis": "1330",
+        "yaxis": "1320"
+      }
+    ],
+    "external_influences": [
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 0,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1312"
+      },
+      {
+        "content": "",
+        "order": 1,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1313"
+      },
+      {
+        "content": "",
+        "order": 3,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "5246"
+      },
+      {
+        "content": "",
+        "order": 4,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1314"
+      },
+      {
+        "content": "",
+        "order": 5,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1316"
+      },
+      {
+        "content": "",
+        "order": 6,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1315"
+      },
+      {
+        "content": "",
+        "order": 7,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "3690"
+      },
+      {
+        "content": "",
+        "order": 8,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1317"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 9,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1318"
+      },
+      {
+        "content": "",
+        "order": 10,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1319"
+      },
+      {
+        "content": "",
+        "order": 11,
+        "column": 0,
+        "xaxis": "3124",
+        "yaxis": "1320"
+      }
+    ]
+  },
+  "external_values": [
+    {
+      "id": "3124",
+      "order": 0,
+      "content": "[Insert Label Here]",
+      "description": "[Insert Label Here]"
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "Focused, confident, Integration of human and machine learning in context\nFlexible, secure connections",
+        "parent_id": "5246",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Drive use as investment requirement",
+        "parent_id": "1320",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Optimise capital and cont margin ratio",
+        "parent_id": "1319",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Much tidier offer, secure to match corporate licensing",
+        "parent_id": "1318",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Evolving collaborative positioning, new opportunities",
+        "parent_id": "1317",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Channels 7&collaborative and rolling trajectory, engagement, conversion, retention of \n membership & revenue connection/support digitally",
+        "parent_id": "1316",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Investor, 4 channels and 2 core large scale business - beginning, escalating revenue trajectory",
+        "parent_id": "1315",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Focus growth on existing templates, new client applications & projects to build portfolio, nc small enterprise sector products",
+        "parent_id": "1314",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Security, Stronger machine learning & confident, expert system application, Reasoned, productive AI application, Great Ui & UX - Graphics to industry standards\nNet promoter score",
+        "parent_id": "1313",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "A collaborative of high performing, productive and rewarded champions\n3 key channels sharing & expanding knowledge base delivering $750k sales (below)",
+        "parent_id": "1312",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Increased ratio of subscriber revenue\nSub Value\nSimple cash-cow version?",
+        "parent_id": "3690",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "Structured, focused sales system.  Lower CAC\nProject sales - $750,000\nSMO-MERA Development, test, productise - $400k Rev 2025/26",
+        "parent_id": "4865",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_outcome": [
+      {
+        "content": "Reputation, awareness, Cash flow, margins",
+        "parent_id": "1311",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Confident users, ongoing use, diversity in use from initial, NPS",
+        "parent_id": "1310",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Uptake, investor/funder, mix of sectors, applications by location, Revenue & sources",
+        "parent_id": "1309",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      },
+      {
+        "content": "Functionality, value delivery & resilience in use cases, reliability, enhancement uptake",
+        "parent_id": "1308",
+        "parent_order": 0,
+        "parent_tag": "Outcome"
+      }
+    ],
+    "by_dimension": [
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "Productive, porous silos and boxes contributing to systems",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": -1,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      },
+      {
+        "content": "",
+        "parent_id": "1305",
+        "parent_order": 0,
+        "parent_tag": "Dimension"
+      }
+    ]
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "Small business system",
+        "parent_id": "1330",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "cpf Derived, SMO MERA as base AI and global supported client",
+        "parent_id": "1329",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "1328",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Single person dependency",
+        "parent_id": "1326",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "No enterprise management integration",
+        "parent_id": "1325",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Partially documented, methodology, Initial integration into management & Jigsaw",
+        "parent_id": "1324",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Small, committed, single person dependencies",
+        "parent_id": "1323",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Bootstrapping development from consultancy & Subs",
+        "parent_id": "1322",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Minimum viable product",
+        "parent_id": "1321",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "Eco-system governance & management",
+        "parent_id": "1330",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "",
+        "parent_id": "1329",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Portfolio of examples",
+        "parent_id": "1328",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Contemporary, professional business model & systems",
+        "parent_id": "1326",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Technology matches trajectory - hardware & software",
+        "parent_id": "1325",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Continue to develop agent systems & apply Jigsaw to us in parallel with development",
+        "parent_id": "1324",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Optimal direct employment, contractor & collaborator mix",
+        "parent_id": "1323",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Funds enabled energetic platform scaling & margins to support next stage growth\nStrong contribution margin ratio",
+        "parent_id": "1322",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      },
+      {
+        "content": "Continuous improvement, leading capability",
+        "parent_id": "1321",
+        "parent_order": 0,
+        "parent_tag": "Resource"
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [
+      {
+        "content": "",
+        "parent_id": "5246",
+        "parent_order": -1,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "4865",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1320",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1319",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1318",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1317",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1316",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1315",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1314",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1313",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "1312",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      },
+      {
+        "content": "",
+        "parent_id": "3690",
+        "parent_order": 0,
+        "parent_tag": "Value"
+      }
+    ],
+    "by_external_value": [
+      {
+        "content": "",
+        "parent_id": "3124",
+        "parent_order": 0,
+        "parent_tag": "External Value"
+      }
+    ]
+  },
+  "_metadata": {
+    "extracted_at": "2025-12-31T17:28:49.494213",
+    "sector": "Strategic Planning",
+    "total_rows": 361,
+    "stats": {
+      "outcomes": 4,
+      "value_chain": 12,
+      "resources": 9,
+      "contribution_map_cells": 56,
+      "delivery_pathways_cells": 129,
+      "external_influences_cells": 14
+    }
+  }
+}
