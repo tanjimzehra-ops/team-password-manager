@@ -426,7 +426,7 @@ export interface ConvexSystemData {
 export function useConvexSystem(systemId: string | null) {
   const raw = useQuery(
     api.systems.getFullSystem,
-    systemId ? { systemId: systemId as Id<"systems"> } : "skip"
+    systemId ? { id: systemId as Id<"systems"> } : "skip"
   )
 
   const isLoading = raw === undefined
