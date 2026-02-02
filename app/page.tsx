@@ -201,15 +201,89 @@ export default function Page() {
   }
 
   const handleContributionCellClick = (valueChainId: string, outcomeId: string) => {
-    console.log("Contribution cell clicked:", { valueChainId, outcomeId })
+    const vc = contributionMapData.valueChain.find(v => v.id === valueChainId)
+    const outcome = contributionMapData.outcomes.find(o => o.id === outcomeId)
+    const cell = contributionMapData.cells.find(
+      c => c.valueChainId === valueChainId && c.outcomeId === outcomeId
+    )
+
+    const syntheticNode: NodeData = {
+      id: `cell-${valueChainId}-${outcomeId}`,
+      title: `${vc?.title ?? "Value Chain"} → ${outcome?.title ?? "Outcome"}`,
+      description: cell?.content || "No contribution defined for this intersection.",
+      kpiValue: vc?.kpiValue ?? 0,
+      kpiStatus: vc?.kpiStatus ?? "healthy",
+      category: "value-chain",
+      color: "secondary",
+      relatedNodes: [vc?.title, outcome?.title].filter(Boolean) as string[],
+      notes: "Contribution Map intersection",
+      metadata: {
+        "View": "Contribution Map",
+        "Value Chain Element": vc?.title ?? valueChainId,
+        "Outcome": outcome?.title ?? outcomeId,
+      },
+    }
+
+    setSelectedNode(syntheticNode)
+    setDetailSidebarOpen(true)
   }
 
   const handleDevelopmentPathwaysCellClick = (valueChainId: string, resourceId: string) => {
-    console.log("Development Pathways cell clicked:", { valueChainId, resourceId })
+    const vc = developmentPathwaysData.valueChain.find(v => v.id === valueChainId)
+    const resource = developmentPathwaysData.resources.find(r => r.id === resourceId)
+    const cell = developmentPathwaysData.cells.find(
+      c => c.valueChainId === valueChainId && c.resourceId === resourceId
+    )
+
+    const syntheticNode: NodeData = {
+      id: `cell-${valueChainId}-${resourceId}`,
+      title: `${vc?.title ?? "Value Chain"} → ${resource?.title ?? "Resource"}`,
+      description: cell?.content || "No development pathway defined for this intersection.",
+      kpiValue: vc?.kpiValue ?? 0,
+      kpiStatus: vc?.kpiStatus ?? "healthy",
+      category: "value-chain",
+      color: "accent",
+      relatedNodes: [vc?.title, resource?.title].filter(Boolean) as string[],
+      notes: "Development Pathways intersection",
+      metadata: {
+        "View": "Development Pathways",
+        "Value Chain Element": vc?.title ?? valueChainId,
+        "Resource": resource?.title ?? resourceId,
+      },
+    }
+
+    setSelectedNode(syntheticNode)
+    setDetailSidebarOpen(true)
   }
 
   const handleConvergenceMapCellClick = (valueChainId: string, externalFactorId: string) => {
-    console.log("Convergence Map cell clicked:", { valueChainId, externalFactorId })
+    const vc = convergenceMapData.valueChain.find(v => v.id === valueChainId)
+    const factor = convergenceMapData.externalFactors.find(f => f.id === externalFactorId)
+    const cell = convergenceMapData.cells.find(
+      c => c.valueChainId === valueChainId && c.externalFactorId === externalFactorId
+    )
+
+    const syntheticNode: NodeData = {
+      id: `cell-${valueChainId}-${externalFactorId}`,
+      title: `${vc?.title ?? "Value Chain"} → ${factor?.title ?? "External Factor"}`,
+      description: cell?.content || "No convergence defined for this intersection.",
+      kpiValue: vc?.kpiValue ?? 0,
+      kpiStatus: vc?.kpiStatus ?? "healthy",
+      category: "value-chain",
+      color: "muted",
+      relatedNodes: [vc?.title, factor?.title].filter(Boolean) as string[],
+      notes: factor?.description
+        ? `Factor: ${factor.description}`
+        : "Convergence Map intersection",
+      metadata: {
+        "View": "Convergence Map",
+        "Value Chain Element": vc?.title ?? valueChainId,
+        "External Factor": factor?.title ?? externalFactorId,
+      },
+    }
+
+    setSelectedNode(syntheticNode)
+    setDetailSidebarOpen(true)
   }
 
   // Render loading state
