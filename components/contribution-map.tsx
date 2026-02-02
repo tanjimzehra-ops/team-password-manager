@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import type { ContributionMapData } from "@/lib/types"
+import type { ContributionMapData, NodeData } from "@/lib/types"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -9,12 +9,14 @@ interface ContributionMapProps {
   data: ContributionMapData
   editMode?: "view" | "edit" | "colour" | "order" | "delete"
   onCellClick?: (valueChainId: string, outcomeId: string) => void
+  onElementClick?: (node: NodeData) => void
 }
 
 export function ContributionMap({
   data,
   editMode = "view",
   onCellClick,
+  onElementClick,
 }: ContributionMapProps) {
   const { outcomes, valueChain, valueChainKpis, outcomeKpis, cells } = data
 
@@ -68,7 +70,8 @@ export function ContributionMap({
             {outcomes.map((outcome, idx) => (
               <th
                 key={outcome.id}
-                className="p-3 text-center border border-border bg-teal-50 dark:bg-teal-900/20"
+                className="p-3 text-center border border-border bg-teal-50 dark:bg-teal-900/20 cursor-pointer hover:bg-teal-100 dark:hover:bg-teal-800/30 transition-colors"
+                onClick={() => onElementClick?.(outcome)}
               >
                 <span className="text-xs text-teal-600 dark:text-teal-400 mb-1 block font-normal">
                   Outcome {idx + 1}
@@ -92,7 +95,22 @@ export function ContributionMap({
               return (
                 <td
                   key={`kpi-${outcome.id}`}
-                  className="bg-emerald-100 dark:bg-emerald-900/40 p-3 border border-border text-left"
+                  className="bg-emerald-100 dark:bg-emerald-900/40 p-3 border border-border text-left cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/40 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `outcome-kpi-${outcome.id}`,
+                    title: `KPIs: ${outcome.title}`,
+                    description: kpis.length > 0 ? kpis.join("\n") : "No KPIs defined.",
+                    kpiValue: outcome.kpiValue,
+                    kpiStatus: outcome.kpiStatus,
+                    category: "outcomes",
+                    color: "secondary",
+                    notes: "Outcome KPIs from Contribution Map",
+                    metadata: {
+                      "View": "Contribution Map",
+                      "Outcome": outcome.title,
+                      "KPI Count": String(kpis.length),
+                    },
+                  })}
                 >
                   {kpis.length > 0 ? (
                     <span className="text-xs text-emerald-800 dark:text-emerald-300">{kpiText}</span>
@@ -138,13 +156,33 @@ export function ContributionMap({
                 )}
 
                 {/* Column B: VC Element Name */}
-                <td className="bg-card dark:bg-card/80 p-3 border border-border align-top">
+                <td
+                  className="bg-card dark:bg-card/80 p-3 border border-border align-top cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors"
+                  onClick={() => onElementClick?.(vc)}
+                >
                   <span className="text-xs text-muted-foreground mb-1 block">VC {vcIdx + 1}</span>
                   <span className="text-sm text-foreground">{vc.title}</span>
                 </td>
 
                 {/* Column C: KPI for this VC element (vertical) */}
-                <td className="bg-emerald-100 dark:bg-emerald-900/30 p-3 border border-border align-top">
+                <td
+                  className="bg-emerald-100 dark:bg-emerald-900/30 p-3 border border-border align-top cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `vc-kpi-${vc.id}`,
+                    title: `KPIs: ${vc.title}`,
+                    description: vcKpiText || "No KPIs defined.",
+                    kpiValue: vc.kpiValue,
+                    kpiStatus: vc.kpiStatus,
+                    category: "value-chain",
+                    color: "secondary",
+                    notes: "Value Chain KPIs from Contribution Map",
+                    metadata: {
+                      "View": "Contribution Map",
+                      "Value Chain Element": vc.title,
+                      "KPI Count": String(vcKpiList.length),
+                    },
+                  })}
+                >
                   {vcKpiText ? (
                     <span className="text-xs text-emerald-800 dark:text-emerald-300">{vcKpiText}</span>
                   ) : editMode === "edit" ? (

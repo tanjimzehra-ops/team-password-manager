@@ -34,7 +34,10 @@ export function LogicGrid({
                 IMPACT / PURPOSE
               </h2>
               <div className="flex items-stretch gap-0 min-h-[56px]">
-                <div className={cn("flex-1 rounded-lg p-3 flex items-center justify-center", "bg-teal-600")}>
+                <div
+                  className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-700 transition-colors", "bg-teal-600")}
+                  onClick={() => row.nodes[0] && onNodeClick(row.nodes[0])}
+                >
                   <p className="text-white font-bold text-center text-sm md:text-base leading-tight">
                     {row.nodes[0]?.title}
                   </p>
@@ -139,14 +142,30 @@ export function LogicGrid({
                   DELIVERY CULTURE / DIMENSION
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[56px]">
-                  <div className="flex-1 relative bg-slate-800 dark:bg-slate-700 rounded-lg p-2 flex items-center">
-                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6">
+                  <div
+                    className="flex-1 relative bg-slate-800 dark:bg-slate-700 rounded-lg p-2 flex items-center cursor-pointer hover:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
+                    onClick={() => onNodeClick({
+                      id: cultureBanner.id,
+                      title: cultureBanner.title,
+                      description: cultureBanner.title,
+                      kpiValue: cultureBanner.kpiValue,
+                      kpiStatus: cultureBanner.kpiStatus,
+                      category: "value-chain",
+                      color: "muted",
+                      notes: "Delivery Culture / Dimension",
+                      metadata: {
+                        "Type": "Delivery Culture",
+                        "View": "Logic Model",
+                      },
+                    })}
+                  >
+                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <p className="text-white font-medium text-center flex-1 text-xs px-2 leading-tight">
                       {cultureBanner.title}
                     </p>
-                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6">
+                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
@@ -208,7 +227,23 @@ export function LogicGrid({
                   SYSTEM CONTEXT / CHALLENGE
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[56px]">
-                  <div className="flex-1 bg-amber-500 dark:bg-amber-600 rounded-lg p-2 flex items-center justify-center">
+                  <div
+                    className="flex-1 bg-amber-500 dark:bg-amber-600 rounded-lg p-2 flex items-center justify-center cursor-pointer hover:bg-amber-600 dark:hover:bg-amber-700 transition-colors"
+                    onClick={() => onNodeClick({
+                      id: bottomBanner.id,
+                      title: bottomBanner.title,
+                      description: bottomBanner.title,
+                      kpiValue: bottomBanner.kpiValue,
+                      kpiStatus: bottomBanner.kpiStatus,
+                      category: "purpose",
+                      color: "primary",
+                      notes: "System Context / Challenge",
+                      metadata: {
+                        "Type": "System Context",
+                        "View": "Logic Model",
+                      },
+                    })}
+                  >
                     <p className="text-white font-medium text-center text-xs leading-tight">{bottomBanner.title}</p>
                   </div>
                   {editMode && (

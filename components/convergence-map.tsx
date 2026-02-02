@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import type { ConvergenceMapData } from "@/lib/types"
+import type { ConvergenceMapData, NodeData } from "@/lib/types"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -9,12 +9,14 @@ interface ConvergenceMapProps {
   data: ConvergenceMapData
   editMode?: "view" | "edit" | "colour" | "order" | "delete"
   onCellClick?: (valueChainId: string, externalFactorId: string) => void
+  onElementClick?: (node: NodeData) => void
 }
 
 export function ConvergenceMap({
   data,
   editMode = "view",
   onCellClick,
+  onElementClick,
 }: ConvergenceMapProps) {
   const { externalFactors, valueChain, cells, kpis, factorsPerVC } = data
 
@@ -64,7 +66,21 @@ export function ConvergenceMap({
             {externalFactors.map((factor, idx) => (
               <th
                 key={factor.id}
-                className="border border-border bg-purple-100 dark:bg-purple-900/30 p-2 text-center min-w-[120px]"
+                className="border border-border bg-purple-100 dark:bg-purple-900/30 p-2 text-center min-w-[120px] cursor-pointer hover:bg-purple-200 dark:hover:bg-purple-800/30 transition-colors"
+                onClick={() => onElementClick?.({
+                  id: factor.id,
+                  title: factor.title,
+                  description: factor.description || "No description.",
+                  kpiValue: 0,
+                  kpiStatus: "healthy",
+                  category: "outcomes",
+                  color: "muted",
+                  notes: "External factor from Convergence Map",
+                  metadata: {
+                    "View": "Convergence Map",
+                    "Type": "External Factor",
+                  },
+                })}
               >
                 <span className="text-[10px] text-purple-700 dark:text-purple-400 block mb-1">
                   Factor {idx + 1}
@@ -87,7 +103,22 @@ export function ConvergenceMap({
             {externalFactors.map((factor) => (
               <td
                 key={`desc-${factor.id}`}
-                className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-xs text-violet-900 dark:text-violet-200"
+                className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-xs text-violet-900 dark:text-violet-200 cursor-pointer hover:bg-violet-200 dark:hover:bg-violet-800/30 transition-colors"
+                onClick={() => onElementClick?.({
+                  id: `factor-desc-${factor.id}`,
+                  title: `Factors: ${factor.title}`,
+                  description: factor.description || "No factors defined.",
+                  kpiValue: 0,
+                  kpiStatus: "healthy",
+                  category: "outcomes",
+                  color: "muted",
+                  notes: "Factor description from Convergence Map",
+                  metadata: {
+                    "View": "Convergence Map",
+                    "External Factor": factor.title,
+                    "Type": "Factor Description",
+                  },
+                })}
               >
                 {factor.description || "—"}
               </td>
@@ -124,7 +155,10 @@ export function ConvergenceMap({
                 )}
 
                 {/* Column B: VC Element name */}
-                <td className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px]">
+                <td
+                  className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px] cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors"
+                  onClick={() => onElementClick?.(vc)}
+                >
                   <span className="text-[10px] text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2">
                     VC-{vcIdx + 1}
                   </span>
@@ -132,7 +166,27 @@ export function ConvergenceMap({
                 </td>
 
                 {/* Column C: Factors for this VC */}
-                <td className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-xs text-violet-900 dark:text-violet-200 min-w-[140px]">
+                <td
+                  className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-xs text-violet-900 dark:text-violet-200 min-w-[140px] cursor-pointer hover:bg-violet-200 dark:hover:bg-violet-800/30 transition-colors"
+                  onClick={() => {
+                    const factorContent = getVcFactor(vc.id)
+                    onElementClick?.({
+                      id: `vc-factor-${vc.id}`,
+                      title: `Factors: ${vc.title}`,
+                      description: factorContent || "No factors defined for this value chain element.",
+                      kpiValue: vc.kpiValue,
+                      kpiStatus: vc.kpiStatus,
+                      category: "value-chain",
+                      color: "muted",
+                      notes: "Value chain factors from Convergence Map",
+                      metadata: {
+                        "View": "Convergence Map",
+                        "Value Chain Element": vc.title,
+                        "Type": "VC Factors",
+                      },
+                    })
+                  }}
+                >
                   {getVcFactor(vc.id) || "—"}
                 </td>
 
@@ -168,7 +222,24 @@ export function ConvergenceMap({
                 })}
 
                 {/* Column M: KPIs */}
-                <td className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-xs text-emerald-800 dark:text-emerald-300">
+                <td
+                  className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-xs text-emerald-800 dark:text-emerald-300 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `vc-kpi-${vc.id}`,
+                    title: `KPIs: ${vc.title}`,
+                    description: vcKpiText || "No KPIs defined.",
+                    kpiValue: vc.kpiValue,
+                    kpiStatus: vc.kpiStatus,
+                    category: "value-chain",
+                    color: "secondary",
+                    notes: "Value Chain KPIs from Convergence Map",
+                    metadata: {
+                      "View": "Convergence Map",
+                      "Value Chain Element": vc.title,
+                      "KPI Count": String(vcKpiList.length),
+                    },
+                  })}
+                >
                   {vcKpiText || (editMode === "edit" ? (
                     <Button
                       variant="ghost"

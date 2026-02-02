@@ -323,6 +323,7 @@ export default function Page() {
             data={contributionMapData}
             editMode={editMode}
             onCellClick={handleContributionCellClick}
+            onElementClick={handleNodeClick}
           />
         )
       case "development-pathways":
@@ -331,6 +332,7 @@ export default function Page() {
             data={developmentPathwaysData}
             editMode={editMode}
             onCellClick={handleDevelopmentPathwaysCellClick}
+            onElementClick={handleNodeClick}
           />
         )
       case "convergence-map":
@@ -339,6 +341,7 @@ export default function Page() {
             data={convergenceMapData}
             editMode={editMode}
             onCellClick={handleConvergenceMapCellClick}
+            onElementClick={handleNodeClick}
           />
         )
       case "canvas":

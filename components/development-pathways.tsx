@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import type { DevelopmentPathwaysData } from "@/lib/types"
+import type { DevelopmentPathwaysData, NodeData } from "@/lib/types"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -9,12 +9,14 @@ interface DevelopmentPathwaysProps {
   data: DevelopmentPathwaysData
   editMode?: "view" | "edit" | "colour" | "order" | "delete"
   onCellClick?: (valueChainId: string, resourceId: string) => void
+  onElementClick?: (node: NodeData) => void
 }
 
 export function DevelopmentPathways({
   data,
   editMode = "view",
   onCellClick,
+  onElementClick,
 }: DevelopmentPathwaysProps) {
   const {
     resources,
@@ -85,7 +87,8 @@ export function DevelopmentPathways({
             {resources.map((resource, idx) => (
               <th
                 key={resource.id}
-                className="border border-border bg-amber-100 dark:bg-amber-900/30 p-2 text-center min-w-[120px]"
+                className="border border-border bg-amber-100 dark:bg-amber-900/30 p-2 text-center min-w-[120px] cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800/30 transition-colors"
+                onClick={() => onElementClick?.(resource)}
               >
                 <span className="text-[10px] text-amber-700 dark:text-amber-400 block mb-1">
                   Resource {idx + 1}
@@ -110,7 +113,22 @@ export function DevelopmentPathways({
               return (
                 <td
                   key={`cap-${resource.id}`}
-                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200"
+                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200 cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `curr-cap-res-${resource.id}`,
+                    title: `Current Capability: ${resource.title}`,
+                    description: content || "No current capability defined.",
+                    kpiValue: resource.kpiValue,
+                    kpiStatus: resource.kpiStatus,
+                    category: "resources",
+                    color: "accent",
+                    notes: "Current capability for this resource",
+                    metadata: {
+                      "View": "Development Pathways",
+                      "Resource": resource.title,
+                      "Type": "Current Capability",
+                    },
+                  })}
                 >
                   {content || "—"}
                 </td>
@@ -149,7 +167,10 @@ export function DevelopmentPathways({
                 )}
 
                 {/* Column B: VC Element name */}
-                <td className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px]">
+                <td
+                  className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px] cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors"
+                  onClick={() => onElementClick?.(vc)}
+                >
                   <span className="text-[10px] text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2">
                     VC {vcIdx + 1}
                   </span>
@@ -157,7 +178,24 @@ export function DevelopmentPathways({
                 </td>
 
                 {/* Column C: Current Capabilities for this VC */}
-                <td className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200 min-w-[140px]">
+                <td
+                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200 min-w-[140px] cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `curr-cap-vc-${vc.id}`,
+                    title: `Current Capability: ${vc.title}`,
+                    description: currentCapVC || "No current capability defined.",
+                    kpiValue: vc.kpiValue,
+                    kpiStatus: vc.kpiStatus,
+                    category: "value-chain",
+                    color: "accent",
+                    notes: "Current capability for this value chain element",
+                    metadata: {
+                      "View": "Development Pathways",
+                      "Value Chain Element": vc.title,
+                      "Type": "Current Capability",
+                    },
+                  })}
+                >
                   {currentCapVC || "—"}
                 </td>
 
@@ -193,7 +231,24 @@ export function DevelopmentPathways({
                 })}
 
                 {/* Column M: KPIs */}
-                <td className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-xs text-emerald-800 dark:text-emerald-300">
+                <td
+                  className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-xs text-emerald-800 dark:text-emerald-300 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `vc-kpi-${vc.id}`,
+                    title: `KPIs: ${vc.title}`,
+                    description: vcKpiText || "No KPIs defined.",
+                    kpiValue: vc.kpiValue,
+                    kpiStatus: vc.kpiStatus,
+                    category: "value-chain",
+                    color: "secondary",
+                    notes: "Value Chain KPIs from Development Pathways",
+                    metadata: {
+                      "View": "Development Pathways",
+                      "Value Chain Element": vc.title,
+                      "KPI Count": String(vcKpiList.length),
+                    },
+                  })}
+                >
                   {vcKpiText || (editMode === "edit" ? (
                     <Button
                       variant="ghost"
@@ -237,7 +292,22 @@ export function DevelopmentPathways({
               return (
                 <td
                   key={`nec-${resource.id}`}
-                  className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2 text-xs text-orange-900 dark:text-orange-200"
+                  className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2 text-xs text-orange-900 dark:text-orange-200 cursor-pointer hover:bg-orange-200 dark:hover:bg-orange-800/30 transition-colors"
+                  onClick={() => onElementClick?.({
+                    id: `nec-cap-${resource.id}`,
+                    title: `Necessary Capability: ${resource.title}`,
+                    description: content || "No necessary capability defined.",
+                    kpiValue: resource.kpiValue,
+                    kpiStatus: resource.kpiStatus,
+                    category: "resources",
+                    color: "accent",
+                    notes: "Necessary capability for this resource",
+                    metadata: {
+                      "View": "Development Pathways",
+                      "Resource": resource.title,
+                      "Type": "Necessary Capability",
+                    },
+                  })}
                 >
                   {content || "—"}
                 </td>
