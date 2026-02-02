@@ -44,7 +44,7 @@ export function ContributionMap({
     "Delivered in a transparent, respectful culture of local collaboration with a focus on sustainable operational outcomes, performance & societal benefits"
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div id="view-contribution-map" className="w-full overflow-x-auto">
       <table className="min-w-[1200px] w-full border-collapse border border-border rounded-lg overflow-hidden">
         <thead>
           {/* Row 1: "Outcomes" header spanning outcome columns */}

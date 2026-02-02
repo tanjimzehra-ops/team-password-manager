@@ -62,7 +62,7 @@ export function DevelopmentPathways({
   }
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div id="view-development-pathways" className="w-full overflow-x-auto">
       <table className="w-full border-collapse text-sm">
         <thead>
           {/* Row 1: Resources/Capability header */}

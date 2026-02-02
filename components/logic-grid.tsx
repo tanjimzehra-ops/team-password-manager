@@ -24,7 +24,7 @@ export function LogicGrid({
   editMode = false,
 }: LogicGridProps) {
   return (
-    <div className="flex-1 flex flex-col gap-0">
+    <div id="view-logic-model" className="flex-1 flex flex-col gap-0">
       {rows.map((row) => (
         <div key={row.id} id={row.id}>
           {/* Purpose Banner - Full width colored banner */}

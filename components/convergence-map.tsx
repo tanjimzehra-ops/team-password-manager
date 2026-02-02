@@ -41,7 +41,7 @@ export function ConvergenceMap({
   }
 
   return (
-    <div className="w-full overflow-x-auto">
+    <div id="view-convergence-map" className="w-full overflow-x-auto">
       <table className="w-full border-collapse text-sm">
         <thead>
           {/* Row 1: External Value Chain header */}

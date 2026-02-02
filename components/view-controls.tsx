@@ -5,7 +5,15 @@ import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { BarChart3 } from "lucide-react"
+import { BarChart3, Download } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
 
 type EditMode = "view" | "edit" | "colour" | "order" | "delete"
@@ -19,6 +27,7 @@ interface ViewControlsProps {
   activeTab?: ViewTab
   displayLogic?: boolean
   onDisplayLogicChange?: (show: boolean) => void
+  onExport?: (format: "csv" | "excel" | "pdf") => void
 }
 
 export function ViewControls({ 
@@ -28,7 +37,8 @@ export function ViewControls({
   onEditModeChange,
   activeTab = "logic-model",
   displayLogic = false,
-  onDisplayLogicChange
+  onDisplayLogicChange,
+  onExport,
 }: ViewControlsProps) {
   // Determine which modes are available for the current view
   const availableModes: EditMode[] = 
@@ -89,12 +99,38 @@ export function ViewControls({
             </div>
           </div>
 
-          <div className="flex items-center gap-2 ml-auto">
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            <Label htmlFor="show-kpi" className="text-sm text-muted-foreground">
-              Show KPIs
-            </Label>
-            <Switch id="show-kpi" checked={showKpi} onCheckedChange={onToggleKpi} />
+          <div className="flex items-center gap-4 ml-auto">
+            <div className="flex items-center gap-2">
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              <Label htmlFor="show-kpi" className="text-sm text-muted-foreground">
+                Show KPIs
+              </Label>
+              <Switch id="show-kpi" checked={showKpi} onCheckedChange={onToggleKpi} />
+            </div>
+
+            {onExport && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-9">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Export Format</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => onExport("csv")}>
+                    CSV (.csv)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onExport("excel")}>
+                    Excel (.xlsx)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onExport("pdf")}>
+                    PDF (.pdf)
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>

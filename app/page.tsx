@@ -21,6 +21,12 @@ import { useFullSystem } from "@/hooks/use-full-system"
 import { useUpdateElement, useUpdateSystem } from "@/hooks/use-mutations"
 import { isSupabaseConfigured } from "@/lib/supabase"
 
+// Convex hooks
+import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
+import { useConvexSystem } from "@/hooks/convex/use-convex-system"
+import { useConvexUpdateElement } from "@/hooks/convex/use-convex-mutations"
+import { useConvexUpdateSystem } from "@/hooks/convex/use-convex-mutations"
+
 // Data adapters
 import {
   transformToLogicGridData,
@@ -39,11 +45,29 @@ import {
   type SystemName,
 } from "@/lib/data"
 import type { NodeData } from "@/lib/types"
+import { useToast } from "@/hooks/use-toast"
+
+// Export functions
+import {
+  exportToPdf,
+  exportLogicModelCsv,
+  exportLogicModelExcel,
+  exportContributionMapCsv,
+  exportContributionMapExcel,
+  exportDevelopmentPathwaysCsv,
+  exportDevelopmentPathwaysExcel,
+  exportConvergenceMapCsv,
+  exportConvergenceMapExcel,
+} from "@/lib/export"
 
 type EditMode = "view" | "edit" | "colour" | "order" | "delete"
 type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
 
+const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
+
 export default function Page() {
+  const { toast } = useToast()
+
   // UI State
   const [showKpi, setShowKpi] = useState(true)
   const [editMode, setEditMode] = useState<EditMode>("view")
@@ -75,18 +99,37 @@ export default function Page() {
     isLoading: systemLoading 
   } = useFullSystem(selectedSystemId)
 
-  // Mutations
+  // Supabase Mutations
   const updateElement = useUpdateElement()
   const updateSystem = useUpdateSystem()
 
+  // Convex data
+  const { data: convexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
+  const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
+    isConvexConfigured ? selectedSystemId : null
+  )
+
+  // Convex mutations
+  const convexUpdateElement = useConvexUpdateElement()
+  const convexUpdateSystem = useConvexUpdateSystem()
+
+  // Determine active data source
+  const dataSource: "convex" | "supabase" | "json" = isConvexConfigured
+    ? "convex"
+    : isSupabaseConfigured
+      ? "supabase"
+      : "json"
+
   // Auto-select first system when systems load
   useEffect(() => {
-    if (systems?.length && !selectedSystemId) {
-      // Try to find MERA first (legacy_id = 2492), otherwise use first system
+    if (selectedSystemId) return
+    if (dataSource === "convex" && convexSystems.length > 0) {
+      setSelectedSystemId(convexSystems[0].id)
+    } else if (systems?.length) {
       const meraSystem = systems.find(s => s.legacy_id === 2492)
       setSelectedSystemId(meraSystem?.id || systems[0].id)
     }
-  }, [systems, selectedSystemId])
+  }, [dataSource, convexSystems, systems, selectedSystemId])
 
   // Check if we have Supabase data loaded
   const hasSupabaseData = isSupabaseConfigured && isDataLoaded(system, outcomes, valueChain, resources)
@@ -156,8 +199,25 @@ export default function Page() {
     return jsonAdapter.getConvergenceMapData()
   }, [hasSupabaseData, valueChain, matrices, externalValues, factors, kpis, jsonAdapter])
 
+  // Effective data: Convex pre-transformed > Supabase useMemo > JSON fallback
+  const effectiveLogicGridData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.initialData : logicGridData
+  const effectiveCultureBanner = dataSource === "convex" && convexSystemData
+    ? convexSystemData.cultureBanner : cultureBanner
+  const effectiveBottomBanner = dataSource === "convex" && convexSystemData
+    ? convexSystemData.bottomBanner : bottomBanner
+  const effectiveContributionMapData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.contributionMapData : contributionMapData
+  const effectiveDevelopmentPathwaysData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.developmentPathwaysData : developmentPathwaysData
+  const effectiveConvergenceMapData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.convergenceMapData : convergenceMapData
+
   // Get current system name for display
   const systemName = useMemo(() => {
+    if (dataSource === "convex" && convexSystemData) {
+      return convexSystemData.system.name
+    }
     if (hasSupabaseData && system) {
       return system.name
     }
@@ -166,7 +226,7 @@ export default function Page() {
     }
     // JSON mode: use adapter name
     return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.['System'] || selectedJsonSystem.toUpperCase()
-  }, [hasSupabaseData, system, isSupabaseConfigured, systems, selectedSystemId, jsonAdapter, selectedJsonSystem])
+  }, [dataSource, convexSystemData, hasSupabaseData, system, isSupabaseConfigured, systems, selectedSystemId, jsonAdapter, selectedJsonSystem])
 
   // Handler functions
   const handleNodeClick = (node: NodeData) => {
@@ -188,8 +248,7 @@ export default function Page() {
   }
 
   const handleSystemSelect = (systemId: string) => {
-    if (isSupabaseConfigured) {
-      // Supabase mode: use system ID
+    if (dataSource === "convex" || dataSource === "supabase") {
       setSelectedSystemId(systemId)
     } else {
       // JSON mode: use system name as key
@@ -200,10 +259,91 @@ export default function Page() {
     }
   }
 
+  // Save handler for NodeDetailSidebar (Convex only)
+  const handleNodeSave = async (updatedNode: NodeData) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+
+    // Matrix cells are not directly saveable yet
+    if (updatedNode.id.startsWith("cell-")) return
+
+    if (updatedNode.category === "purpose") {
+      // Purpose maps to system-level fields
+      await convexUpdateSystem.updateSystem({
+        id: convexSystemData.system.id,
+        impact: updatedNode.title,
+      })
+    } else {
+      // outcomes, value-chain, resources map to elements
+      await convexUpdateElement.updateElement({
+        id: updatedNode.id,
+        content: updatedNode.title,
+        description: updatedNode.description,
+        gradientValue: updatedNode.kpiValue,
+      })
+    }
+  }
+
+  // Export handler
+  const handleExport = async (format: "csv" | "excel" | "pdf") => {
+    const baseName = `${systemName}-${activeTab}`
+
+    try {
+      if (format === "pdf") {
+        const containerMap: Record<string, string> = {
+          "logic-model": "view-logic-model",
+          "contribution-map": "view-contribution-map",
+          "development-pathways": "view-development-pathways",
+          "convergence-map": "view-convergence-map",
+        }
+        const containerId = containerMap[activeTab]
+        if (containerId) {
+          await exportToPdf(containerId, baseName)
+        }
+      } else if (format === "csv") {
+        switch (activeTab) {
+          case "logic-model":
+            exportLogicModelCsv(effectiveLogicGridData, baseName)
+            break
+          case "contribution-map":
+            exportContributionMapCsv(effectiveContributionMapData, baseName)
+            break
+          case "development-pathways":
+            exportDevelopmentPathwaysCsv(effectiveDevelopmentPathwaysData, baseName)
+            break
+          case "convergence-map":
+            exportConvergenceMapCsv(effectiveConvergenceMapData, baseName)
+            break
+        }
+      } else if (format === "excel") {
+        switch (activeTab) {
+          case "logic-model":
+            exportLogicModelExcel(effectiveLogicGridData, baseName)
+            break
+          case "contribution-map":
+            exportContributionMapExcel(effectiveContributionMapData, baseName)
+            break
+          case "development-pathways":
+            exportDevelopmentPathwaysExcel(effectiveDevelopmentPathwaysData, baseName)
+            break
+          case "convergence-map":
+            exportConvergenceMapExcel(effectiveConvergenceMapData, baseName)
+            break
+        }
+      }
+      toast({ title: "Export complete", description: `${format.toUpperCase()} file downloaded` })
+    } catch (err) {
+      toast({
+        title: "Export failed",
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "destructive",
+      })
+    }
+  }
+
   const handleContributionCellClick = (valueChainId: string, outcomeId: string) => {
-    const vc = contributionMapData.valueChain.find(v => v.id === valueChainId)
-    const outcome = contributionMapData.outcomes.find(o => o.id === outcomeId)
-    const cell = contributionMapData.cells.find(
+    const vc = effectiveContributionMapData.valueChain.find(v => v.id === valueChainId)
+    const outcome = effectiveContributionMapData.outcomes.find(o => o.id === outcomeId)
+    const cell = effectiveContributionMapData.cells.find(
       c => c.valueChainId === valueChainId && c.outcomeId === outcomeId
     )
 
@@ -229,9 +369,9 @@ export default function Page() {
   }
 
   const handleDevelopmentPathwaysCellClick = (valueChainId: string, resourceId: string) => {
-    const vc = developmentPathwaysData.valueChain.find(v => v.id === valueChainId)
-    const resource = developmentPathwaysData.resources.find(r => r.id === resourceId)
-    const cell = developmentPathwaysData.cells.find(
+    const vc = effectiveDevelopmentPathwaysData.valueChain.find(v => v.id === valueChainId)
+    const resource = effectiveDevelopmentPathwaysData.resources.find(r => r.id === resourceId)
+    const cell = effectiveDevelopmentPathwaysData.cells.find(
       c => c.valueChainId === valueChainId && c.resourceId === resourceId
     )
 
@@ -257,9 +397,9 @@ export default function Page() {
   }
 
   const handleConvergenceMapCellClick = (valueChainId: string, externalFactorId: string) => {
-    const vc = convergenceMapData.valueChain.find(v => v.id === valueChainId)
-    const factor = convergenceMapData.externalFactors.find(f => f.id === externalFactorId)
-    const cell = convergenceMapData.cells.find(
+    const vc = effectiveConvergenceMapData.valueChain.find(v => v.id === valueChainId)
+    const factor = effectiveConvergenceMapData.externalFactors.find(f => f.id === externalFactorId)
+    const cell = effectiveConvergenceMapData.cells.find(
       c => c.valueChainId === valueChainId && c.externalFactorId === externalFactorId
     )
 
@@ -300,8 +440,11 @@ export default function Page() {
 
   // Render main content based on active tab
   const renderMainContent = () => {
-    // Show loading while fetching Supabase data
-    if (isSupabaseConfigured && (systemsLoading || (selectedSystemId && systemLoading))) {
+    // Show loading while fetching data
+    if (
+      (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) ||
+      (dataSource === "supabase" && (systemsLoading || (selectedSystemId && systemLoading)))
+    ) {
       return renderLoading()
     }
 
@@ -309,18 +452,18 @@ export default function Page() {
       case "logic-model":
         return (
           <LogicGrid
-            rows={logicGridData}
+            rows={effectiveLogicGridData}
             showKpi={showKpi}
             editMode={editMode === "edit" || editMode === "colour"}
             onNodeClick={handleNodeClick}
-            cultureBanner={cultureBanner}
-            bottomBanner={bottomBanner}
+            cultureBanner={effectiveCultureBanner}
+            bottomBanner={effectiveBottomBanner}
           />
         )
       case "contribution-map":
         return (
           <ContributionMap
-            data={contributionMapData}
+            data={effectiveContributionMapData}
             editMode={editMode}
             onCellClick={handleContributionCellClick}
             onElementClick={handleNodeClick}
@@ -329,7 +472,7 @@ export default function Page() {
       case "development-pathways":
         return (
           <DevelopmentPathways
-            data={developmentPathwaysData}
+            data={effectiveDevelopmentPathwaysData}
             editMode={editMode}
             onCellClick={handleDevelopmentPathwaysCellClick}
             onElementClick={handleNodeClick}
@@ -338,7 +481,7 @@ export default function Page() {
       case "convergence-map":
         return (
           <ConvergenceMap
-            data={convergenceMapData}
+            data={effectiveConvergenceMapData}
             editMode={editMode}
             onCellClick={handleConvergenceMapCellClick}
             onElementClick={handleNodeClick}
@@ -364,12 +507,18 @@ export default function Page() {
         activeTab={activeTab}
         displayLogic={displayLogic}
         onDisplayLogicChange={setDisplayLogic}
+        onExport={activeTab !== "canvas" ? handleExport : undefined}
       />
 
       {/* Data Source Indicator */}
-      {!isSupabaseConfigured && (
+      {dataSource === "json" && (
         <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
-          Using static demo data. Configure Supabase to load real data.
+          Using static demo data. Configure Convex or Supabase to load real data.
+        </div>
+      )}
+      {dataSource === "convex" && (
+        <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 text-center">
+          Connected to Convex (real-time)
         </div>
       )}
 
@@ -379,10 +528,19 @@ export default function Page() {
           <NavSidebar
             isCollapsed={navSidebarCollapsed}
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={isSupabaseConfigured ? (selectedSystemId || systemName) : selectedJsonSystem}
+            selectedSystem={dataSource !== "json" ? (selectedSystemId || systemName) : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
-            systems={isSupabaseConfigured ? systems?.map(s => ({ id: s.id, name: s.name, sector: s.sector })) : undefined}
-            isLoading={isSupabaseConfigured ? systemsLoading : false}
+            systems={
+              dataSource === "convex"
+                ? convexSystems.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                : dataSource === "supabase"
+                  ? systems?.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                  : undefined
+            }
+            isLoading={
+              dataSource === "convex" ? convexSystemsLoading :
+              dataSource === "supabase" ? systemsLoading : false
+            }
             showCanvas={activeTab === "canvas"}
             onCanvasClick={() => setActiveTab("canvas")}
           />
@@ -390,7 +548,7 @@ export default function Page() {
           {/* Row Labels Sidebar - Only show for Logic Model */}
           {activeTab === "logic-model" && (
             <RowSidebar
-              rows={logicGridData}
+              rows={effectiveLogicGridData}
               activeRow={activeRow}
               onRowClick={handleRowClick}
             />
@@ -425,7 +583,12 @@ export default function Page() {
       <Footer />
 
       {/* Node Detail Sidebar */}
-      <NodeDetailSidebar node={selectedNode} isOpen={detailSidebarOpen} onClose={handleCloseDetail} />
+      <NodeDetailSidebar
+        node={selectedNode}
+        isOpen={detailSidebarOpen}
+        onClose={handleCloseDetail}
+        onSave={dataSource === "convex" ? handleNodeSave : undefined}
+      />
     </div>
   )
 }
