@@ -1,0 +1,447 @@
+{
+  "system_id": 9999,
+  "name": "Relationships Australia - Tasmania",
+  "logic_model": {
+    "impact": "A connected and respectful Tasmania - Connection builds trust and respect builds fairness. Together they create the conditions for healthier communities, stronger services and better social, health and economic outcomes for everyone",
+    "dimension": "Respectfully and collaboratively activated with a focus on client journey to integrated health & wellbeing impact",
+    "challenge": "Tasmania experiencing high levels of psychological distress, poor relationship quality, isolation and lack of inclusion leading to reduced wellbeing and productivity",
+    "outcomes": [
+      {
+        "id": "9000",
+        "order": 0,
+        "content": "Impact Driven Service Delivery",
+        "description": "Designing & delivering contemporary, inclusive relationship services that satisfy evolving wellbeing, connection & belonging needs and are co-designed with people with lived experience"
+      },
+      {
+        "id": "9001",
+        "order": 1,
+        "content": "Growth with Purpose",
+        "description": "Expanding our reach to support more Tasmanian individuals, families, communities and businesses in ways that are sustainable and effective in reducing the impact of trauma and leading to healthier, productive relationships and strong social outcomes"
+      },
+      {
+        "id": "9002",
+        "order": 2,
+        "content": "Amplifying our Expertise",
+        "description": "Positively influence public policy by using media, digital and social platforms to elevate trusted research and practical solutions to the societal pressures affecting communities"
+      },
+      {
+        "id": "9003",
+        "order": 3,
+        "content": "Sustainable, Flourishing organisation",
+        "description": "A strong reputation for delivering programs & supports which satisfy community needs enabling RA-Tas to meet its social impact, revenue and margin targets and progress our mission."
+      }
+    ],
+    "value_chain": [
+      {
+        "id": "9100",
+        "order": 0,
+        "content": "Situational needs analysis and co-design pathway consideration",
+        "description": "Situational needs analysis and co-design pathway consideration"
+      },
+      {
+        "id": "9101",
+        "order": 1,
+        "content": "Clinical & service or project design built on research & evidence",
+        "description": "Clinical & service or project design built on research & evidence"
+      },
+      {
+        "id": "9102",
+        "order": 2,
+        "content": "Community Connection services",
+        "description": "Community Connection services"
+      },
+      {
+        "id": "9103",
+        "order": 3,
+        "content": "Family violence & trauma support",
+        "description": "Family violence & trauma support"
+      },
+      {
+        "id": "9104",
+        "order": 4,
+        "content": "Individual & family counselling",
+        "description": "Individual & family counselling"
+      },
+      {
+        "id": "9105",
+        "order": 5,
+        "content": "Separation and supprt services",
+        "description": "Separation and supprt services"
+      },
+      {
+        "id": "9106",
+        "order": 6,
+        "content": "Clarity in purpose, stakeholder enagement, promotion & access connections ( referral pathway s)",
+        "description": "Clarity in purpose, stakeholder enagement, promotion & access connections ( referral pathway s)"
+      },
+      {
+        "id": "9107",
+        "order": 7,
+        "content": "Marketing, client connection & engagement",
+        "description": "Marketing, client connection & engagement"
+      },
+      {
+        "id": "9108",
+        "order": 8,
+        "content": "Monitoring, reporting, continuous improvement and pilot initiatives",
+        "description": "Monitoring, reporting, continuous improvement and pilot initiatives"
+      },
+      {
+        "id": "9109",
+        "order": 9,
+        "content": "Evaluation & full system development",
+        "description": "Evaluation & full system development"
+      },
+      {
+        "id": "9110",
+        "order": 10,
+        "content": "Publicising relationships imperative & positioning through media, papers & conferences",
+        "description": "Publicising relationships imperative & positioning through media, papers & conferences"
+      }
+    ],
+    "resources": [
+      {
+        "id": "9200",
+        "order": 0,
+        "content": "Knowledge & research foundations transformed into service models",
+        "description": "Knowledge & research foundations transformed into service models"
+      },
+      {
+        "id": "9201",
+        "order": 1,
+        "content": "Diverse revenue streams and surplus to support delivery and development",
+        "description": "Diverse revenue streams and surplus to support delivery and development"
+      },
+      {
+        "id": "9202",
+        "order": 2,
+        "content": "Knowledgeable, professional & committed team attracted, developed & retained",
+        "description": "Knowledgeable, professional & committed team attracted, developed & retained"
+      },
+      {
+        "id": "9203",
+        "order": 3,
+        "content": "Locations, and environment which enable professional services",
+        "description": "Locations, and environment which enable professional services"
+      },
+      {
+        "id": "9204",
+        "order": 4,
+        "content": "Professional clinical systems & processes",
+        "description": "Professional clinical systems & processes"
+      },
+      {
+        "id": "9205",
+        "order": 5,
+        "content": "Corporate and business support systems & technology",
+        "description": "Corporate and business support systems & technology"
+      },
+      {
+        "id": "9206",
+        "order": 6,
+        "content": "Mutually beneficial, strongly aligned, effective networks, alliances & relationships",
+        "description": "Mutually beneficial, strongly aligned, effective networks, alliances & relationships"
+      },
+      {
+        "id": "9207",
+        "order": 7,
+        "content": "Robust data, analysis & conclusions to support decisions & innovation",
+        "description": "Robust data, analysis & conclusions to support decisions & innovation"
+      },
+      {
+        "id": "9208",
+        "order": 8,
+        "content": "Contemporary strategic, clinical & operational governance & management systems",
+        "description": "Contemporary strategic, clinical & operational governance & management systems"
+      },
+      {
+        "id": "9209",
+        "order": 9,
+        "content": "Confidential and agile systems",
+        "description": "Confidential and agile systems"
+      },
+      {
+        "id": "9210",
+        "order": 10,
+        "content": "Strong and trusted internal communication channels",
+        "description": "Strong and trusted internal communication channels"
+      },
+      {
+        "id": "9211",
+        "order": 11,
+        "content": "pro active environmental scanning and forecasting",
+        "description": "pro active environmental scanning and forecasting"
+      }
+    ]
+  },
+  "matrices": {
+    "contribution_map": [
+      {
+        "content": "Services designed to and measured for impact impact",
+        "order": 0,
+        "column": 0,
+        "xaxis": "9000",
+        "yaxis": "9100"
+      },
+      {
+        "content": "trialling new models of service to adress service gaps",
+        "order": 0,
+        "column": 1,
+        "xaxis": "9001",
+        "yaxis": "9100"
+      },
+      {
+        "content": "strategic communications in line with service evaluation and design",
+        "order": 0,
+        "column": 2,
+        "xaxis": "9002",
+        "yaxis": "9100"
+      },
+      {
+        "content": "client experience of service delivery and satisfaction on whetehr service met their needs",
+        "order": 1,
+        "column": 0,
+        "xaxis": "9000",
+        "yaxis": "9101"
+      },
+      {
+        "content": "new service offerings designed with gap analysios,",
+        "order": 1,
+        "column": 1,
+        "xaxis": "9001",
+        "yaxis": "9101"
+      },
+      {
+        "content": "stakeholder intput and enagement in service design",
+        "order": 1,
+        "column": 2,
+        "xaxis": "9002",
+        "yaxis": "9101"
+      }
+    ],
+    "delivery_pathways": [],
+    "external_influences": []
+  },
+  "external_values": [
+    {
+      "id": "9300",
+      "order": 0,
+      "content": "[Insert Label Here]",
+      "description": ""
+    },
+    {
+      "id": "9301",
+      "order": 1,
+      "content": "[Insert Label Here]",
+      "description": ""
+    }
+  ],
+  "kpis": {
+    "by_value": [
+      {
+        "content": "70% of programs informed by evidence                4 new research partnerships",
+        "parent_id": "9100",
+        "parent_order": 0
+      },
+      {
+        "content": "80% of clients report service met their needs",
+        "parent_id": "9101",
+        "parent_order": 1
+      },
+      {
+        "content": "10% Increase in clients served",
+        "parent_id": "9102",
+        "parent_order": 2
+      },
+      {
+        "content": "75% of new programs co-designed",
+        "parent_id": "9103",
+        "parent_order": 3
+      },
+      {
+        "content": "% service delivery or operational changes implemented within 6 months of findings",
+        "parent_id": "9108",
+        "parent_order": 8
+      },
+      {
+        "content": "% Pilot programs scaled",
+        "parent_id": "9109",
+        "parent_order": 9
+      },
+      {
+        "content": "%Policy changes/government frameworks influenced.         10% increase Community sentiment trust rating",
+        "parent_id": "9110",
+        "parent_order": 10
+      }
+    ],
+    "by_outcome": [],
+    "by_dimension": []
+  },
+  "capabilities": {
+    "current_by_resource": [
+      {
+        "content": "",
+        "parent_id": "9200",
+        "parent_order": 0
+      },
+      {
+        "content": "",
+        "parent_id": "9201",
+        "parent_order": 1
+      },
+      {
+        "content": "",
+        "parent_id": "9202",
+        "parent_order": 2
+      },
+      {
+        "content": "",
+        "parent_id": "9203",
+        "parent_order": 3
+      },
+      {
+        "content": "",
+        "parent_id": "9204",
+        "parent_order": 4
+      },
+      {
+        "content": "",
+        "parent_id": "9205",
+        "parent_order": 5
+      },
+      {
+        "content": "",
+        "parent_id": "9206",
+        "parent_order": 6
+      },
+      {
+        "content": "",
+        "parent_id": "9207",
+        "parent_order": 7
+      },
+      {
+        "content": "",
+        "parent_id": "9208",
+        "parent_order": 8
+      }
+    ],
+    "necessary_by_resource": [
+      {
+        "content": "",
+        "parent_id": "9200",
+        "parent_order": 0
+      },
+      {
+        "content": "",
+        "parent_id": "9201",
+        "parent_order": 1
+      },
+      {
+        "content": "",
+        "parent_id": "9202",
+        "parent_order": 2
+      },
+      {
+        "content": "",
+        "parent_id": "9203",
+        "parent_order": 3
+      },
+      {
+        "content": "",
+        "parent_id": "9204",
+        "parent_order": 4
+      },
+      {
+        "content": "",
+        "parent_id": "9205",
+        "parent_order": 5
+      },
+      {
+        "content": "",
+        "parent_id": "9206",
+        "parent_order": 6
+      },
+      {
+        "content": "",
+        "parent_id": "9207",
+        "parent_order": 7
+      },
+      {
+        "content": "",
+        "parent_id": "9208",
+        "parent_order": 8
+      }
+    ]
+  },
+  "factors": {
+    "by_value": [
+      {
+        "content": "",
+        "parent_id": "9100",
+        "parent_order": 0
+      },
+      {
+        "content": "",
+        "parent_id": "9101",
+        "parent_order": 1
+      },
+      {
+        "content": "",
+        "parent_id": "9102",
+        "parent_order": 2
+      },
+      {
+        "content": "",
+        "parent_id": "9103",
+        "parent_order": 3
+      },
+      {
+        "content": "",
+        "parent_id": "9104",
+        "parent_order": 4
+      },
+      {
+        "content": "",
+        "parent_id": "9105",
+        "parent_order": 5
+      },
+      {
+        "content": "",
+        "parent_id": "9106",
+        "parent_order": 6
+      },
+      {
+        "content": "",
+        "parent_id": "9107",
+        "parent_order": 7
+      },
+      {
+        "content": "",
+        "parent_id": "9108",
+        "parent_order": 8
+      },
+      {
+        "content": "",
+        "parent_id": "9109",
+        "parent_order": 9
+      },
+      {
+        "content": "",
+        "parent_id": "9110",
+        "parent_order": 10
+      }
+    ],
+    "by_external_value": [
+      {
+        "content": "",
+        "parent_id": "9300",
+        "parent_order": 0
+      },
+      {
+        "content": "",
+        "parent_id": "9301",
+        "parent_order": 1
+      }
+    ]
+  }
+}

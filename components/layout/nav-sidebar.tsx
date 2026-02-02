@@ -32,6 +32,7 @@ const defaultSystems: SystemInfo[] = [
   { id: "illawarra", name: "Illawarra Energy", sector: "Energy Storage" },
   { id: "central_highlands", name: "Central Highlands Council", sector: "Local Government" },
   { id: "council_2", name: "Central Highlands Council v2", sector: "Local Government - Strategic Plan" },
+  { id: "relationships_au_tas", name: "Relationships Australia - Tas", sector: "Community Services" },
 ]
 
 export function NavSidebar({

@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { QueryProvider } from "@/components/providers/query-provider"
+import { ConvexClientProvider } from "@/components/providers/convex-provider"
 import "./globals.css"
 
 import { Plus_Jakarta_Sans, Lora, IBM_Plex_Mono, Geist as V0_Font_Geist, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
@@ -59,11 +60,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${plusJakartaSans.className} font-sans antialiased`}>
-        <QueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-            {children}
-          </ThemeProvider>
-        </QueryProvider>
+        <ConvexClientProvider>
+          <QueryProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+              {children}
+            </ThemeProvider>
+          </QueryProvider>
+        </ConvexClientProvider>
         <Analytics />
       </body>
     </html>

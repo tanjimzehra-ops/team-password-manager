@@ -493,6 +493,7 @@ import cpfJigsawJson from './cpf_jigsaw.json'
 import illawarraJson from './illawarra_energy_storage.json'
 import centralHighlandsJson from './central_highlands_council.json'
 import council2Json from './council_2.json'
+import relationshipsAuJson from './relationships_australia_tas.json'
 
 export const availableSystems = {
   mera: new SystemDataAdapter(meraJson as SystemJSON),
@@ -502,6 +503,7 @@ export const availableSystems = {
   illawarra: new SystemDataAdapter(illawarraJson as SystemJSON),
   central_highlands: new SystemDataAdapter(centralHighlandsJson as SystemJSON),
   council_2: new SystemDataAdapter(council2Json as SystemJSON),
+  relationships_au_tas: new SystemDataAdapter(relationshipsAuJson as SystemJSON),
 }
 
 export type SystemName = keyof typeof availableSystems

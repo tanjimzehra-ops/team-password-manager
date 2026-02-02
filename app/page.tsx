@@ -58,7 +58,7 @@ export default function Page() {
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
 
   // JSON system adapter (used when Supabase is not configured)
-  const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("mera")
+  const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("relationships_au_tas")
 
   // Supabase data
   const { data: systems, isLoading: systemsLoading } = useSystems()
