@@ -89,6 +89,17 @@ interface ConvexSystem {
   challenge: string
 }
 
+// The Convex getFullSystem query spreads system fields at the root level
+// alongside the related collections (i.e. { _id, name, ..., elements, matrixCells, ... })
+interface FullSystemRaw extends ConvexSystem {
+  elements: ConvexElement[]
+  matrixCells: ConvexMatrixCell[]
+  kpis: ConvexKPI[]
+  capabilities: ConvexCapability[]
+  externalValues: ConvexExternalValue[]
+  factors: ConvexFactor[]
+}
+
 interface FullSystemPayload {
   system: ConvexSystem
   elements: ConvexElement[]
@@ -435,7 +446,25 @@ export function useConvexSystem(systemId: string | null) {
     return { data: null, isLoading }
   }
 
-  const payload = raw as unknown as FullSystemPayload
+  // The Convex getFullSystem query spreads system fields at the root level
+  // alongside collections. We need to restructure into { system, elements, ... }
+  const flat = raw as unknown as FullSystemRaw
+  const payload: FullSystemPayload = {
+    system: {
+      _id: flat._id,
+      name: flat.name,
+      sector: flat.sector,
+      impact: flat.impact,
+      dimension: flat.dimension,
+      challenge: flat.challenge,
+    },
+    elements: flat.elements,
+    matrixCells: flat.matrixCells,
+    kpis: flat.kpis,
+    capabilities: flat.capabilities,
+    externalValues: flat.externalValues,
+    factors: flat.factors,
+  }
 
   const data: ConvexSystemData = {
     system: {

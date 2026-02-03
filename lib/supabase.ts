@@ -5,7 +5,10 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables')
+  // Non-blocking: Supabase is optional when using Convex as primary data source
+  if (typeof window !== 'undefined') {
+    console.debug('Supabase not configured — using Convex or JSON data source')
+  }
 }
 
 // Create Supabase client

@@ -212,7 +212,7 @@ function renderDetailsTab(node: NodeData) {
   const hasNotes = !!node.notes
   const hasRelated = node.relatedNodes && node.relatedNodes.length > 0
   const metadataEntries = node.metadata
-    ? Object.entries(node.metadata).filter(([key]) => key !== "View")
+    ? Object.entries(node.metadata).filter(([key]) => key !== "View" && !key.startsWith("_"))
     : []
   const hasMetadata = metadataEntries.length > 0
 

@@ -24,8 +24,7 @@ import { isSupabaseConfigured } from "@/lib/supabase"
 // Convex hooks
 import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
 import { useConvexSystem } from "@/hooks/convex/use-convex-system"
-import { useConvexUpdateElement } from "@/hooks/convex/use-convex-mutations"
-import { useConvexUpdateSystem } from "@/hooks/convex/use-convex-mutations"
+import { useConvexUpdateElement, useConvexUpdateSystem, useConvexUpdateMatrixCell } from "@/hooks/convex/use-convex-mutations"
 
 // Data adapters
 import {
@@ -112,6 +111,7 @@ export default function Page() {
   // Convex mutations
   const convexUpdateElement = useConvexUpdateElement()
   const convexUpdateSystem = useConvexUpdateSystem()
+  const convexUpdateMatrixCell = useConvexUpdateMatrixCell()
 
   // Determine active data source
   const dataSource: "convex" | "supabase" | "json" = isConvexConfigured
@@ -263,10 +263,32 @@ export default function Page() {
   const handleNodeSave = async (updatedNode: NodeData) => {
     if (dataSource !== "convex" || !convexSystemData) return
 
-    // Matrix cells are not directly saveable yet
-    if (updatedNode.id.startsWith("cell-")) return
+    if (updatedNode.id.startsWith("cell-")) {
+      // Matrix cell: use metadata keys for reliable ID extraction
+      const view = updatedNode.metadata?.["View"]
+      const rowElementId = updatedNode.metadata?.["_rowElementId"]
+      const colElementId = updatedNode.metadata?.["_colElementId"]
+      if (!rowElementId || !colElementId) return
 
-    if (updatedNode.category === "purpose") {
+      let matrixType: "contribution" | "development" | "convergence"
+      if (view === "Contribution Map") {
+        matrixType = "contribution"
+      } else if (view === "Development Pathways") {
+        matrixType = "development"
+      } else if (view === "Convergence Map") {
+        matrixType = "convergence"
+      } else {
+        return
+      }
+
+      await convexUpdateMatrixCell.updateMatrixCell({
+        systemId: convexSystemData.system.id,
+        matrixType,
+        rowElementId,
+        colElementId,
+        content: updatedNode.description,
+      })
+    } else if (updatedNode.category === "purpose") {
       // Purpose maps to system-level fields
       await convexUpdateSystem.updateSystem({
         id: convexSystemData.system.id,
@@ -361,6 +383,8 @@ export default function Page() {
         "View": "Contribution Map",
         "Value Chain Element": vc?.title ?? valueChainId,
         "Outcome": outcome?.title ?? outcomeId,
+        "_rowElementId": valueChainId,
+        "_colElementId": outcomeId,
       },
     }
 
@@ -389,6 +413,8 @@ export default function Page() {
         "View": "Development Pathways",
         "Value Chain Element": vc?.title ?? valueChainId,
         "Resource": resource?.title ?? resourceId,
+        "_rowElementId": valueChainId,
+        "_colElementId": resourceId,
       },
     }
 
@@ -419,6 +445,8 @@ export default function Page() {
         "View": "Convergence Map",
         "Value Chain Element": vc?.title ?? valueChainId,
         "External Factor": factor?.title ?? externalFactorId,
+        "_rowElementId": valueChainId,
+        "_colElementId": externalFactorId,
       },
     }
 

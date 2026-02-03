@@ -131,21 +131,33 @@ export function useConvexDeleteElement() {
 // ---------------------------------------------------------------------------
 
 /**
- * Update a matrix cell
+ * Upsert a matrix cell by composite key (systemId + matrixType + rowElementId + colElementId)
  */
 export function useConvexUpdateMatrixCell() {
   const mutate = useMutation(api.matrixCells.upsert)
   const { toast } = useToast()
 
   const updateMatrixCell = async ({
-    id,
+    systemId,
+    matrixType,
+    rowElementId,
+    colElementId,
     content,
   }: {
-    id: string
+    systemId: string
+    matrixType: "contribution" | "development" | "convergence"
+    rowElementId: string
+    colElementId: string
     content: string
   }) => {
     try {
-      await mutate({ id: id as Id<"matrixCells">, content })
+      await mutate({
+        systemId: systemId as Id<"systems">,
+        matrixType,
+        rowElementId: rowElementId as Id<"elements">,
+        colElementId,
+        content,
+      })
       toast({ title: "Cell updated", description: "Matrix cell saved successfully" })
     } catch (err) {
       toast({
