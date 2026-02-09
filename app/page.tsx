@@ -15,6 +15,11 @@ import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 
+// New components
+import { NodeEditPopup } from "@/components/node-edit-popup"
+import { PerformanceModal } from "@/components/performance-modal"
+import { LibraryPopup } from "@/components/library-popup"
+
 // Supabase hooks
 import { useSystems } from "@/hooks/use-systems"
 import { useFullSystem } from "@/hooks/use-full-system"
@@ -24,7 +29,23 @@ import { isSupabaseConfigured } from "@/lib/supabase"
 // Convex hooks
 import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
 import { useConvexSystem } from "@/hooks/convex/use-convex-system"
-import { useConvexUpdateElement, useConvexUpdateSystem, useConvexUpdateMatrixCell } from "@/hooks/convex/use-convex-mutations"
+import {
+  useConvexUpdateElement,
+  useConvexUpdateSystem,
+  useConvexUpdateMatrixCell,
+  useConvexUpdateElementColor,
+  useConvexUpdateElementOrder,
+  useConvexCreatePortfolio,
+  useConvexUpdatePortfolio,
+  useConvexDeletePortfolio,
+} from "@/hooks/convex/use-convex-mutations"
+
+// Custom hooks
+import { useEditMode } from "@/hooks/use-edit-mode"
+import type { EditMode } from "@/hooks/use-edit-mode"
+import { usePerformanceMode } from "@/hooks/use-performance-mode"
+import { useLibrary } from "@/hooks/use-library"
+import { usePortfolioState } from "@/hooks/use-portfolio-state"
 
 // Data adapters
 import {
@@ -59,7 +80,6 @@ import {
   exportConvergenceMapExcel,
 } from "@/lib/export"
 
-type EditMode = "view" | "edit" | "colour" | "order" | "delete"
 type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
 
 const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
@@ -69,13 +89,22 @@ export default function Page() {
 
   // UI State
   const [showKpi, setShowKpi] = useState(true)
-  const [editMode, setEditMode] = useState<EditMode>("view")
   const [activeTab, setActiveTab] = useState<ViewTab>("logic-model")
-  const [displayLogic, setDisplayLogic] = useState(false)
   const [navSidebarCollapsed, setNavSidebarCollapsed] = useState(false)
   const [activeRow, setActiveRow] = useState<string | null>(null)
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null)
   const [detailSidebarOpen, setDetailSidebarOpen] = useState(false)
+
+  // Custom hooks (replace inline useState for editMode and displayMode)
+  const {
+    editMode, setEditMode, nodeForEdit, editPopupOpen, nodeToDelete, deleteDialogOpen,
+    startEdit, startDelete, closeEdit, closeDelete, resetEditMode,
+  } = useEditMode()
+
+  const {
+    displayMode, setDisplayMode, performanceModalOpen, performanceNode,
+    openPerformanceModal, closePerformanceModal,
+  } = usePerformanceMode()
 
   // System selection (for both Supabase and JSON modes)
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
@@ -85,17 +114,17 @@ export default function Page() {
 
   // Supabase data
   const { data: systems, isLoading: systemsLoading } = useSystems()
-  const { 
-    system, 
-    outcomes, 
-    valueChain, 
-    resources, 
+  const {
+    system,
+    outcomes,
+    valueChain,
+    resources,
     matrices,
     kpis,
     capabilities,
     factors,
     externalValues,
-    isLoading: systemLoading 
+    isLoading: systemLoading
   } = useFullSystem(selectedSystemId)
 
   // Supabase Mutations
@@ -112,6 +141,11 @@ export default function Page() {
   const convexUpdateElement = useConvexUpdateElement()
   const convexUpdateSystem = useConvexUpdateSystem()
   const convexUpdateMatrixCell = useConvexUpdateMatrixCell()
+  const convexUpdateElementColor = useConvexUpdateElementColor()
+  const convexUpdateElementOrder = useConvexUpdateElementOrder()
+  const convexCreatePortfolio = useConvexCreatePortfolio()
+  const convexUpdatePortfolio = useConvexUpdatePortfolio()
+  const convexDeletePortfolio = useConvexDeletePortfolio()
 
   // Determine active data source
   const dataSource: "convex" | "supabase" | "json" = isConvexConfigured
@@ -212,6 +246,20 @@ export default function Page() {
     ? convexSystemData.developmentPathwaysData : developmentPathwaysData
   const effectiveConvergenceMapData = dataSource === "convex" && convexSystemData
     ? convexSystemData.convergenceMapData : convergenceMapData
+
+  // Library hook (depends on effectiveLogicGridData)
+  const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
+    effectiveLogicGridData,
+    dataSource === "convex"
+      ? convexSystems.map(s => ({ id: s.id, name: s.name }))
+      : dataSource === "supabase"
+        ? systems?.map(s => ({ id: s.id, name: s.name }))
+        : undefined,
+    selectedSystemId
+  )
+
+  // Portfolio optimistic state
+  const { addOptimistic, removeOptimistic, getMergedPortfolios } = usePortfolioState()
 
   // Get current system name for display
   const systemName = useMemo(() => {
@@ -454,6 +502,107 @@ export default function Page() {
     setDetailSidebarOpen(true)
   }
 
+  // Color change handler (Convex only)
+  const handleColorChange = async (nodeId: string, color: NodeData["color"]) => {
+    if (dataSource !== "convex") return
+    await convexUpdateElementColor.updateElementColor({
+      id: nodeId,
+      color: color as "primary" | "secondary" | "accent" | "muted",
+    })
+  }
+
+  // Reorder handler (Convex only)
+  const handleReorder = async (category: string, fromIndex: number, toIndex: number) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+    const row = effectiveLogicGridData.find(r => r.category === category)
+    if (!row) return
+    const nodes = [...row.nodes]
+    const [moved] = nodes.splice(fromIndex, 1)
+    nodes.splice(toIndex, 0, moved)
+    // Update each element with its new order index
+    for (let i = 0; i < nodes.length; i++) {
+      await convexUpdateElementOrder.updateElementOrder({
+        id: nodes[i].id,
+        orderIndex: i,
+      })
+    }
+  }
+
+  // Add node handler (placeholder - opens library)
+  const handleAddNode = (category: string) => {
+    openLibrary(category as NodeData["category"])
+  }
+
+  // Delete node handler
+  const handleDeleteNode = (nodeId: string) => {
+    const node = effectiveLogicGridData.flatMap(r => r.nodes).find(n => n.id === nodeId)
+    if (node) startDelete(node)
+  }
+
+  // Edit node handler
+  const handleEditNode = (node: NodeData) => {
+    startEdit(node)
+  }
+
+  // Edit popup save
+  const handleEditPopupSave = async (data: { title: string; description: string }) => {
+    if (!nodeForEdit || dataSource !== "convex") return
+    await convexUpdateElement.updateElement({
+      id: nodeForEdit.id,
+      content: data.title,
+      description: data.description,
+    })
+    closeEdit()
+  }
+
+  // Portfolio handlers
+  const handlePortfolioCreate = async (data: { title: string; description: string; date: string; progress: number; status: string; elementId: string }) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+    addOptimistic({
+      id: `temp-${Date.now()}`,
+      ...data,
+    })
+    await convexCreatePortfolio.createPortfolio({
+      systemId: convexSystemData.system.id,
+      elementId: data.elementId,
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      progress: data.progress,
+      status: data.status as "planning" | "active" | "completed",
+      orderIndex: 0,
+    })
+  }
+
+  const handlePortfolioUpdate = async (id: string, data: { title: string; description: string; date: string; progress: number; status: string }) => {
+    if (dataSource !== "convex") return
+    await convexUpdatePortfolio.updatePortfolio({
+      id,
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      progress: data.progress,
+      status: data.status as "planning" | "active" | "completed",
+    })
+  }
+
+  const handlePortfolioDelete = async (id: string) => {
+    if (dataSource !== "convex") return
+    removeOptimistic(id)
+    await convexDeletePortfolio.deletePortfolio({ id })
+  }
+
+  // Library handlers
+  const handleLibraryConnect = (item: { id: string; title: string }) => {
+    toast({ title: "Connected", description: `Element "${item.title}" linked` })
+    closeLibrary()
+  }
+
+  const handleLibraryCopy = (item: { id: string; title: string }) => {
+    toast({ title: "Copied", description: `Element "${item.title}" copied` })
+    closeLibrary()
+  }
+
   // Render loading state
   const renderLoading = () => (
     <div className="flex-1 flex items-center justify-center">
@@ -482,10 +631,16 @@ export default function Page() {
           <LogicGrid
             rows={effectiveLogicGridData}
             showKpi={showKpi}
-            editMode={editMode === "edit" || editMode === "colour"}
+            editMode={editMode}
+            displayMode={displayMode}
             onNodeClick={handleNodeClick}
             cultureBanner={effectiveCultureBanner}
             bottomBanner={effectiveBottomBanner}
+            onColorChange={handleColorChange}
+            onReorder={handleReorder}
+            onAddNode={handleAddNode}
+            onDeleteNode={handleDeleteNode}
+            onEditNode={handleEditNode}
           />
         )
       case "contribution-map":
@@ -527,14 +682,14 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
-      <ViewControls 
-        showKpi={showKpi} 
-        onToggleKpi={setShowKpi} 
-        editMode={editMode} 
+      <ViewControls
+        showKpi={showKpi}
+        onToggleKpi={setShowKpi}
+        editMode={editMode}
         onEditModeChange={setEditMode}
         activeTab={activeTab}
-        displayLogic={displayLogic}
-        onDisplayLogicChange={setDisplayLogic}
+        displayMode={displayMode}
+        onDisplayModeChange={setDisplayMode}
         onExport={activeTab !== "canvas" ? handleExport : undefined}
       />
 
@@ -588,15 +743,15 @@ export default function Page() {
             {/* Save System Button - Only in Edit mode */}
             {editMode === "edit" && (
               <div className="mt-8 flex justify-center gap-4">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="px-8"
                   disabled={updateElement.isPending || updateSystem.isPending}
                 >
                   {updateElement.isPending || updateSystem.isPending ? "Saving..." : "Save Changes"}
                 </Button>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   variant="outline"
                   onClick={() => setEditMode("view")}
                 >
@@ -616,6 +771,40 @@ export default function Page() {
         isOpen={detailSidebarOpen}
         onClose={handleCloseDetail}
         onSave={dataSource === "convex" ? handleNodeSave : undefined}
+        portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
+        onPortfolioCreate={dataSource === "convex" ? handlePortfolioCreate : undefined}
+        onPortfolioUpdate={dataSource === "convex" ? handlePortfolioUpdate : undefined}
+        onPortfolioDelete={dataSource === "convex" ? handlePortfolioDelete : undefined}
+      />
+
+      {/* Edit Popup */}
+      <NodeEditPopup
+        isOpen={editPopupOpen}
+        onClose={closeEdit}
+        title={nodeForEdit ? `Edit ${nodeForEdit.title}` : "Edit Node"}
+        initialTitle={nodeForEdit?.title ?? ""}
+        initialDescription={nodeForEdit?.description ?? ""}
+        onSave={handleEditPopupSave}
+      />
+
+      {/* Performance Modal */}
+      <PerformanceModal
+        isOpen={performanceModalOpen}
+        onClose={closePerformanceModal}
+        node={performanceNode}
+        displayMode={displayMode}
+      />
+
+      {/* Library Popup */}
+      <LibraryPopup
+        isOpen={libraryOpen}
+        onClose={closeLibrary}
+        category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
+        currentSystemId={selectedSystemId ?? ""}
+        currentSystemName={systemName}
+        onConnect={handleLibraryConnect}
+        onCopy={handleLibraryCopy}
+        items={libraryItems}
       />
     </div>
   )

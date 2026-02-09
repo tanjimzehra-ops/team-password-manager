@@ -57,3 +57,30 @@ export const remove = mutation({
     await ctx.db.delete(args.id)
   },
 })
+
+export const replaceForParent = mutation({
+  args: {
+    systemId: v.id("systems"),
+    parentId: v.id("elements"),
+    kpis: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    // Delete all existing KPIs for this parent
+    const existing = await ctx.db
+      .query("kpis")
+      .withIndex("by_parent", (q) => q.eq("parentId", args.parentId))
+      .collect()
+    for (const kpi of existing) {
+      await ctx.db.delete(kpi._id)
+    }
+    // Create new KPIs
+    for (let i = 0; i < args.kpis.length; i++) {
+      await ctx.db.insert("kpis", {
+        systemId: args.systemId,
+        parentId: args.parentId,
+        content: args.kpis[i],
+        orderIndex: i,
+      })
+    }
+  },
+})

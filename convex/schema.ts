@@ -23,6 +23,7 @@ export default defineSchema({
     description: v.optional(v.string()),
     orderIndex: v.number(),
     gradientValue: v.optional(v.number()), // 0-100 KPI health
+    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"))),
   }).index("by_system", ["systemId"])
     .index("by_system_type", ["systemId", "elementType"]),
 
@@ -37,6 +38,8 @@ export default defineSchema({
     rowElementId: v.id("elements"),  // Value Chain element
     colElementId: v.string(),        // Element ID or External Value ID (polymorphic)
     content: v.string(),
+    color: v.optional(v.string()),
+    gradient: v.optional(v.number()),
   }).index("by_system_type", ["systemId", "matrixType"])
     .index("by_row", ["systemId", "matrixType", "rowElementId"]),
 
@@ -73,4 +76,22 @@ export default defineSchema({
     content: v.string(),
   }).index("by_system", ["systemId"])
     .index("by_value_chain", ["valueChainId"]),
+
+  // Portfolios - linked to nodes (elements), associated with strategic initiatives
+  portfolios: defineTable({
+    systemId: v.id("systems"),
+    elementId: v.id("elements"),
+    title: v.string(),
+    description: v.optional(v.string()),
+    date: v.string(),
+    progress: v.number(),
+    status: v.union(
+      v.literal("planning"),
+      v.literal("active"),
+      v.literal("completed")
+    ),
+    orderIndex: v.number(),
+  })
+    .index("by_system", ["systemId"])
+    .index("by_element", ["elementId"]),
 })

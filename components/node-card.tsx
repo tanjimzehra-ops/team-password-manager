@@ -1,8 +1,14 @@
 "use client"
 
+import { useState } from "react"
 import type { NodeData } from "@/lib/types"
+import type { EditMode } from "@/hooks/use-edit-mode"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge"
+import { GripVertical, Trash2, Palette } from "lucide-react"
+import { InlineColorPicker } from "@/components/inline-color-picker"
+import { getHealthBorderColor, formatKpiValue, getHealthStatus } from "@/lib/kpi-utils"
 
 interface NodeCardProps {
   node: NodeData
@@ -10,7 +16,15 @@ interface NodeCardProps {
   onClick: () => void
   compact?: boolean
   isEditMode?: boolean
-  chipLabel?: string // Added chipLabel prop for numbered chips
+  editMode?: EditMode
+  chipLabel?: string
+  displayMode?: "stage" | "performance"
+  onColorChange?: (color: NodeData["color"]) => void
+  onEditClick?: (node: NodeData) => void
+  onDeleteClick?: (node: NodeData) => void
+  draggable?: boolean
+  onDragStart?: (e: React.DragEvent, node: NodeData) => void
+  onDrop?: (e: React.DragEvent, node: NodeData) => void
 }
 
 const editModeColorMap = {
@@ -27,20 +41,142 @@ const viewModeColorMap = {
   muted: "bg-card border-border text-card-foreground",
 }
 
-export function NodeCard({ node, showKpi, onClick, compact = false, isEditMode = false, chipLabel }: NodeCardProps) {
+const healthBadgeColorMap: Record<"healthy" | "warning" | "critical", string> = {
+  healthy: "bg-green-500 text-white",
+  warning: "bg-yellow-500 text-black",
+  critical: "bg-red-500 text-white",
+}
+
+export function NodeCard({
+  node,
+  showKpi,
+  onClick,
+  compact = false,
+  isEditMode = false,
+  editMode,
+  chipLabel,
+  displayMode = "stage",
+  onColorChange,
+  onEditClick,
+  onDeleteClick,
+  draggable = false,
+  onDragStart,
+  onDrop,
+}: NodeCardProps) {
+  const [showColorPicker, setShowColorPicker] = useState(false)
+
   const colors = isEditMode ? editModeColorMap : viewModeColorMap
+  const isPerformanceMode = displayMode === "performance"
+  const healthBorderColor = isPerformanceMode ? getHealthBorderColor(node.kpiValue) : ""
+  const healthStatus = getHealthStatus(node.kpiValue)
+
+  // Determine the click handler based on edit mode
+  const handleClick = () => {
+    if (editMode === "colour") {
+      setShowColorPicker((prev) => !prev)
+      return
+    }
+    if (editMode === "edit" && onEditClick) {
+      onEditClick(node)
+      return
+    }
+    if (editMode === "delete" && onDeleteClick) {
+      onDeleteClick(node)
+      return
+    }
+    onClick()
+  }
+
+  const handleColorSelect = (color: NodeData["color"]) => {
+    onColorChange?.(color)
+    setShowColorPicker(false)
+  }
+
+  const handleDragStart = (e: React.DragEvent) => {
+    onDragStart?.(e, node)
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault()
+    onDrop?.(e, node)
+  }
 
   return (
     <div
-      onClick={onClick}
+      onClick={handleClick}
+      draggable={draggable || editMode === "order"}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
       className={cn(
         "relative cursor-pointer rounded-lg border-2 transition-all duration-200 flex flex-col",
         "hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
         "shadow-md",
         colors[node.color],
+        // In performance mode, override the border color with health-based color
+        isPerformanceMode && healthBorderColor,
         compact ? "p-2 min-h-[70px]" : "p-3 min-h-[160px]",
+        editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
+        editMode === "order" && "cursor-grab active:cursor-grabbing",
       )}
     >
+      {/* Edit mode overlays */}
+
+      {/* Colour mode: Palette icon indicator */}
+      {editMode === "colour" && (
+        <div className="absolute top-1 right-1 z-10">
+          <Palette className="h-4 w-4 text-white/80" />
+        </div>
+      )}
+
+      {/* Order mode: Drag grip icon */}
+      {editMode === "order" && (
+        <div className="absolute top-1 left-1 z-10">
+          <GripVertical className="h-4 w-4 text-white/80" />
+        </div>
+      )}
+
+      {/* Delete mode: Trash icon overlay */}
+      {editMode === "delete" && (
+        <div className="absolute top-1 right-1 z-10">
+          <Trash2 className="h-4 w-4 text-red-400" />
+        </div>
+      )}
+
+      {/* Performance mode: KPI badge in top-right corner */}
+      {isPerformanceMode && (
+        <Badge
+          className={cn(
+            "absolute top-1 right-1 z-10 text-[10px] px-1.5 py-0 border-none",
+            healthBadgeColorMap[healthStatus],
+          )}
+        >
+          {formatKpiValue(node.kpiValue, displayMode)}
+        </Badge>
+      )}
+
+      {/* Stage mode: KPI percentage badge (view mode only) */}
+      {showKpi && !isEditMode && !isPerformanceMode && (
+        <Badge
+          variant="secondary"
+          className="absolute top-1 right-1 z-10 text-[10px] px-1.5 py-0"
+        >
+          {node.kpiValue}%
+        </Badge>
+      )}
+
+      {/* Inline color picker overlay */}
+      {editMode === "colour" && showColorPicker && (
+        <InlineColorPicker
+          currentColor={node.color}
+          onColorSelect={handleColorSelect}
+        />
+      )}
+
       {chipLabel && (
         <span
           className={cn(

@@ -14,6 +14,7 @@ import type * as externalValues from "../externalValues.js";
 import type * as factors from "../factors.js";
 import type * as kpis from "../kpis.js";
 import type * as matrixCells from "../matrixCells.js";
+import type * as portfolios from "../portfolios.js";
 import type * as seed from "../seed.js";
 import type * as systems from "../systems.js";
 
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   factors: typeof factors;
   kpis: typeof kpis;
   matrixCells: typeof matrixCells;
+  portfolios: typeof portfolios;
   seed: typeof seed;
   systems: typeof systems;
 }>;

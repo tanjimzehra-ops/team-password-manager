@@ -1,10 +1,13 @@
 "use client"
+import { useState } from "react"
 import type { RowData, NodeData } from "@/lib/types"
 import { NodeCard } from "./node-card"
 import { Button } from "@/components/ui/button"
-import { Plus, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react"
+import { Plus, ChevronLeft, ChevronRight, ArrowRight, Book } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+
+export type EditMode = "view" | "edit" | "colour" | "order" | "delete"
 
 interface LogicGridProps {
   rows: RowData[]
@@ -12,7 +15,13 @@ interface LogicGridProps {
   onNodeClick: (node: NodeData) => void
   cultureBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   bottomBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
-  editMode?: boolean
+  editMode?: EditMode
+  displayMode?: "stage" | "performance"
+  onColorChange?: (nodeId: string, color: NodeData["color"]) => void
+  onReorder?: (category: string, fromIndex: number, toIndex: number) => void
+  onAddNode?: (category: string) => void
+  onDeleteNode?: (nodeId: string) => void
+  onEditNode?: (node: NodeData) => void
 }
 
 export function LogicGrid({
@@ -21,8 +30,71 @@ export function LogicGrid({
   onNodeClick,
   cultureBanner,
   bottomBanner,
-  editMode = false,
+  editMode = "view",
+  displayMode,
+  onColorChange,
+  onReorder,
+  onAddNode,
+  onDeleteNode,
+  onEditNode,
 }: LogicGridProps) {
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
+  const [dragCategory, setDragCategory] = useState<string | null>(null)
+
+  const isEditActive = editMode !== "view"
+
+  // Drag-and-drop handlers
+  const handleDragStart = (e: React.DragEvent, node: NodeData, index: number, category: string) => {
+    if (editMode !== "order") return
+    e.dataTransfer.setData("text/plain", JSON.stringify({ nodeId: node.id, fromIndex: index, category }))
+    e.dataTransfer.effectAllowed = "move"
+    setDragCategory(category)
+  }
+
+  const handleDragOver = (e: React.DragEvent, index: number, category: string) => {
+    if (editMode !== "order") return
+    if (dragCategory && dragCategory !== category) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = "move"
+    setDragOverIndex(index)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleDrop = (e: React.DragEvent, _node: NodeData, toIndex: number, category: string) => {
+    if (editMode !== "order") return
+    e.preventDefault()
+    setDragOverIndex(null)
+    setDragCategory(null)
+
+    try {
+      const data = JSON.parse(e.dataTransfer.getData("text/plain"))
+      if (data.category === category && data.fromIndex !== toIndex) {
+        onReorder?.(category, data.fromIndex, toIndex)
+      }
+    } catch {
+      // Invalid drag data, ignore
+    }
+  }
+
+  const handleDragEnd = () => {
+    setDragOverIndex(null)
+    setDragCategory(null)
+  }
+
+  // Click handler for nodes - routes based on edit mode
+  const handleNodeClick = (node: NodeData) => {
+    if (editMode === "edit") {
+      onEditNode?.(node)
+    } else if (editMode === "delete") {
+      onDeleteNode?.(node.id)
+    } else {
+      onNodeClick(node)
+    }
+  }
+
   return (
     <div id="view-logic-model" className="flex-1 flex flex-col gap-0">
       {rows.map((row) => (
@@ -36,12 +108,12 @@ export function LogicGrid({
               <div className="flex items-stretch gap-0 min-h-[56px]">
                 <div
                   className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-700 transition-colors", "bg-teal-600")}
-                  onClick={() => row.nodes[0] && onNodeClick(row.nodes[0])}
+                  onClick={() => row.nodes[0] && handleNodeClick(row.nodes[0])}
                 >
                   <p className="text-white font-bold text-center text-sm md:text-base leading-tight">
                     {row.nodes[0]?.title}
                   </p>
-                  {showKpi && editMode && (
+                  {showKpi && isEditActive && (
                     <Input
                       type="number"
                       defaultValue={row.nodes[0]?.kpiValue}
@@ -50,7 +122,7 @@ export function LogicGrid({
                     />
                   )}
                 </div>
-                {editMode && (
+                {isEditActive && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
                       <ArrowRight className="h-3 w-3" />
@@ -70,20 +142,54 @@ export function LogicGrid({
               <div className="flex items-stretch gap-0 min-h-[180px]">
                 <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-2">
                   {row.nodes.map((node, index) => (
-                    <NodeCard
+                    <div
                       key={node.id}
-                      node={node}
-                      showKpi={showKpi}
-                      onClick={() => onNodeClick(node)}
-                      isEditMode={editMode}
-                      chipLabel={`Outcome ${index + 1}`}
-                    />
+                      className={cn(
+                        editMode === "order" && dragOverIndex === index && dragCategory === row.category
+                          ? "border-l-2 border-primary"
+                          : "border-l-2 border-transparent",
+                      )}
+                      onDragOver={(e) => handleDragOver(e, index, row.category)}
+                      onDragLeave={handleDragLeave}
+                      onDrop={(e) => handleDrop(e, node, index, row.category)}
+                    >
+                      <NodeCard
+                        key={node.id}
+                        node={node}
+                        showKpi={showKpi}
+                        onClick={() => handleNodeClick(node)}
+                        isEditMode={isEditActive}
+                        editMode={editMode}
+                        displayMode={displayMode}
+                        onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
+                        onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
+                        onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                        draggable={editMode === "order"}
+                        onDragStart={(e) => handleDragStart(e, node, index, row.category)}
+                        onDragEnd={handleDragEnd}
+                        chipLabel={`Outcome ${index + 1}`}
+                      />
+                    </div>
                   ))}
                 </div>
-                {editMode && (
+                {isEditActive && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
-                    <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add outcome">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-5 w-5 bg-transparent"
+                      title="Add outcome"
+                      onClick={() => onAddNode?.(row.category)}
+                    >
                       <Plus className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-5 w-5 bg-transparent"
+                      title="Open library"
+                    >
+                      <Book className="h-3 w-3" />
                     </Button>
                     <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
                       <ArrowRight className="h-3 w-3" />
@@ -103,26 +209,55 @@ export function LogicGrid({
               <div className="flex items-stretch gap-0 min-h-[140px]">
                 <div className="flex-1 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-13 gap-1">
                   {row.nodes.map((node, index) => (
-                    <NodeCard
+                    <div
                       key={node.id}
-                      node={node}
-                      showKpi={showKpi}
-                      onClick={() => onNodeClick(node)}
-                      compact
-                      isEditMode={editMode}
-                      chipLabel={`VC ${index + 1}`}
-                    />
+                      className={cn(
+                        editMode === "order" && dragOverIndex === index && dragCategory === row.category
+                          ? "border-l-2 border-primary"
+                          : "border-l-2 border-transparent",
+                      )}
+                      onDragOver={(e) => handleDragOver(e, index, row.category)}
+                      onDragLeave={handleDragLeave}
+                      onDrop={(e) => handleDrop(e, node, index, row.category)}
+                    >
+                      <NodeCard
+                        key={node.id}
+                        node={node}
+                        showKpi={showKpi}
+                        onClick={() => handleNodeClick(node)}
+                        compact
+                        isEditMode={isEditActive}
+                        editMode={editMode}
+                        displayMode={displayMode}
+                        onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
+                        onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
+                        onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                        draggable={editMode === "order"}
+                        onDragStart={(e) => handleDragStart(e, node, index, row.category)}
+                        onDragEnd={handleDragEnd}
+                        chipLabel={`VC ${index + 1}`}
+                      />
+                    </div>
                   ))}
                 </div>
-                {editMode && (
+                {isEditActive && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button
                       variant="outline"
                       size="icon"
                       className="h-5 w-5 bg-transparent"
                       title="Add value chain item"
+                      onClick={() => onAddNode?.(row.category)}
                     >
                       <Plus className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-5 w-5 bg-transparent"
+                      title="Open library"
+                    >
+                      <Book className="h-3 w-3" />
                     </Button>
                     <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
                       <ArrowRight className="h-3 w-3" />
@@ -169,7 +304,7 @@ export function LogicGrid({
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  {editMode && (
+                  {isEditActive && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
@@ -192,21 +327,55 @@ export function LogicGrid({
                 <div className="flex items-stretch gap-0 min-h-[140px]">
                   <div className="flex-1 grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1">
                     {row.nodes.map((node, index) => (
-                      <NodeCard
+                      <div
                         key={node.id}
-                        node={node}
-                        showKpi={showKpi}
-                        onClick={() => onNodeClick(node)}
-                        compact
-                        isEditMode={editMode}
-                        chipLabel={`Resource ${index + 1}`}
-                      />
+                        className={cn(
+                          editMode === "order" && dragOverIndex === index && dragCategory === row.category
+                            ? "border-l-2 border-primary"
+                            : "border-l-2 border-transparent",
+                        )}
+                        onDragOver={(e) => handleDragOver(e, index, row.category)}
+                        onDragLeave={handleDragLeave}
+                        onDrop={(e) => handleDrop(e, node, index, row.category)}
+                      >
+                        <NodeCard
+                          key={node.id}
+                          node={node}
+                          showKpi={showKpi}
+                          onClick={() => handleNodeClick(node)}
+                          compact
+                          isEditMode={isEditActive}
+                          editMode={editMode}
+                          displayMode={displayMode}
+                          onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
+                          onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
+                          onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                          draggable={editMode === "order"}
+                          onDragStart={(e) => handleDragStart(e, node, index, row.category)}
+                          onDragEnd={handleDragEnd}
+                          chipLabel={`Resource ${index + 1}`}
+                        />
+                      </div>
                     ))}
                   </div>
-                  {editMode && (
+                  {isEditActive && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
-                      <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add resource">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-5 w-5 bg-transparent"
+                        title="Add resource"
+                        onClick={() => onAddNode?.(row.category)}
+                      >
                         <Plus className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-5 w-5 bg-transparent"
+                        title="Open library"
+                      >
+                        <Book className="h-3 w-3" />
                       </Button>
                       <Button
                         variant="outline"
@@ -246,7 +415,7 @@ export function LogicGrid({
                   >
                     <p className="text-white font-medium text-center text-xs leading-tight">{bottomBanner.title}</p>
                   </div>
-                  {editMode && (
+                  {isEditActive && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"

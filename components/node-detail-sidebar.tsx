@@ -8,14 +8,23 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { X, Link2, FileText, Info, Pencil, Save } from "lucide-react"
+import { X, Link2, FileText, Info, Pencil, Save, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { PortfolioCreatePopup } from "@/components/portfolio-create-popup"
+import { PortfolioDetailPopup } from "@/components/portfolio-detail-popup"
+import type { Portfolio } from "@/components/portfolio-create-popup"
+import type { PortfolioDetail } from "@/components/portfolio-detail-popup"
 
 interface NodeDetailSidebarProps {
   node: NodeData | null
   isOpen: boolean
   onClose: () => void
   onSave?: (updatedNode: NodeData) => Promise<void>
+  // Portfolio props
+  portfolios?: Array<{id: string; title: string; description?: string; date?: string; progress: number; status: string}>
+  onPortfolioCreate?: (data: {title: string; description: string; date: string; progress: number; status: string; elementId: string}) => void
+  onPortfolioUpdate?: (id: string, data: {title: string; description: string; date: string; progress: number; status: string}) => void
+  onPortfolioDelete?: (id: string) => void
 }
 
 // Existing KPI status colours — UNTOUCHED
@@ -264,13 +273,27 @@ function renderDetailsTab(node: NodeData) {
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 
-export function NodeDetailSidebar({ node, isOpen, onClose, onSave }: NodeDetailSidebarProps) {
+export function NodeDetailSidebar({
+  node,
+  isOpen,
+  onClose,
+  onSave,
+  portfolios,
+  onPortfolioCreate,
+  onPortfolioUpdate,
+  onPortfolioDelete,
+}: NodeDetailSidebarProps) {
   // Edit mode state
   const [isEditing, setIsEditing] = useState(false)
   const [editTitle, setEditTitle] = useState("")
   const [editDescription, setEditDescription] = useState("")
   const [editKpiValue, setEditKpiValue] = useState(0)
   const [isSaving, setIsSaving] = useState(false)
+
+  // Portfolio state
+  const [portfolioCreateOpen, setPortfolioCreateOpen] = useState(false)
+  const [selectedPortfolio, setSelectedPortfolio] = useState<PortfolioDetail | null>(null)
+  const [portfolioDetailOpen, setPortfolioDetailOpen] = useState(false)
 
   // Reset edit state when node changes
   useEffect(() => {
@@ -306,6 +329,47 @@ export function NodeDetailSidebar({ node, isOpen, onClose, onSave }: NodeDetailS
 
   const cancelEdit = () => {
     setIsEditing(false)
+  }
+
+  // Adapt portfolio data for the PortfolioCreatePopup component
+  const portfoliosAsCreateFormat: Portfolio[] = (portfolios || []).map((p) => ({
+    id: p.id,
+    title: p.title,
+    description: p.description,
+    date: p.date || "",
+    progress: p.progress,
+    status: (p.status as "active" | "planning" | "completed") || "planning",
+  }))
+
+  // Handler to bridge sidebar's onPortfolioCreate to PortfolioCreatePopup's onSave
+  const handlePortfolioCreateSave = (data: Omit<Portfolio, "id">) => {
+    if (!onPortfolioCreate || !node) return
+    onPortfolioCreate({
+      title: data.title,
+      description: data.description || "",
+      date: data.date,
+      progress: data.progress,
+      status: data.status,
+      elementId: node.id,
+    })
+  }
+
+  // Handler to bridge sidebar's onPortfolioUpdate to PortfolioDetailPopup's onUpdate
+  const handlePortfolioUpdate = (id: string, data: Partial<PortfolioDetail>) => {
+    if (!onPortfolioUpdate) return
+    onPortfolioUpdate(id, {
+      title: data.title || "",
+      description: data.description || "",
+      date: data.date || "",
+      progress: data.progress ?? 0,
+      status: data.status || "planning",
+    })
+  }
+
+  // Handler to bridge sidebar's onPortfolioDelete to PortfolioDetailPopup's onDelete
+  const handlePortfolioDelete = (id: string) => {
+    if (!onPortfolioDelete) return
+    onPortfolioDelete(id)
   }
 
   return (
@@ -397,6 +461,72 @@ export function NodeDetailSidebar({ node, isOpen, onClose, onSave }: NodeDetailS
 
               <TabsContent value="overview" className="space-y-4 mt-4">
                 {renderCategoryOverview(node, isEditing, editDescription, setEditDescription)}
+
+                {/* Portfolio Section */}
+                {portfolios && !isMatrixCell(node) && (
+                  <>
+                    <Separator />
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-medium text-muted-foreground">Portfolios</div>
+                        {onPortfolioCreate && (
+                          <Button variant="outline" size="sm" onClick={() => setPortfolioCreateOpen(true)}>
+                            <Plus className="h-3 w-3 mr-1" />
+                            Add
+                          </Button>
+                        )}
+                      </div>
+                      {portfolios.length === 0 ? (
+                        <p className="text-sm text-muted-foreground italic">No portfolios linked.</p>
+                      ) : (
+                        <div className="space-y-2">
+                          {portfolios.map((p) => (
+                            <div
+                              key={p.id}
+                              className="bg-muted/30 rounded-lg p-3 cursor-pointer hover:bg-muted/50 transition-colors"
+                              onClick={() => {
+                                setSelectedPortfolio({
+                                  id: p.id,
+                                  title: p.title,
+                                  description: p.description,
+                                  date: p.date || "",
+                                  progress: p.progress,
+                                  status: (p.status as "active" | "planning" | "completed") || "planning",
+                                })
+                                setPortfolioDetailOpen(true)
+                              }}
+                            >
+                              <div className="flex justify-between items-center mb-1">
+                                <span className="text-sm font-medium text-foreground">{p.title}</span>
+                                <Badge variant="secondary" className="text-xs">{p.status}</Badge>
+                              </div>
+                              <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                                  style={{ width: `${Math.min(Math.max(p.progress, 0), 100)}%` }}
+                                />
+                              </div>
+                              <div className="text-xs text-muted-foreground text-right mt-1">{p.progress}%</div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {/* Summary Section */}
+                {node.metadata?.Summary && (
+                  <>
+                    <Separator />
+                    <div className="space-y-2">
+                      <div className="text-sm font-medium text-muted-foreground">Summary</div>
+                      <p className="text-foreground/80 text-sm bg-muted/30 rounded-lg p-3">
+                        {node.metadata.Summary}
+                      </p>
+                    </div>
+                  </>
+                )}
               </TabsContent>
 
               <TabsContent value="details" className="space-y-4 mt-4">
@@ -426,6 +556,25 @@ export function NodeDetailSidebar({ node, isOpen, onClose, onSave }: NodeDetailS
           </div>
         </div>
       </div>
+
+      {/* Portfolio Popups */}
+      {node && onPortfolioCreate && (
+        <PortfolioCreatePopup
+          isOpen={portfolioCreateOpen}
+          onClose={() => setPortfolioCreateOpen(false)}
+          onSave={handlePortfolioCreateSave}
+          existingPortfolios={portfoliosAsCreateFormat}
+        />
+      )}
+      {onPortfolioUpdate && onPortfolioDelete && (
+        <PortfolioDetailPopup
+          isOpen={portfolioDetailOpen}
+          onClose={() => setPortfolioDetailOpen(false)}
+          portfolio={selectedPortfolio}
+          onUpdate={handlePortfolioUpdate}
+          onDelete={handlePortfolioDelete}
+        />
+      )}
     </>
   )
 }
