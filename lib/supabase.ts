@@ -1,13 +1,21 @@
 import { createClient } from '@supabase/supabase-js'
 
 // Environment variables
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-// Create Supabase client only when configured (avoids build errors on Vercel)
-export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null
+if (!supabaseUrl || !supabaseAnonKey) {
+  // Non-blocking: Supabase is optional when using Convex as primary data source
+  if (typeof window !== 'undefined') {
+    console.debug('Supabase not configured — using Convex or JSON data source')
+  }
+}
+
+// Create Supabase client
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-key'
+)
 
 // Check if Supabase is properly configured
 // TEMPORARY: Force false to test JSON data (Session 37)

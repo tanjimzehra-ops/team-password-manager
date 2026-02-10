@@ -29,11 +29,15 @@ export function useConvexUpdateElement() {
     content,
     gradientValue,
     description,
+    color,
+    orderIndex,
   }: {
     id: string
     content?: string
     gradientValue?: number
     description?: string
+    color?: "primary" | "secondary" | "accent" | "muted"
+    orderIndex?: number
   }) => {
     try {
       await mutate({
@@ -41,6 +45,8 @@ export function useConvexUpdateElement() {
         content,
         gradientValue,
         description,
+        color,
+        orderIndex,
       })
       toast({ title: "Changes saved", description: "Element updated successfully" })
     } catch (err) {
@@ -126,26 +132,129 @@ export function useConvexDeleteElement() {
   return { mutate: deleteElement, deleteElement }
 }
 
+/**
+ * Update an element's color
+ */
+export function useConvexUpdateElementColor() {
+  const mutate = useMutation(api.elements.update)
+  const { toast } = useToast()
+
+  const updateElementColor = async ({
+    id,
+    color,
+  }: {
+    id: string
+    color: "primary" | "secondary" | "accent" | "muted"
+  }) => {
+    try {
+      await mutate({ id: id as Id<"elements">, color })
+      toast({ title: "Colour updated", description: "Element colour changed successfully" })
+    } catch (err) {
+      toast({
+        title: "Error updating colour",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: updateElementColor, updateElementColor }
+}
+
+/**
+ * Update an element's order index
+ */
+export function useConvexUpdateElementOrder() {
+  const mutate = useMutation(api.elements.update)
+  const { toast } = useToast()
+
+  const updateElementOrder = async ({
+    id,
+    orderIndex,
+  }: {
+    id: string
+    orderIndex: number
+  }) => {
+    try {
+      await mutate({ id: id as Id<"elements">, orderIndex })
+    } catch (err) {
+      toast({
+        title: "Error reordering element",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: updateElementOrder, updateElementOrder }
+}
+
+/**
+ * Batch reorder multiple elements at once
+ */
+export function useConvexReorderElements() {
+  const mutate = useMutation(api.elements.reorder)
+  const { toast } = useToast()
+
+  const reorderElements = async ({
+    updates,
+  }: {
+    updates: Array<{ id: string; orderIndex: number }>
+  }) => {
+    try {
+      await mutate({
+        updates: updates.map((u) => ({
+          id: u.id as Id<"elements">,
+          orderIndex: u.orderIndex,
+        })),
+      })
+    } catch (err) {
+      toast({
+        title: "Error reordering elements",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: reorderElements, reorderElements }
+}
+
 // ---------------------------------------------------------------------------
 // Matrix cell mutations
 // ---------------------------------------------------------------------------
 
 /**
- * Update a matrix cell
+ * Upsert a matrix cell by composite key (systemId + matrixType + rowElementId + colElementId)
  */
 export function useConvexUpdateMatrixCell() {
   const mutate = useMutation(api.matrixCells.upsert)
   const { toast } = useToast()
 
   const updateMatrixCell = async ({
-    id,
+    systemId,
+    matrixType,
+    rowElementId,
+    colElementId,
     content,
   }: {
-    id: string
+    systemId: string
+    matrixType: "contribution" | "development" | "convergence"
+    rowElementId: string
+    colElementId: string
     content: string
   }) => {
     try {
-      await mutate({ id: id as Id<"matrixCells">, content })
+      await mutate({
+        systemId: systemId as Id<"systems">,
+        matrixType,
+        rowElementId: rowElementId as Id<"elements">,
+        colElementId,
+        content,
+      })
       toast({ title: "Cell updated", description: "Matrix cell saved successfully" })
     } catch (err) {
       toast({
@@ -342,6 +451,42 @@ export function useConvexDeleteKpi() {
   }
 
   return { mutate: deleteKpi, deleteKpi }
+}
+
+/**
+ * Replace all KPIs for a parent element (delete existing, create new)
+ */
+export function useConvexReplaceKpis() {
+  const mutate = useMutation(api.kpis.replaceForParent)
+  const { toast } = useToast()
+
+  const replaceKpis = async ({
+    systemId,
+    parentId,
+    kpis,
+  }: {
+    systemId: string
+    parentId: string
+    kpis: string[]
+  }) => {
+    try {
+      await mutate({
+        systemId: systemId as Id<"systems">,
+        parentId: parentId as Id<"elements">,
+        kpis,
+      })
+      toast({ title: "KPIs updated", description: "KPI list saved successfully" })
+    } catch (err) {
+      toast({
+        title: "Error updating KPIs",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: replaceKpis, replaceKpis }
 }
 
 // ---------------------------------------------------------------------------
@@ -541,4 +686,132 @@ export function useConvexDeleteExternalValue() {
   }
 
   return { mutate: deleteExternalValue, deleteExternalValue }
+}
+
+// ---------------------------------------------------------------------------
+// Portfolio mutations
+// ---------------------------------------------------------------------------
+
+/**
+ * Create a portfolio
+ */
+export function useConvexCreatePortfolio() {
+  const mutate = useMutation(api.portfolios.create)
+  const { toast } = useToast()
+
+  const createPortfolio = async ({
+    systemId,
+    elementId,
+    title,
+    description,
+    date,
+    progress,
+    status,
+    orderIndex,
+  }: {
+    systemId: string
+    elementId: string
+    title: string
+    description?: string
+    date: string
+    progress: number
+    status: "planning" | "active" | "completed"
+    orderIndex: number
+  }) => {
+    try {
+      const id = await mutate({
+        systemId: systemId as Id<"systems">,
+        elementId: elementId as Id<"elements">,
+        title,
+        description,
+        date,
+        progress,
+        status,
+        orderIndex,
+      })
+      toast({ title: "Portfolio created", description: "New portfolio added successfully" })
+      return id
+    } catch (err) {
+      toast({
+        title: "Error creating portfolio",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: createPortfolio, createPortfolio }
+}
+
+/**
+ * Update a portfolio
+ */
+export function useConvexUpdatePortfolio() {
+  const mutate = useMutation(api.portfolios.update)
+  const { toast } = useToast()
+
+  const updatePortfolio = async ({
+    id,
+    title,
+    description,
+    date,
+    progress,
+    status,
+    orderIndex,
+  }: {
+    id: string
+    title?: string
+    description?: string
+    date?: string
+    progress?: number
+    status?: "planning" | "active" | "completed"
+    orderIndex?: number
+  }) => {
+    try {
+      await mutate({
+        id: id as Id<"portfolios">,
+        title,
+        description,
+        date,
+        progress,
+        status,
+        orderIndex,
+      })
+      toast({ title: "Portfolio updated", description: "Changes saved successfully" })
+    } catch (err) {
+      toast({
+        title: "Error updating portfolio",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: updatePortfolio, updatePortfolio }
+}
+
+/**
+ * Delete a portfolio
+ */
+export function useConvexDeletePortfolio() {
+  const mutate = useMutation(api.portfolios.remove)
+  const { toast } = useToast()
+
+  const deletePortfolio = async ({ id }: { id: string }) => {
+    try {
+      await mutate({ id: id as Id<"portfolios"> })
+      toast({ title: "Portfolio deleted", description: "Portfolio removed successfully" })
+    } catch (err) {
+      toast({
+        title: "Error deleting portfolio",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: deletePortfolio, deletePortfolio }
 }

@@ -16,6 +16,9 @@ export {
   useConvexUpdateElement,
   useConvexCreateElement,
   useConvexDeleteElement,
+  useConvexUpdateElementColor,
+  useConvexUpdateElementOrder,
+  useConvexReorderElements,
   // Matrix cells
   useConvexUpdateMatrixCell,
   // System
@@ -26,6 +29,7 @@ export {
   useConvexCreateKpi,
   useConvexUpdateKpi,
   useConvexDeleteKpi,
+  useConvexReplaceKpis,
   // Factors
   useConvexCreateFactor,
   useConvexUpdateFactor,
@@ -34,4 +38,8 @@ export {
   useConvexCreateExternalValue,
   useConvexUpdateExternalValue,
   useConvexDeleteExternalValue,
+  // Portfolios
+  useConvexCreatePortfolio,
+  useConvexUpdatePortfolio,
+  useConvexDeletePortfolio,
 } from "./use-convex-mutations"

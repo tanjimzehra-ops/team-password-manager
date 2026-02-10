@@ -26,7 +26,7 @@ export const getFullSystem = query({
     const system = await ctx.db.get(args.id)
     if (!system) return null
 
-    const [elements, matrixCells, kpis, capabilities, externalValues, factors] =
+    const [elements, matrixCells, kpis, capabilities, externalValues, factors, portfolios] =
       await Promise.all([
         ctx.db
           .query("elements")
@@ -52,6 +52,10 @@ export const getFullSystem = query({
           .query("factors")
           .withIndex("by_system", (q) => q.eq("systemId", args.id))
           .collect(),
+        ctx.db
+          .query("portfolios")
+          .withIndex("by_system", (q) => q.eq("systemId", args.id))
+          .collect(),
       ])
 
     return {
@@ -62,6 +66,7 @@ export const getFullSystem = query({
       capabilities,
       externalValues,
       factors,
+      portfolios,
     }
   },
 })
@@ -103,7 +108,7 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id("systems") },
   handler: async (ctx, args) => {
-    const [elements, matrixCells, kpis, capabilities, externalValues, factors] =
+    const [elements, matrixCells, kpis, capabilities, externalValues, factors, portfolios] =
       await Promise.all([
         ctx.db
           .query("elements")
@@ -129,6 +134,10 @@ export const remove = mutation({
           .query("factors")
           .withIndex("by_system", (q) => q.eq("systemId", args.id))
           .collect(),
+        ctx.db
+          .query("portfolios")
+          .withIndex("by_system", (q) => q.eq("systemId", args.id))
+          .collect(),
       ])
 
     await Promise.all([
@@ -138,6 +147,7 @@ export const remove = mutation({
       ...capabilities.map((c) => ctx.db.delete(c._id)),
       ...externalValues.map((ev) => ctx.db.delete(ev._id)),
       ...factors.map((f) => ctx.db.delete(f._id)),
+      ...portfolios.map((p) => ctx.db.delete(p._id)),
     ])
 
     await ctx.db.delete(args.id)

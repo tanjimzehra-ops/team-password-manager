@@ -54,6 +54,8 @@ export const update = mutation({
     content: v.optional(v.string()),
     description: v.optional(v.string()),
     gradientValue: v.optional(v.number()),
+    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"))),
+    orderIndex: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const { id, ...fields } = args
@@ -64,6 +66,22 @@ export const update = mutation({
       }
     }
     await ctx.db.patch(id, updates)
+  },
+})
+
+export const reorder = mutation({
+  args: {
+    updates: v.array(
+      v.object({
+        id: v.id("elements"),
+        orderIndex: v.number(),
+      })
+    ),
+  },
+  handler: async (ctx, args) => {
+    for (const { id, orderIndex } of args.updates) {
+      await ctx.db.patch(id, { orderIndex })
+    }
   },
 })
 

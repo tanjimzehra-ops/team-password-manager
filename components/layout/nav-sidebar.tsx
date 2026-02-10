@@ -50,6 +50,11 @@ export function NavSidebar({
   // Use provided systems or fallback to defaults
   const displaySystems = systems?.length ? systems : defaultSystems
 
+  const DEMO_SYSTEMS = ["MERA", "Central Highlands", "Blank"]
+  const filteredSystems = displaySystems.filter(s =>
+    DEMO_SYSTEMS.some(name => s.name.includes(name))
+  )
+
   // Find if selected system matches by ID or name
   const isSystemSelected = (system: SystemInfo) => {
     return selectedSystem === system.id || selectedSystem === system.name
@@ -152,7 +157,7 @@ export function NavSidebar({
                   </div>
                 ) : (
                   <>
-                    {displaySystems.map((system) => (
+                    {filteredSystems.map((system) => (
                       <Button
                         key={system.id}
                         variant="ghost"

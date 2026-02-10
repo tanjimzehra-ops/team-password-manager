@@ -15,11 +15,37 @@ import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 
+// New components
+import { NodeEditPopup } from "@/components/node-edit-popup"
+import { PerformanceModal } from "@/components/performance-modal"
+import { LibraryPopup } from "@/components/library-popup"
+
 // Supabase hooks
 import { useSystems } from "@/hooks/use-systems"
 import { useFullSystem } from "@/hooks/use-full-system"
 import { useUpdateElement, useUpdateSystem } from "@/hooks/use-mutations"
 import { isSupabaseConfigured } from "@/lib/supabase"
+
+// Convex hooks
+import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
+import { useConvexSystem } from "@/hooks/convex/use-convex-system"
+import {
+  useConvexUpdateElement,
+  useConvexUpdateSystem,
+  useConvexUpdateMatrixCell,
+  useConvexUpdateElementColor,
+  useConvexUpdateElementOrder,
+  useConvexCreatePortfolio,
+  useConvexUpdatePortfolio,
+  useConvexDeletePortfolio,
+} from "@/hooks/convex/use-convex-mutations"
+
+// Custom hooks
+import { useEditMode } from "@/hooks/use-edit-mode"
+import type { EditMode } from "@/hooks/use-edit-mode"
+import { usePerformanceMode } from "@/hooks/use-performance-mode"
+import { useLibrary } from "@/hooks/use-library"
+import { usePortfolioState } from "@/hooks/use-portfolio-state"
 
 // Data adapters
 import {
@@ -39,20 +65,46 @@ import {
   type SystemName,
 } from "@/lib/data"
 import type { NodeData } from "@/lib/types"
+import { useToast } from "@/hooks/use-toast"
 
-type EditMode = "view" | "edit" | "colour" | "order" | "delete"
+// Export functions
+import {
+  exportToPdf,
+  exportLogicModelCsv,
+  exportLogicModelExcel,
+  exportContributionMapCsv,
+  exportContributionMapExcel,
+  exportDevelopmentPathwaysCsv,
+  exportDevelopmentPathwaysExcel,
+  exportConvergenceMapCsv,
+  exportConvergenceMapExcel,
+} from "@/lib/export"
+
 type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
 
+const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
+
 export default function Page() {
+  const { toast } = useToast()
+
   // UI State
   const [showKpi, setShowKpi] = useState(true)
-  const [editMode, setEditMode] = useState<EditMode>("view")
   const [activeTab, setActiveTab] = useState<ViewTab>("logic-model")
-  const [displayLogic, setDisplayLogic] = useState(false)
   const [navSidebarCollapsed, setNavSidebarCollapsed] = useState(false)
   const [activeRow, setActiveRow] = useState<string | null>(null)
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null)
   const [detailSidebarOpen, setDetailSidebarOpen] = useState(false)
+
+  // Custom hooks (replace inline useState for editMode and displayMode)
+  const {
+    editMode, setEditMode, nodeForEdit, editPopupOpen, nodeToDelete, deleteDialogOpen,
+    startEdit, startDelete, closeEdit, closeDelete, resetEditMode,
+  } = useEditMode()
+
+  const {
+    displayMode, setDisplayMode, performanceModalOpen, performanceNode,
+    openPerformanceModal, closePerformanceModal,
+  } = usePerformanceMode()
 
   // System selection (for both Supabase and JSON modes)
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
@@ -62,31 +114,56 @@ export default function Page() {
 
   // Supabase data
   const { data: systems, isLoading: systemsLoading } = useSystems()
-  const { 
-    system, 
-    outcomes, 
-    valueChain, 
-    resources, 
+  const {
+    system,
+    outcomes,
+    valueChain,
+    resources,
     matrices,
     kpis,
     capabilities,
     factors,
     externalValues,
-    isLoading: systemLoading 
+    isLoading: systemLoading
   } = useFullSystem(selectedSystemId)
 
-  // Mutations
+  // Supabase Mutations
   const updateElement = useUpdateElement()
   const updateSystem = useUpdateSystem()
 
+  // Convex data
+  const { data: convexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
+  const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
+    isConvexConfigured ? selectedSystemId : null
+  )
+
+  // Convex mutations
+  const convexUpdateElement = useConvexUpdateElement()
+  const convexUpdateSystem = useConvexUpdateSystem()
+  const convexUpdateMatrixCell = useConvexUpdateMatrixCell()
+  const convexUpdateElementColor = useConvexUpdateElementColor()
+  const convexUpdateElementOrder = useConvexUpdateElementOrder()
+  const convexCreatePortfolio = useConvexCreatePortfolio()
+  const convexUpdatePortfolio = useConvexUpdatePortfolio()
+  const convexDeletePortfolio = useConvexDeletePortfolio()
+
+  // Determine active data source
+  const dataSource: "convex" | "supabase" | "json" = isConvexConfigured
+    ? "convex"
+    : isSupabaseConfigured
+      ? "supabase"
+      : "json"
+
   // Auto-select first system when systems load
   useEffect(() => {
-    if (systems?.length && !selectedSystemId) {
-      // Try to find MERA first (legacy_id = 2492), otherwise use first system
+    if (selectedSystemId) return
+    if (dataSource === "convex" && convexSystems.length > 0) {
+      setSelectedSystemId(convexSystems[0].id)
+    } else if (systems?.length) {
       const meraSystem = systems.find(s => s.legacy_id === 2492)
       setSelectedSystemId(meraSystem?.id || systems[0].id)
     }
-  }, [systems, selectedSystemId])
+  }, [dataSource, convexSystems, systems, selectedSystemId])
 
   // Check if we have Supabase data loaded
   const hasSupabaseData = isSupabaseConfigured && isDataLoaded(system, outcomes, valueChain, resources)
@@ -156,8 +233,39 @@ export default function Page() {
     return jsonAdapter.getConvergenceMapData()
   }, [hasSupabaseData, valueChain, matrices, externalValues, factors, kpis, jsonAdapter])
 
+  // Effective data: Convex pre-transformed > Supabase useMemo > JSON fallback
+  const effectiveLogicGridData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.initialData : logicGridData
+  const effectiveCultureBanner = dataSource === "convex" && convexSystemData
+    ? convexSystemData.cultureBanner : cultureBanner
+  const effectiveBottomBanner = dataSource === "convex" && convexSystemData
+    ? convexSystemData.bottomBanner : bottomBanner
+  const effectiveContributionMapData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.contributionMapData : contributionMapData
+  const effectiveDevelopmentPathwaysData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.developmentPathwaysData : developmentPathwaysData
+  const effectiveConvergenceMapData = dataSource === "convex" && convexSystemData
+    ? convexSystemData.convergenceMapData : convergenceMapData
+
+  // Library hook (depends on effectiveLogicGridData)
+  const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
+    effectiveLogicGridData,
+    dataSource === "convex"
+      ? convexSystems.map(s => ({ id: s.id, name: s.name }))
+      : dataSource === "supabase"
+        ? systems?.map(s => ({ id: s.id, name: s.name }))
+        : undefined,
+    selectedSystemId
+  )
+
+  // Portfolio optimistic state
+  const { addOptimistic, removeOptimistic, getMergedPortfolios } = usePortfolioState()
+
   // Get current system name for display
   const systemName = useMemo(() => {
+    if (dataSource === "convex" && convexSystemData) {
+      return convexSystemData.system.name
+    }
     if (hasSupabaseData && system) {
       return system.name
     }
@@ -166,7 +274,7 @@ export default function Page() {
     }
     // JSON mode: use adapter name
     return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.['System'] || selectedJsonSystem.toUpperCase()
-  }, [hasSupabaseData, system, isSupabaseConfigured, systems, selectedSystemId, jsonAdapter, selectedJsonSystem])
+  }, [dataSource, convexSystemData, hasSupabaseData, system, isSupabaseConfigured, systems, selectedSystemId, jsonAdapter, selectedJsonSystem])
 
   // Handler functions
   const handleNodeClick = (node: NodeData) => {
@@ -188,8 +296,7 @@ export default function Page() {
   }
 
   const handleSystemSelect = (systemId: string) => {
-    if (isSupabaseConfigured) {
-      // Supabase mode: use system ID
+    if (dataSource === "convex" || dataSource === "supabase") {
       setSelectedSystemId(systemId)
     } else {
       // JSON mode: use system name as key
@@ -200,10 +307,113 @@ export default function Page() {
     }
   }
 
+  // Save handler for NodeDetailSidebar (Convex only)
+  const handleNodeSave = async (updatedNode: NodeData) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+
+    if (updatedNode.id.startsWith("cell-")) {
+      // Matrix cell: use metadata keys for reliable ID extraction
+      const view = updatedNode.metadata?.["View"]
+      const rowElementId = updatedNode.metadata?.["_rowElementId"]
+      const colElementId = updatedNode.metadata?.["_colElementId"]
+      if (!rowElementId || !colElementId) return
+
+      let matrixType: "contribution" | "development" | "convergence"
+      if (view === "Contribution Map") {
+        matrixType = "contribution"
+      } else if (view === "Development Pathways") {
+        matrixType = "development"
+      } else if (view === "Convergence Map") {
+        matrixType = "convergence"
+      } else {
+        return
+      }
+
+      await convexUpdateMatrixCell.updateMatrixCell({
+        systemId: convexSystemData.system.id,
+        matrixType,
+        rowElementId,
+        colElementId,
+        content: updatedNode.description,
+      })
+    } else if (updatedNode.category === "purpose") {
+      // Purpose maps to system-level fields
+      await convexUpdateSystem.updateSystem({
+        id: convexSystemData.system.id,
+        impact: updatedNode.title,
+      })
+    } else {
+      // outcomes, value-chain, resources map to elements
+      await convexUpdateElement.updateElement({
+        id: updatedNode.id,
+        content: updatedNode.title,
+        description: updatedNode.description,
+        gradientValue: updatedNode.kpiValue,
+      })
+    }
+  }
+
+  // Export handler
+  const handleExport = async (format: "csv" | "excel" | "pdf") => {
+    const baseName = `${systemName}-${activeTab}`
+
+    try {
+      if (format === "pdf") {
+        const containerMap: Record<string, string> = {
+          "logic-model": "view-logic-model",
+          "contribution-map": "view-contribution-map",
+          "development-pathways": "view-development-pathways",
+          "convergence-map": "view-convergence-map",
+        }
+        const containerId = containerMap[activeTab]
+        if (containerId) {
+          await exportToPdf(containerId, baseName)
+        }
+      } else if (format === "csv") {
+        switch (activeTab) {
+          case "logic-model":
+            exportLogicModelCsv(effectiveLogicGridData, baseName)
+            break
+          case "contribution-map":
+            exportContributionMapCsv(effectiveContributionMapData, baseName)
+            break
+          case "development-pathways":
+            exportDevelopmentPathwaysCsv(effectiveDevelopmentPathwaysData, baseName)
+            break
+          case "convergence-map":
+            exportConvergenceMapCsv(effectiveConvergenceMapData, baseName)
+            break
+        }
+      } else if (format === "excel") {
+        switch (activeTab) {
+          case "logic-model":
+            exportLogicModelExcel(effectiveLogicGridData, baseName)
+            break
+          case "contribution-map":
+            exportContributionMapExcel(effectiveContributionMapData, baseName)
+            break
+          case "development-pathways":
+            exportDevelopmentPathwaysExcel(effectiveDevelopmentPathwaysData, baseName)
+            break
+          case "convergence-map":
+            exportConvergenceMapExcel(effectiveConvergenceMapData, baseName)
+            break
+        }
+      }
+      toast({ title: "Export complete", description: `${format.toUpperCase()} file downloaded` })
+    } catch (err) {
+      toast({
+        title: "Export failed",
+        description: err instanceof Error ? err.message : "Unknown error",
+        variant: "destructive",
+      })
+    }
+  }
+
   const handleContributionCellClick = (valueChainId: string, outcomeId: string) => {
-    const vc = contributionMapData.valueChain.find(v => v.id === valueChainId)
-    const outcome = contributionMapData.outcomes.find(o => o.id === outcomeId)
-    const cell = contributionMapData.cells.find(
+    const vc = effectiveContributionMapData.valueChain.find(v => v.id === valueChainId)
+    const outcome = effectiveContributionMapData.outcomes.find(o => o.id === outcomeId)
+    const cell = effectiveContributionMapData.cells.find(
       c => c.valueChainId === valueChainId && c.outcomeId === outcomeId
     )
 
@@ -221,6 +431,8 @@ export default function Page() {
         "View": "Contribution Map",
         "Value Chain Element": vc?.title ?? valueChainId,
         "Outcome": outcome?.title ?? outcomeId,
+        "_rowElementId": valueChainId,
+        "_colElementId": outcomeId,
       },
     }
 
@@ -229,9 +441,9 @@ export default function Page() {
   }
 
   const handleDevelopmentPathwaysCellClick = (valueChainId: string, resourceId: string) => {
-    const vc = developmentPathwaysData.valueChain.find(v => v.id === valueChainId)
-    const resource = developmentPathwaysData.resources.find(r => r.id === resourceId)
-    const cell = developmentPathwaysData.cells.find(
+    const vc = effectiveDevelopmentPathwaysData.valueChain.find(v => v.id === valueChainId)
+    const resource = effectiveDevelopmentPathwaysData.resources.find(r => r.id === resourceId)
+    const cell = effectiveDevelopmentPathwaysData.cells.find(
       c => c.valueChainId === valueChainId && c.resourceId === resourceId
     )
 
@@ -249,6 +461,8 @@ export default function Page() {
         "View": "Development Pathways",
         "Value Chain Element": vc?.title ?? valueChainId,
         "Resource": resource?.title ?? resourceId,
+        "_rowElementId": valueChainId,
+        "_colElementId": resourceId,
       },
     }
 
@@ -257,9 +471,9 @@ export default function Page() {
   }
 
   const handleConvergenceMapCellClick = (valueChainId: string, externalFactorId: string) => {
-    const vc = convergenceMapData.valueChain.find(v => v.id === valueChainId)
-    const factor = convergenceMapData.externalFactors.find(f => f.id === externalFactorId)
-    const cell = convergenceMapData.cells.find(
+    const vc = effectiveConvergenceMapData.valueChain.find(v => v.id === valueChainId)
+    const factor = effectiveConvergenceMapData.externalFactors.find(f => f.id === externalFactorId)
+    const cell = effectiveConvergenceMapData.cells.find(
       c => c.valueChainId === valueChainId && c.externalFactorId === externalFactorId
     )
 
@@ -279,11 +493,114 @@ export default function Page() {
         "View": "Convergence Map",
         "Value Chain Element": vc?.title ?? valueChainId,
         "External Factor": factor?.title ?? externalFactorId,
+        "_rowElementId": valueChainId,
+        "_colElementId": externalFactorId,
       },
     }
 
     setSelectedNode(syntheticNode)
     setDetailSidebarOpen(true)
+  }
+
+  // Color change handler (Convex only)
+  const handleColorChange = async (nodeId: string, color: NodeData["color"]) => {
+    if (dataSource !== "convex") return
+    await convexUpdateElementColor.updateElementColor({
+      id: nodeId,
+      color: color as "primary" | "secondary" | "accent" | "muted",
+    })
+  }
+
+  // Reorder handler (Convex only)
+  const handleReorder = async (category: string, fromIndex: number, toIndex: number) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+    const row = effectiveLogicGridData.find(r => r.category === category)
+    if (!row) return
+    const nodes = [...row.nodes]
+    const [moved] = nodes.splice(fromIndex, 1)
+    nodes.splice(toIndex, 0, moved)
+    // Update each element with its new order index
+    for (let i = 0; i < nodes.length; i++) {
+      await convexUpdateElementOrder.updateElementOrder({
+        id: nodes[i].id,
+        orderIndex: i,
+      })
+    }
+  }
+
+  // Add node handler (placeholder - opens library)
+  const handleAddNode = (category: string) => {
+    openLibrary(category as NodeData["category"])
+  }
+
+  // Delete node handler
+  const handleDeleteNode = (nodeId: string) => {
+    const node = effectiveLogicGridData.flatMap(r => r.nodes).find(n => n.id === nodeId)
+    if (node) startDelete(node)
+  }
+
+  // Edit node handler
+  const handleEditNode = (node: NodeData) => {
+    startEdit(node)
+  }
+
+  // Edit popup save
+  const handleEditPopupSave = async (data: { title: string; description: string }) => {
+    if (!nodeForEdit || dataSource !== "convex") return
+    await convexUpdateElement.updateElement({
+      id: nodeForEdit.id,
+      content: data.title,
+      description: data.description,
+    })
+    closeEdit()
+  }
+
+  // Portfolio handlers
+  const handlePortfolioCreate = async (data: { title: string; description: string; date: string; progress: number; status: string; elementId: string }) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+    addOptimistic({
+      id: `temp-${Date.now()}`,
+      ...data,
+    })
+    await convexCreatePortfolio.createPortfolio({
+      systemId: convexSystemData.system.id,
+      elementId: data.elementId,
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      progress: data.progress,
+      status: data.status as "planning" | "active" | "completed",
+      orderIndex: 0,
+    })
+  }
+
+  const handlePortfolioUpdate = async (id: string, data: { title: string; description: string; date: string; progress: number; status: string }) => {
+    if (dataSource !== "convex") return
+    await convexUpdatePortfolio.updatePortfolio({
+      id,
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      progress: data.progress,
+      status: data.status as "planning" | "active" | "completed",
+    })
+  }
+
+  const handlePortfolioDelete = async (id: string) => {
+    if (dataSource !== "convex") return
+    removeOptimistic(id)
+    await convexDeletePortfolio.deletePortfolio({ id })
+  }
+
+  // Library handlers
+  const handleLibraryConnect = (item: { id: string; title: string }) => {
+    toast({ title: "Connected", description: `Element "${item.title}" linked` })
+    closeLibrary()
+  }
+
+  const handleLibraryCopy = (item: { id: string; title: string }) => {
+    toast({ title: "Copied", description: `Element "${item.title}" copied` })
+    closeLibrary()
   }
 
   // Render loading state
@@ -300,8 +617,11 @@ export default function Page() {
 
   // Render main content based on active tab
   const renderMainContent = () => {
-    // Show loading while fetching Supabase data
-    if (isSupabaseConfigured && (systemsLoading || (selectedSystemId && systemLoading))) {
+    // Show loading while fetching data
+    if (
+      (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) ||
+      (dataSource === "supabase" && (systemsLoading || (selectedSystemId && systemLoading)))
+    ) {
       return renderLoading()
     }
 
@@ -309,18 +629,24 @@ export default function Page() {
       case "logic-model":
         return (
           <LogicGrid
-            rows={logicGridData}
+            rows={effectiveLogicGridData}
             showKpi={showKpi}
-            editMode={editMode === "edit" || editMode === "colour"}
+            editMode={editMode}
+            displayMode={displayMode}
             onNodeClick={handleNodeClick}
-            cultureBanner={cultureBanner}
-            bottomBanner={bottomBanner}
+            cultureBanner={effectiveCultureBanner}
+            bottomBanner={effectiveBottomBanner}
+            onColorChange={handleColorChange}
+            onReorder={handleReorder}
+            onAddNode={handleAddNode}
+            onDeleteNode={handleDeleteNode}
+            onEditNode={handleEditNode}
           />
         )
       case "contribution-map":
         return (
           <ContributionMap
-            data={contributionMapData}
+            data={effectiveContributionMapData}
             editMode={editMode}
             onCellClick={handleContributionCellClick}
             onElementClick={handleNodeClick}
@@ -329,7 +655,7 @@ export default function Page() {
       case "development-pathways":
         return (
           <DevelopmentPathways
-            data={developmentPathwaysData}
+            data={effectiveDevelopmentPathwaysData}
             editMode={editMode}
             onCellClick={handleDevelopmentPathwaysCellClick}
             onElementClick={handleNodeClick}
@@ -338,7 +664,7 @@ export default function Page() {
       case "convergence-map":
         return (
           <ConvergenceMap
-            data={convergenceMapData}
+            data={effectiveConvergenceMapData}
             editMode={editMode}
             onCellClick={handleConvergenceMapCellClick}
             onElementClick={handleNodeClick}
@@ -356,20 +682,26 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
-      <ViewControls 
-        showKpi={showKpi} 
-        onToggleKpi={setShowKpi} 
-        editMode={editMode} 
+      <ViewControls
+        showKpi={showKpi}
+        onToggleKpi={setShowKpi}
+        editMode={editMode}
         onEditModeChange={setEditMode}
         activeTab={activeTab}
-        displayLogic={displayLogic}
-        onDisplayLogicChange={setDisplayLogic}
+        displayMode={displayMode}
+        onDisplayModeChange={setDisplayMode}
+        onExport={activeTab !== "canvas" ? handleExport : undefined}
       />
 
       {/* Data Source Indicator */}
-      {!isSupabaseConfigured && (
+      {dataSource === "json" && (
         <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
-          Using static demo data. Configure Supabase to load real data.
+          Using static demo data. Configure Convex or Supabase to load real data.
+        </div>
+      )}
+      {dataSource === "convex" && (
+        <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 text-center">
+          Connected to Convex (real-time)
         </div>
       )}
 
@@ -379,10 +711,19 @@ export default function Page() {
           <NavSidebar
             isCollapsed={navSidebarCollapsed}
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={isSupabaseConfigured ? (selectedSystemId || systemName) : selectedJsonSystem}
+            selectedSystem={dataSource !== "json" ? (selectedSystemId || systemName) : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
-            systems={isSupabaseConfigured ? systems?.map(s => ({ id: s.id, name: s.name, sector: s.sector })) : undefined}
-            isLoading={isSupabaseConfigured ? systemsLoading : false}
+            systems={
+              dataSource === "convex"
+                ? convexSystems.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                : dataSource === "supabase"
+                  ? systems?.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                  : undefined
+            }
+            isLoading={
+              dataSource === "convex" ? convexSystemsLoading :
+              dataSource === "supabase" ? systemsLoading : false
+            }
             showCanvas={activeTab === "canvas"}
             onCanvasClick={() => setActiveTab("canvas")}
           />
@@ -390,7 +731,7 @@ export default function Page() {
           {/* Row Labels Sidebar - Only show for Logic Model */}
           {activeTab === "logic-model" && (
             <RowSidebar
-              rows={logicGridData}
+              rows={effectiveLogicGridData}
               activeRow={activeRow}
               onRowClick={handleRowClick}
             />
@@ -402,15 +743,15 @@ export default function Page() {
             {/* Save System Button - Only in Edit mode */}
             {editMode === "edit" && (
               <div className="mt-8 flex justify-center gap-4">
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   className="px-8"
                   disabled={updateElement.isPending || updateSystem.isPending}
                 >
                   {updateElement.isPending || updateSystem.isPending ? "Saving..." : "Save Changes"}
                 </Button>
-                <Button 
-                  size="lg" 
+                <Button
+                  size="lg"
                   variant="outline"
                   onClick={() => setEditMode("view")}
                 >
@@ -425,7 +766,46 @@ export default function Page() {
       <Footer />
 
       {/* Node Detail Sidebar */}
-      <NodeDetailSidebar node={selectedNode} isOpen={detailSidebarOpen} onClose={handleCloseDetail} />
+      <NodeDetailSidebar
+        node={selectedNode}
+        isOpen={detailSidebarOpen}
+        onClose={handleCloseDetail}
+        onSave={dataSource === "convex" ? handleNodeSave : undefined}
+        portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
+        onPortfolioCreate={dataSource === "convex" ? handlePortfolioCreate : undefined}
+        onPortfolioUpdate={dataSource === "convex" ? handlePortfolioUpdate : undefined}
+        onPortfolioDelete={dataSource === "convex" ? handlePortfolioDelete : undefined}
+      />
+
+      {/* Edit Popup */}
+      <NodeEditPopup
+        isOpen={editPopupOpen}
+        onClose={closeEdit}
+        title={nodeForEdit ? `Edit ${nodeForEdit.title}` : "Edit Node"}
+        initialTitle={nodeForEdit?.title ?? ""}
+        initialDescription={nodeForEdit?.description ?? ""}
+        onSave={handleEditPopupSave}
+      />
+
+      {/* Performance Modal */}
+      <PerformanceModal
+        isOpen={performanceModalOpen}
+        onClose={closePerformanceModal}
+        node={performanceNode}
+        displayMode={displayMode}
+      />
+
+      {/* Library Popup */}
+      <LibraryPopup
+        isOpen={libraryOpen}
+        onClose={closeLibrary}
+        category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
+        currentSystemId={selectedSystemId ?? ""}
+        currentSystemName={systemName}
+        onConnect={handleLibraryConnect}
+        onCopy={handleLibraryCopy}
+        items={libraryItems}
+      />
     </div>
   )
 }
