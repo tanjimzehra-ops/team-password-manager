@@ -27,3 +27,18 @@ yarn-error.log*
 
 # Vercel
 .vercel
+
+# Claude Code
+.claude/
+
+# Cursor IDE
+.cursor/
+
+# Convex local config
+.convex_config.json
+
+# TypeScript build info
+tsconfig.tsbuildinfo
+
+# BMAD methodology (local only)
+_bmad/
