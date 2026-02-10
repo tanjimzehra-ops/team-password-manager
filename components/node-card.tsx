@@ -65,7 +65,7 @@ export function NodeCard({
 }: NodeCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
 
-  const colors = isEditMode ? editModeColorMap : viewModeColorMap
+  const colors = editMode === "colour" ? editModeColorMap : viewModeColorMap
   const isPerformanceMode = displayMode === "performance"
   const healthBorderColor = isPerformanceMode ? getHealthBorderColor(node.kpiValue) : ""
   const healthStatus = getHealthStatus(node.kpiValue)
@@ -119,7 +119,7 @@ export function NodeCard({
         colors[node.color],
         // In performance mode, override the border color with health-based color
         isPerformanceMode && healthBorderColor,
-        compact ? "p-2 min-h-[70px]" : "p-3 min-h-[160px]",
+        "p-3 min-h-[110px]",
         editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
       )}
@@ -151,7 +151,7 @@ export function NodeCard({
       {isPerformanceMode && (
         <Badge
           className={cn(
-            "absolute top-1 right-1 z-10 text-[10px] px-1.5 py-0 border-none",
+            "absolute top-1 right-1 z-10 text-sm px-1.5 py-0 border-none",
             healthBadgeColorMap[healthStatus],
           )}
         >
@@ -163,7 +163,7 @@ export function NodeCard({
       {showKpi && !isEditMode && !isPerformanceMode && (
         <Badge
           variant="secondary"
-          className="absolute top-1 right-1 z-10 text-[10px] px-1.5 py-0"
+          className="absolute top-1 right-1 z-10 text-sm px-1.5 py-0"
         >
           {node.kpiValue}%
         </Badge>
@@ -180,7 +180,7 @@ export function NodeCard({
       {chipLabel && (
         <span
           className={cn(
-            "text-[9px] font-medium mb-1 self-start",
+            "text-xs font-medium mb-1 self-start",
             isEditMode ? "text-white/70" : "text-muted-foreground",
           )}
         >
@@ -188,7 +188,7 @@ export function NodeCard({
         </span>
       )}
 
-      <h3 className={cn("font-bold leading-tight text-center", compact ? "text-[11px]" : "text-sm mb-2")}>
+      <h3 className={cn("font-bold leading-tight text-center text-sm mb-2")}>
         {node.title}
       </h3>
 
@@ -196,7 +196,7 @@ export function NodeCard({
       {!compact && node.description && (
         <p
           className={cn(
-            "text-xs leading-snug text-center flex-1 mt-1",
+            "text-sm leading-snug text-center flex-1 mt-1",
             isEditMode ? "opacity-90" : "text-muted-foreground",
           )}
         >

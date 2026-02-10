@@ -32,7 +32,7 @@ export function RowSidebar({ rows, activeRow, onRowClick }: RowSidebarProps) {
   const getSubLabel = (rowId: string) => {
     switch (rowId) {
       case "outcomes":
-        return "OUTCOMES"
+        return "OBJECTIVES"
       case "resources":
         return "RESOURCES"
       default:
@@ -41,7 +41,7 @@ export function RowSidebar({ rows, activeRow, onRowClick }: RowSidebarProps) {
   }
 
   return (
-    <div className="sticky top-[200px] h-fit shrink-0 bg-slate-800 z-10 w-12">
+    <div className="sticky top-[200px] h-fit shrink-0 bg-slate-200 dark:bg-slate-800 z-10 w-12">
       {/* Row Labels - Vertical (90 degrees rotated) */}
       <div className="flex flex-col">
         {rows.map((row) => {
@@ -55,15 +55,15 @@ export function RowSidebar({ rows, activeRow, onRowClick }: RowSidebarProps) {
               onClick={() => onRowClick(row.id)}
               className={cn(
                 "relative px-1 py-4 border-b border-slate-700 last:border-b-0 transition-colors",
-                "hover:bg-slate-700",
-                activeRow === row.id && "bg-slate-700",
+                "hover:bg-slate-300 dark:hover:bg-slate-700",
+                activeRow === row.id && "bg-slate-300 dark:bg-slate-700",
                 "flex items-center justify-center",
               )}
               style={{ minHeight: row.id === "purpose" ? "60px" : "100px" }}
             >
               <div className="flex flex-col items-center gap-1">
                 <span
-                  className="text-[10px] font-bold text-white uppercase tracking-wider"
+                  className="text-xs font-bold text-slate-800 dark:text-white uppercase tracking-wider"
                   style={{
                     writingMode: "vertical-rl",
                     textOrientation: "mixed",
@@ -75,7 +75,7 @@ export function RowSidebar({ rows, activeRow, onRowClick }: RowSidebarProps) {
                 </span>
                 {subLabel && (
                   <span
-                    className="text-[9px] font-medium text-slate-400 uppercase tracking-wider"
+                    className="text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider"
                     style={{
                       writingMode: "vertical-rl",
                       textOrientation: "mixed",

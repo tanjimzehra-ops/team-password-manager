@@ -67,45 +67,45 @@ export function DevelopmentPathways({
         <thead>
           {/* Row 1: Resources/Capability header */}
           <tr>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2 w-16"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2 w-48"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2 w-40"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-16"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-48"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-40"></th>
             <th
               colSpan={resources.length}
               className="border border-border bg-amber-200 dark:bg-amber-900/50 p-3 text-center font-semibold text-amber-900 dark:text-amber-200"
             >
-              RESOURCES / CAPABILITY
+              RESOURCES, CAPABILITIES / LEVERS
             </th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2 w-48"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-48"></th>
           </tr>
 
           {/* Row 2: Individual resource headers */}
           <tr>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-2"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
+            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
             {resources.map((resource, idx) => (
               <th
                 key={resource.id}
-                className="border border-border bg-amber-100 dark:bg-amber-900/30 p-2 text-center min-w-[120px] cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800/30 transition-colors"
+                className="border border-border bg-amber-100 dark:bg-amber-900/30 p-3 text-center min-w-[120px] cursor-pointer hover:bg-amber-200 dark:hover:bg-amber-800/30 transition-colors"
                 onClick={() => onElementClick?.(resource)}
               >
-                <span className="text-[10px] text-amber-700 dark:text-amber-400 block mb-1">
+                <span className="text-sm text-amber-700 dark:text-amber-400 block mb-1">
                   Resource {idx + 1}
                 </span>
-                <span className="text-xs font-medium text-foreground">{resource.title}</span>
+                <span className="text-sm font-medium text-foreground">{resource.title}</span>
               </th>
             ))}
-            <th className="border border-border bg-emerald-200 dark:bg-emerald-900/50 p-2 text-center font-semibold text-emerald-900 dark:text-emerald-200">
-              KPIs
+            <th className="border border-border bg-emerald-200 dark:bg-emerald-900/50 p-3 text-center font-semibold text-emerald-900 dark:text-emerald-200">
+              Key Results
             </th>
           </tr>
 
           {/* Row 3: Current Capabilities horizontal row */}
           <tr>
-            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-2"></td>
-            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-2"></td>
-            <td className="border border-border bg-sky-200 dark:bg-sky-900/50 p-2 text-center font-semibold text-sky-900 dark:text-sky-200">
+            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></td>
+            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></td>
+            <td className="border border-border bg-sky-200 dark:bg-sky-900/50 p-3 text-center font-semibold text-sky-900 dark:text-sky-200">
               Current Capabilities
             </td>
             {resources.map((resource, idx) => {
@@ -113,7 +113,7 @@ export function DevelopmentPathways({
               return (
                 <td
                   key={`cap-${resource.id}`}
-                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200 cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
+                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-sm text-sky-900 dark:text-sky-200 cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
                   onClick={() => onElementClick?.({
                     id: `curr-cap-res-${resource.id}`,
                     title: `Current Capability: ${resource.title}`,
@@ -171,15 +171,15 @@ export function DevelopmentPathways({
                   className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px] cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors"
                   onClick={() => onElementClick?.(vc)}
                 >
-                  <span className="text-[10px] text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2">
+                  <span className="text-sm text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2">
                     VC {vcIdx + 1}
                   </span>
-                  <span className="text-xs text-foreground">{vc.title}</span>
+                  <span className="text-sm text-foreground">{vc.title}</span>
                 </td>
 
                 {/* Column C: Current Capabilities for this VC */}
                 <td
-                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-xs text-sky-900 dark:text-sky-200 min-w-[140px] cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
+                  className="border border-border bg-sky-100 dark:bg-sky-900/30 p-2 text-sm text-sky-900 dark:text-sky-200 min-w-[140px] cursor-pointer hover:bg-sky-200 dark:hover:bg-sky-800/30 transition-colors"
                   onClick={() => onElementClick?.({
                     id: `curr-cap-vc-${vc.id}`,
                     title: `Current Capability: ${vc.title}`,
@@ -207,7 +207,7 @@ export function DevelopmentPathways({
                     <td
                       key={`${vc.id}-${resource.id}`}
                       className={cn(
-                        "border border-border bg-card dark:bg-card/60 p-2 text-xs text-foreground transition-colors cursor-pointer",
+                        "border border-border bg-card dark:bg-card/60 p-2 text-sm text-foreground transition-colors cursor-pointer",
                         "hover:bg-muted/50 dark:hover:bg-muted/20"
                       )}
                       onClick={() => onCellClick?.(vc.id, resource.id)}
@@ -230,22 +230,22 @@ export function DevelopmentPathways({
                   )
                 })}
 
-                {/* Column M: KPIs */}
+                {/* Column M: Key Results */}
                 <td
-                  className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-xs text-emerald-800 dark:text-emerald-300 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors"
+                  className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-sm text-emerald-800 dark:text-emerald-300 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors"
                   onClick={() => onElementClick?.({
                     id: `vc-kpi-${vc.id}`,
-                    title: `KPIs: ${vc.title}`,
-                    description: vcKpiText || "No KPIs defined.",
+                    title: `Key Results: ${vc.title}`,
+                    description: vcKpiText || "No Key Results defined.",
                     kpiValue: vc.kpiValue,
                     kpiStatus: vc.kpiStatus,
                     category: "value-chain",
                     color: "secondary",
-                    notes: "Value Chain KPIs from Development Pathways",
+                    notes: "Value Chain Key Results from Development Pathways",
                     metadata: {
                       "View": "Development Pathways",
                       "Value Chain Element": vc.title,
-                      "KPI Count": String(vcKpiList.length),
+                      "Key Results Count": String(vcKpiList.length),
                     },
                   })}
                 >
@@ -256,7 +256,7 @@ export function DevelopmentPathways({
                       className="w-full h-full min-h-[40px] border border-dashed border-gray-400 text-gray-500"
                     >
                       <Plus className="h-3 w-3 mr-1" />
-                      <span className="text-xs">Add KPI</span>
+                      <span className="text-xs">Add Key Result</span>
                     </Button>
                   ) : "—")}
                 </td>
@@ -264,26 +264,9 @@ export function DevelopmentPathways({
             )
           })}
 
-          {/* Culture row - Delivery Culture/Dimension */}
+          {/* Necessary Capabilities row */}
           <tr>
-            <td
-              colSpan={2}
-              className="border border-border bg-slate-700 dark:bg-slate-800 p-3 text-xs text-white text-center"
-            >
-              {dimension || "Delivery Culture"}
-            </td>
-            {resources.map((resource) => (
-              <td
-                key={`culture-${resource.id}`}
-                className="border border-border bg-slate-600 dark:bg-slate-700 p-2"
-              ></td>
-            ))}
-            <td className="border border-border bg-slate-600 dark:bg-slate-700 p-2"></td>
-          </tr>
-
-          {/* Necessary Capabilities row (bottom) */}
-          <tr>
-            <td className="border border-border bg-orange-200 dark:bg-orange-900/50 p-2 text-center font-semibold text-orange-900 dark:text-orange-200 text-xs">
+            <td className="border border-border bg-orange-200 dark:bg-orange-900/50 p-3 text-center font-semibold text-orange-900 dark:text-orange-200 text-sm">
               Necessary Capabilities
             </td>
             <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
@@ -292,7 +275,7 @@ export function DevelopmentPathways({
               return (
                 <td
                   key={`nec-${resource.id}`}
-                  className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2 text-xs text-orange-900 dark:text-orange-200 cursor-pointer hover:bg-orange-200 dark:hover:bg-orange-800/30 transition-colors"
+                  className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2 text-sm text-orange-900 dark:text-orange-200 cursor-pointer hover:bg-orange-200 dark:hover:bg-orange-800/30 transition-colors"
                   onClick={() => onElementClick?.({
                     id: `nec-cap-${resource.id}`,
                     title: `Necessary Capability: ${resource.title}`,
@@ -314,6 +297,23 @@ export function DevelopmentPathways({
               )
             })}
             <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
+          </tr>
+
+          {/* Culture row - Delivery Culture/Dimension */}
+          <tr>
+            <td
+              colSpan={2}
+              className="border border-border bg-teal-700 text-white p-3 text-sm text-center"
+            >
+              {dimension || "Delivery Culture"}
+            </td>
+            {resources.map((resource) => (
+              <td
+                key={`culture-${resource.id}`}
+                className="border border-border bg-teal-600/50 p-2"
+              ></td>
+            ))}
+            <td className="border border-border bg-teal-600/50 p-2"></td>
           </tr>
         </tbody>
       </table>

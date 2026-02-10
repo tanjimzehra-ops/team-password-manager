@@ -102,12 +102,12 @@ export function LogicGrid({
           {/* Purpose Banner - Full width colored banner */}
           {row.category === "purpose" && (
             <div className="mt-2">
-              <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                 IMPACT / PURPOSE
               </h2>
               <div className="flex items-stretch gap-0 min-h-[56px]">
                 <div
-                  className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-700 transition-colors", "bg-teal-600")}
+                  className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-900 transition-colors", "bg-teal-800")}
                   onClick={() => row.nodes[0] && handleNodeClick(row.nodes[0])}
                 >
                   <p className="text-white font-bold text-center text-sm md:text-base leading-tight">
@@ -136,8 +136,8 @@ export function LogicGrid({
           {/* Outcome Cards - 4 equal columns with descriptions */}
           {row.category === "outcomes" && (
             <div className="mt-4" id="outcomes">
-              <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                STRATEGIC OUTCOMES
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                STRATEGIC OBJECTIVES
               </h2>
               <div className="flex items-stretch gap-0 min-h-[180px]">
                 <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-2">
@@ -167,7 +167,7 @@ export function LogicGrid({
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
-                        chipLabel={`Outcome ${index + 1}`}
+                        chipLabel={`Objective ${index + 1}`}
                       />
                     </div>
                   ))}
@@ -203,7 +203,7 @@ export function LogicGrid({
           {/* Value Chain - Compact row of text-only cards */}
           {row.category === "value-chain" && (
             <div className="mt-4" id="value-chain">
-              <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                 VALUE CHAIN ELEMENTS
               </h2>
               <div className="flex items-stretch gap-0 min-h-[140px]">
@@ -273,12 +273,12 @@ export function LogicGrid({
             <>
               {/* Culture Banner between Value Chain and Resources */}
               <div className="mt-4" id="culture">
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                   DELIVERY CULTURE / DIMENSION
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[56px]">
                   <div
-                    className="flex-1 relative bg-slate-800 dark:bg-slate-700 rounded-lg p-2 flex items-center cursor-pointer hover:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
+                    className="flex-1 relative bg-teal-700 rounded-lg p-2 flex items-center cursor-pointer hover:bg-teal-800 transition-colors"
                     onClick={() => onNodeClick({
                       id: cultureBanner.id,
                       title: cultureBanner.title,
@@ -297,7 +297,7 @@ export function LogicGrid({
                     <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <p className="text-white font-medium text-center flex-1 text-xs px-2 leading-tight">
+                    <p className="text-white font-medium text-center flex-1 text-sm px-2 leading-tight">
                       {cultureBanner.title}
                     </p>
                     <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
@@ -321,8 +321,8 @@ export function LogicGrid({
 
               {/* Resources Cards */}
               <div className="mt-4" id="resources">
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                  RESOURCES / CAPABILITIES
+                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  RESOURCES, CAPABILITIES / LEVERS
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[140px]">
                   <div className="flex-1 grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1">
@@ -392,12 +392,12 @@ export function LogicGrid({
 
               {/* Bottom Banner - Context statement */}
               <div className="mt-4" id="context">
-                <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                   SYSTEM CONTEXT / CHALLENGE
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[56px]">
                   <div
-                    className="flex-1 bg-amber-500 dark:bg-amber-600 rounded-lg p-2 flex items-center justify-center cursor-pointer hover:bg-amber-600 dark:hover:bg-amber-700 transition-colors"
+                    className="flex-1 bg-teal-600 rounded-lg p-2 flex items-center justify-center cursor-pointer hover:bg-teal-700 transition-colors"
                     onClick={() => onNodeClick({
                       id: bottomBanner.id,
                       title: bottomBanner.title,
@@ -413,7 +413,7 @@ export function LogicGrid({
                       },
                     })}
                   >
-                    <p className="text-white font-medium text-center text-xs leading-tight">{bottomBanner.title}</p>
+                    <p className="text-white font-medium text-center text-sm leading-tight">{bottomBanner.title}</p>
                   </div>
                   {isEditActive && (
                     <div className="flex flex-col justify-center gap-1 pl-2">

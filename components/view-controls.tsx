@@ -91,7 +91,7 @@ export function ViewControls({
             <div className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
               <Label htmlFor="show-kpi" className="text-sm text-muted-foreground">
-                Show KPIs
+                Show Key Results
               </Label>
               <Switch id="show-kpi" checked={showKpi} onCheckedChange={onToggleKpi} />
             </div>

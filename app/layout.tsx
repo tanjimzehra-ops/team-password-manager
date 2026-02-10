@@ -62,7 +62,7 @@ export default function RootLayout({
       <body className={`${plusJakartaSans.className} font-sans antialiased`}>
         <ConvexClientProvider>
           <QueryProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               {children}
             </ThemeProvider>
           </QueryProvider>

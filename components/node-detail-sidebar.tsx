@@ -50,9 +50,9 @@ const kpiStatusBarColors = {
 // Category configuration — text badges only, no icons
 const categoryConfig = {
   purpose: { label: "Purpose", badgeClass: "bg-teal-100 text-teal-700 border-teal-200 dark:bg-teal-900/30 dark:text-teal-300 dark:border-teal-800" },
-  outcomes: { label: "Outcomes", badgeClass: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800" },
+  outcomes: { label: "Strategic Objectives", badgeClass: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800" },
   "value-chain": { label: "Value Chain", badgeClass: "bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-800" },
-  resources: { label: "Resources", badgeClass: "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800" },
+  resources: { label: "Resources, Capabilities / Levers", badgeClass: "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800" },
 } as const
 
 function isMatrixCell(node: NodeData): boolean {
@@ -422,7 +422,7 @@ export function NodeDetailSidebar({
             <div className="bg-muted/50 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <Info className="h-4 w-4" />
-                KPI Status
+                Key Results Status
               </div>
               <div className="flex items-center gap-4">
                 {isEditing ? (

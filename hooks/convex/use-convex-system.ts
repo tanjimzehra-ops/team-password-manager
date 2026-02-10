@@ -181,7 +181,7 @@ function buildInitialData(payload: FullSystemPayload): RowData[] {
     },
     {
       id: "outcomes",
-      label: "Outcomes",
+      label: "Strategic Objectives",
       category: "outcomes",
       color: "bg-red-600 dark:bg-red-700",
       nodes: outcomes.map((o, idx) =>
@@ -197,7 +197,7 @@ function buildInitialData(payload: FullSystemPayload): RowData[] {
     },
     {
       id: "resources",
-      label: "Resources & Capability",
+      label: "Resources, Capabilities / Levers",
       category: "resources",
       color: "bg-red-400 dark:bg-red-500",
       nodes: resources.map((r) => toNodeData(r, "resources", "secondary")),

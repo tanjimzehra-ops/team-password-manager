@@ -39,9 +39,9 @@ interface LibraryPopupProps {
 }
 
 const categoryLabels = {
-  outcomes: "Outcomes",
+  outcomes: "Strategic Objectives",
   "value-chain": "Value Chain",
-  resources: "Resources",
+  resources: "Resources, Capabilities / Levers",
 }
 
 const categoryColors = {
