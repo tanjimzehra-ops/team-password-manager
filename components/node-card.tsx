@@ -113,7 +113,7 @@ export function NodeCard({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       className={cn(
-        "relative cursor-pointer rounded-lg border-2 transition-all duration-200 flex flex-col",
+        "relative cursor-pointer rounded-lg border-2 transition-all duration-200 flex flex-col h-full",
         "hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
         "shadow-md",
         colors[node.color],

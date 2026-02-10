@@ -140,11 +140,12 @@ export function LogicGrid({
                 STRATEGIC OBJECTIVES
               </h2>
               <div className="flex items-stretch gap-0 min-h-[180px]">
-                <div className="flex-1 grid grid-cols-2 lg:grid-cols-4 gap-2">
+                <div className="flex-1 flex flex-nowrap gap-2">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
                       className={cn(
+                        "flex-1 min-w-0",
                         editMode === "order" && dragOverIndex === index && dragCategory === row.category
                           ? "border-l-2 border-primary"
                           : "border-l-2 border-transparent",
@@ -207,11 +208,12 @@ export function LogicGrid({
                 VALUE CHAIN ELEMENTS
               </h2>
               <div className="flex items-stretch gap-0 min-h-[140px]">
-                <div className="flex-1 grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-13 gap-1">
+                <div className="flex-1 flex flex-nowrap gap-1">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
                       className={cn(
+                        "flex-1 min-w-0",
                         editMode === "order" && dragOverIndex === index && dragCategory === row.category
                           ? "border-l-2 border-primary"
                           : "border-l-2 border-transparent",
@@ -325,11 +327,12 @@ export function LogicGrid({
                   RESOURCES, CAPABILITIES / LEVERS
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[140px]">
-                  <div className="flex-1 grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-9 gap-1">
+                  <div className="flex-1 flex flex-nowrap gap-1">
                     {row.nodes.map((node, index) => (
                       <div
                         key={node.id}
                         className={cn(
+                          "flex-1 min-w-0",
                           editMode === "order" && dragOverIndex === index && dragCategory === row.category
                             ? "border-l-2 border-primary"
                             : "border-l-2 border-transparent",
