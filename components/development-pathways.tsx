@@ -264,6 +264,23 @@ export function DevelopmentPathways({
             )
           })}
 
+          {/* Culture row - Delivery Culture/Dimension */}
+          <tr>
+            <td
+              colSpan={2}
+              className="border border-border bg-teal-700 text-white p-3 text-sm text-center"
+            >
+              {dimension || "Delivery Culture"}
+            </td>
+            {resources.map((resource) => (
+              <td
+                key={`culture-${resource.id}`}
+                className="border border-border bg-teal-600/50 p-2"
+              ></td>
+            ))}
+            <td className="border border-border bg-teal-600/50 p-2"></td>
+          </tr>
+
           {/* Necessary Capabilities row */}
           <tr>
             <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
@@ -297,23 +314,6 @@ export function DevelopmentPathways({
               )
             })}
             <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
-          </tr>
-
-          {/* Culture row - Delivery Culture/Dimension */}
-          <tr>
-            <td
-              colSpan={2}
-              className="border border-border bg-teal-700 text-white p-3 text-sm text-center"
-            >
-              {dimension || "Delivery Culture"}
-            </td>
-            {resources.map((resource) => (
-              <td
-                key={`culture-${resource.id}`}
-                className="border border-border bg-teal-600/50 p-2"
-              ></td>
-            ))}
-            <td className="border border-border bg-teal-600/50 p-2"></td>
           </tr>
         </tbody>
       </table>
