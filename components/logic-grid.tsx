@@ -110,7 +110,7 @@ export function LogicGrid({
                   className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-900 transition-colors", "bg-teal-800")}
                   onClick={() => row.nodes[0] && handleNodeClick(row.nodes[0])}
                 >
-                  <p className="text-white font-bold text-center text-sm md:text-base leading-tight">
+                  <p className="text-white font-bold text-center text-[22px] leading-tight">
                     {row.nodes[0]?.title}
                   </p>
                   {showKpi && isEditActive && (
@@ -299,7 +299,7 @@ export function LogicGrid({
                     <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <p className="text-white font-medium text-center flex-1 text-sm px-2 leading-tight">
+                    <p className="text-white font-medium text-center flex-1 text-lg px-2 leading-tight">
                       {cultureBanner.title}
                     </p>
                     <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
@@ -416,7 +416,7 @@ export function LogicGrid({
                       },
                     })}
                   >
-                    <p className="text-white font-medium text-center text-sm leading-tight">{bottomBanner.title}</p>
+                    <p className="text-white font-medium text-center text-lg leading-tight">{bottomBanner.title}</p>
                   </div>
                   {isEditActive && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
