@@ -266,10 +266,10 @@ export function DevelopmentPathways({
 
           {/* Necessary Capabilities row */}
           <tr>
+            <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
             <td className="border border-border bg-orange-200 dark:bg-orange-900/50 p-3 text-center font-semibold text-orange-900 dark:text-orange-200 text-sm">
               Necessary Capabilities
             </td>
-            <td className="border border-border bg-orange-100 dark:bg-orange-900/30 p-2"></td>
             {resources.map((resource, idx) => {
               const content = getNecessaryCapability(idx)
               return (
