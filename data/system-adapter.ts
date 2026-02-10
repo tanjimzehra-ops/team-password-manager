@@ -91,7 +91,7 @@ export interface SystemJSON {
 }
 
 // =============================================================================
-// Static Fallback Descriptions (from supabase-adapters.ts)
+// Static Fallback Descriptions
 // Used when JSON data has no separate description field
 // =============================================================================
 

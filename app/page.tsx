@@ -20,12 +20,6 @@ import { NodeEditPopup } from "@/components/node-edit-popup"
 import { PerformanceModal } from "@/components/performance-modal"
 import { LibraryPopup } from "@/components/library-popup"
 
-// Supabase hooks
-import { useSystems } from "@/hooks/use-systems"
-import { useFullSystem } from "@/hooks/use-full-system"
-import { useUpdateElement, useUpdateSystem } from "@/hooks/use-mutations"
-import { isSupabaseConfigured } from "@/lib/supabase"
-
 // Convex hooks
 import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
 import { useConvexSystem } from "@/hooks/convex/use-convex-system"
@@ -47,18 +41,7 @@ import { usePerformanceMode } from "@/hooks/use-performance-mode"
 import { useLibrary } from "@/hooks/use-library"
 import { usePortfolioState } from "@/hooks/use-portfolio-state"
 
-// Data adapters
-import {
-  transformToLogicGridData,
-  transformToContributionMapData,
-  transformToDevelopmentPathwaysData,
-  transformToConvergenceMapData,
-  getCultureBanner,
-  getContextBanner,
-  isDataLoaded,
-} from "@/lib/supabase-adapters"
-
-// Fallback static data (used when Supabase is not configured)
+// Fallback static data (used when Convex is not configured)
 import {
   availableSystems,
   getSystemAdapter,
@@ -106,30 +89,11 @@ export default function Page() {
     openPerformanceModal, closePerformanceModal,
   } = usePerformanceMode()
 
-  // System selection (for both Supabase and JSON modes)
+  // System selection
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
 
-  // JSON system adapter (used when Supabase is not configured)
+  // JSON system adapter (used when Convex is not configured)
   const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("relationships_au_tas")
-
-  // Supabase data
-  const { data: systems, isLoading: systemsLoading } = useSystems()
-  const {
-    system,
-    outcomes,
-    valueChain,
-    resources,
-    matrices,
-    kpis,
-    capabilities,
-    factors,
-    externalValues,
-    isLoading: systemLoading
-  } = useFullSystem(selectedSystemId)
-
-  // Supabase Mutations
-  const updateElement = useUpdateElement()
-  const updateSystem = useUpdateSystem()
 
   // Convex data
   const { data: convexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
@@ -148,113 +112,35 @@ export default function Page() {
   const convexDeletePortfolio = useConvexDeletePortfolio()
 
   // Determine active data source
-  const dataSource: "convex" | "supabase" | "json" = isConvexConfigured
-    ? "convex"
-    : isSupabaseConfigured
-      ? "supabase"
-      : "json"
+  const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
 
   // Auto-select first system when systems load
   useEffect(() => {
     if (selectedSystemId) return
     if (dataSource === "convex" && convexSystems.length > 0) {
       setSelectedSystemId(convexSystems[0].id)
-    } else if (systems?.length) {
-      const meraSystem = systems.find(s => s.legacy_id === 2492)
-      setSelectedSystemId(meraSystem?.id || systems[0].id)
     }
-  }, [dataSource, convexSystems, systems, selectedSystemId])
-
-  // Check if we have Supabase data loaded
-  const hasSupabaseData = isSupabaseConfigured && isDataLoaded(system, outcomes, valueChain, resources)
+  }, [dataSource, convexSystems, selectedSystemId])
 
   // Get current JSON adapter for static data
   const jsonAdapter = useMemo(() => {
     return getSystemAdapter(selectedJsonSystem)
   }, [selectedJsonSystem])
 
-  // Transform Supabase data or use static data as fallback
-  const logicGridData = useMemo(() => {
-    if (hasSupabaseData && system && outcomes && valueChain && resources) {
-      return transformToLogicGridData(system, outcomes, valueChain, resources)
-    }
-    return jsonAdapter.initialData
-  }, [hasSupabaseData, system, outcomes, valueChain, resources, jsonAdapter])
-
-  const cultureBanner = useMemo(() => {
-    if (hasSupabaseData && system) {
-      return getCultureBanner(system)
-    }
-    return jsonAdapter.cultureBanner
-  }, [hasSupabaseData, system, jsonAdapter])
-
-  const bottomBanner = useMemo(() => {
-    if (hasSupabaseData && system) {
-      return getContextBanner(system)
-    }
-    return jsonAdapter.bottomBanner
-  }, [hasSupabaseData, system, jsonAdapter])
-
-  const contributionMapData = useMemo(() => {
-    if (hasSupabaseData && outcomes && valueChain && matrices) {
-      return transformToContributionMapData(
-        outcomes,
-        valueChain,
-        matrices.contribution,
-        kpis
-      )
-    }
-    return jsonAdapter.getContributionMapData()
-  }, [hasSupabaseData, outcomes, valueChain, matrices, kpis, jsonAdapter])
-
-  const developmentPathwaysData = useMemo(() => {
-    if (hasSupabaseData && resources && valueChain && matrices) {
-      return transformToDevelopmentPathwaysData(
-        resources,
-        valueChain,
-        matrices.development,
-        capabilities,
-        kpis
-      )
-    }
-    return jsonAdapter.getDevelopmentPathwaysData()
-  }, [hasSupabaseData, resources, valueChain, matrices, capabilities, kpis, jsonAdapter])
-
-  const convergenceMapData = useMemo(() => {
-    if (hasSupabaseData && valueChain && matrices) {
-      return transformToConvergenceMapData(
-        valueChain,
-        matrices.convergence,
-        externalValues,
-        factors,
-        kpis
-      )
-    }
-    return jsonAdapter.getConvergenceMapData()
-  }, [hasSupabaseData, valueChain, matrices, externalValues, factors, kpis, jsonAdapter])
-
-  // Effective data: Convex pre-transformed > Supabase useMemo > JSON fallback
-  const effectiveLogicGridData = dataSource === "convex" && convexSystemData
-    ? convexSystemData.initialData : logicGridData
-  const effectiveCultureBanner = dataSource === "convex" && convexSystemData
-    ? convexSystemData.cultureBanner : cultureBanner
-  const effectiveBottomBanner = dataSource === "convex" && convexSystemData
-    ? convexSystemData.bottomBanner : bottomBanner
-  const effectiveContributionMapData = dataSource === "convex" && convexSystemData
-    ? convexSystemData.contributionMapData : contributionMapData
-  const effectiveDevelopmentPathwaysData = dataSource === "convex" && convexSystemData
-    ? convexSystemData.developmentPathwaysData : developmentPathwaysData
-  const effectiveConvergenceMapData = dataSource === "convex" && convexSystemData
-    ? convexSystemData.convergenceMapData : convergenceMapData
+  // Data: Convex pre-transformed > JSON fallback
+  const effectiveLogicGridData = convexSystemData?.initialData ?? jsonAdapter.initialData
+  const effectiveCultureBanner = convexSystemData?.cultureBanner ?? jsonAdapter.cultureBanner
+  const effectiveBottomBanner = convexSystemData?.bottomBanner ?? jsonAdapter.bottomBanner
+  const effectiveContributionMapData = convexSystemData?.contributionMapData ?? jsonAdapter.getContributionMapData()
+  const effectiveDevelopmentPathwaysData = convexSystemData?.developmentPathwaysData ?? jsonAdapter.getDevelopmentPathwaysData()
+  const effectiveConvergenceMapData = convexSystemData?.convergenceMapData ?? jsonAdapter.getConvergenceMapData()
 
   // Library hook (depends on effectiveLogicGridData)
   const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
     effectiveLogicGridData,
     dataSource === "convex"
       ? convexSystems.map(s => ({ id: s.id, name: s.name }))
-      : dataSource === "supabase"
-        ? systems?.map(s => ({ id: s.id, name: s.name }))
-        : undefined,
+      : undefined,
     selectedSystemId
   )
 
@@ -266,15 +152,9 @@ export default function Page() {
     if (dataSource === "convex" && convexSystemData) {
       return convexSystemData.system.name
     }
-    if (hasSupabaseData && system) {
-      return system.name
-    }
-    if (isSupabaseConfigured && systems?.length) {
-      return systems.find(s => s.id === selectedSystemId)?.name || "MERA"
-    }
     // JSON mode: use adapter name
     return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.['System'] || selectedJsonSystem.toUpperCase()
-  }, [dataSource, convexSystemData, hasSupabaseData, system, isSupabaseConfigured, systems, selectedSystemId, jsonAdapter, selectedJsonSystem])
+  }, [dataSource, convexSystemData, jsonAdapter, selectedJsonSystem])
 
   // Handler functions
   const handleNodeClick = (node: NodeData) => {
@@ -296,7 +176,7 @@ export default function Page() {
   }
 
   const handleSystemSelect = (systemId: string) => {
-    if (dataSource === "convex" || dataSource === "supabase") {
+    if (dataSource === "convex") {
       setSelectedSystemId(systemId)
     } else {
       // JSON mode: use system name as key
@@ -609,7 +489,7 @@ export default function Page() {
       <div className="flex flex-col items-center gap-4">
         <Spinner className="w-8 h-8" />
         <p className="text-muted-foreground">
-          {systemsLoading ? "Loading systems..." : "Loading data..."}
+          {convexSystemsLoading ? "Loading systems..." : "Loading data..."}
         </p>
       </div>
     </div>
@@ -618,10 +498,7 @@ export default function Page() {
   // Render main content based on active tab
   const renderMainContent = () => {
     // Show loading while fetching data
-    if (
-      (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) ||
-      (dataSource === "supabase" && (systemsLoading || (selectedSystemId && systemLoading)))
-    ) {
+    if (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) {
       return renderLoading()
     }
 
@@ -696,7 +573,7 @@ export default function Page() {
       {/* Data Source Indicator */}
       {dataSource === "json" && (
         <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
-          Using static demo data. Configure Convex or Supabase to load real data.
+          Using static demo data. Configure Convex to enable real-time data.
         </div>
       )}
       {dataSource === "convex" && (
@@ -707,23 +584,18 @@ export default function Page() {
 
       <main className="w-full flex-1 flex flex-col min-h-0">
         <div className="flex gap-0 flex-1 min-h-0">
-          {/* Navigation Sidebar - Supabase or JSON systems */}
+          {/* Navigation Sidebar */}
           <NavSidebar
             isCollapsed={navSidebarCollapsed}
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={dataSource !== "json" ? (selectedSystemId || systemName) : selectedJsonSystem}
+            selectedSystem={dataSource === "convex" ? (selectedSystemId || systemName) : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
             systems={
               dataSource === "convex"
                 ? convexSystems.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
-                : dataSource === "supabase"
-                  ? systems?.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
-                  : undefined
+                : undefined
             }
-            isLoading={
-              dataSource === "convex" ? convexSystemsLoading :
-              dataSource === "supabase" ? systemsLoading : false
-            }
+            isLoading={dataSource === "convex" ? convexSystemsLoading : false}
             showCanvas={activeTab === "canvas"}
             onCanvasClick={() => setActiveTab("canvas")}
           />
@@ -740,22 +612,15 @@ export default function Page() {
           {/* Main Content Area */}
           <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto overflow-y-auto">
             {renderMainContent()}
-            {/* Save System Button - Only in Edit mode */}
+            {/* Edit mode controls - Convex auto-saves */}
             {editMode === "edit" && (
-              <div className="mt-8 flex justify-center gap-4">
-                <Button
-                  size="lg"
-                  className="px-8"
-                  disabled={updateElement.isPending || updateSystem.isPending}
-                >
-                  {updateElement.isPending || updateSystem.isPending ? "Saving..." : "Save Changes"}
-                </Button>
+              <div className="mt-8 flex justify-center">
                 <Button
                   size="lg"
                   variant="outline"
                   onClick={() => setEditMode("view")}
                 >
-                  Cancel
+                  Done Editing
                 </Button>
               </div>
             )}

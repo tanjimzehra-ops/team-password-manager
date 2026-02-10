@@ -3,7 +3,6 @@ import type { Metadata } from "next"
 
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
-import { QueryProvider } from "@/components/providers/query-provider"
 import { ConvexClientProvider } from "@/components/providers/convex-provider"
 import "./globals.css"
 
@@ -61,11 +60,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${plusJakartaSans.className} font-sans antialiased`}>
         <ConvexClientProvider>
-          <QueryProvider>
-            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-              {children}
-            </ThemeProvider>
-          </QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            {children}
+          </ThemeProvider>
         </ConvexClientProvider>
         <Analytics />
       </body>

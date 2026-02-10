@@ -18,13 +18,13 @@ No test framework is configured. TypeScript build errors are intentionally ignor
 
 **Jigsaw 1.6** is a strategic planning visualization tool built with Next.js 16 (App Router) + React 19 + TypeScript. It renders interactive Logic Model and Matrix views for organizational strategy systems.
 
-### Dual Data Layer
+### Data Layer
 
 The app supports two data modes that switch automatically:
 
-1. **JSON mode (default):** Static JSON files in `data/` are loaded via `SystemDataAdapter` class (`data/system-adapter.ts`). Each system (MERA, Kiraa, Levur, etc.) has a JSON file following the `SystemJSON` interface. The adapter transforms raw data into UI types (`RowData`, `ContributionMapData`, `DevelopmentPathwaysData`, `ConvergenceMapData`).
+1. **Convex mode (primary):** When `NEXT_PUBLIC_CONVEX_URL` is set, data is fetched in real-time via Convex hooks in `hooks/convex/`. The `use-convex-system.ts` hook fetches and transforms data into UI types. Mutations in `use-convex-mutations.ts` provide full CRUD with automatic reactivity. Schema defined in `convex/schema.ts`.
 
-2. **Supabase mode:** When `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` are set, data is fetched via React Query hooks in `hooks/`. The `use-full-system.ts` hook aggregates all queries (system, elements, matrices, KPIs, capabilities, factors) into a single `FullSystemData` object. Supabase data is transformed to UI format via `lib/supabase-adapters.ts`.
+2. **JSON mode (fallback):** Static JSON files in `data/` are loaded via `SystemDataAdapter` class (`data/system-adapter.ts`). Each system (MERA, Kiraa, Levur, etc.) has a JSON file following the `SystemJSON` interface. The adapter transforms raw data into UI types (`RowData`, `ContributionMapData`, `DevelopmentPathwaysData`, `ConvergenceMapData`).
 
 ### Key Patterns
 
