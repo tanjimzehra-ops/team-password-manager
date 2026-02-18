@@ -250,3 +250,166 @@ export const seedSystem = internalMutation({
     return { systemId, elements: idMap.size, externalValues: externalIdMap.size, matrixCells: contributionCount + developmentCount + convergenceCount, kpis: kpiCount, capabilities: capCount, factors: factorCount }
   },
 })
+
+// =============================================================================
+// Auth Seed Functions — Bootstrap organisations, super admins, system mapping
+//
+// Execution order:
+//   1. npx convex run seed:createOrganisations
+//   2. (Users sign in via WorkOS — getOrCreateMe auto-provisions their records)
+//   3. npx convex run seed:bootstrapSuperAdmins
+//   4. npx convex run seed:assignSystemOrgs
+// =============================================================================
+
+const AUTH_ORGANISATIONS = [
+  { name: "Creating Preferred Futures", contactEmail: "martin@creatingpreferredfutures.com.au", status: "active" as const },
+  { name: "MERA Energy", contactEmail: "nicolas@meraenergy.com.au", status: "active" as const },
+  { name: "Central Highlands Council", status: "active" as const },
+  { name: "Relationships Australia Tasmania", status: "active" as const },
+  { name: "Kiraa", status: "trial" as const },
+  { name: "Levur", status: "trial" as const },
+  { name: "Illawarra Energy Storage", status: "trial" as const },
+]
+
+const SUPER_ADMIN_EMAILS = [
+  "nicopt.au@gmail.com",
+  "nicolas@meraenergy.com.au",
+  "martin@creatingpreferredfutures.com.au",
+  "sahanipradeep103@gmail.com",
+  "tanjimzehra@gmail.com",
+]
+
+// System name (in Convex DB) → Organisation name
+const SYSTEM_ORG_MAP: Record<string, string> = {
+  "MERA": "MERA Energy",
+  "People globally routinely": "Creating Preferred Futures",
+  "Central Highlands Council": "Central Highlands Council",
+  "Central Highlands Council - Strategic Plan": "Central Highlands Council",
+  "Relationships Australia - Tasmania": "Relationships Australia Tasmania",
+  "Illawarra Energy Storage": "Illawarra Energy Storage",
+}
+
+/** Step 1: Create organisations */
+export const createOrganisations = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const results: { name: string; status: string }[] = []
+
+    for (const org of AUTH_ORGANISATIONS) {
+      const existing = await ctx.db
+        .query("organisations")
+        .filter((q) => q.eq(q.field("name"), org.name))
+        .first()
+
+      if (existing) {
+        results.push({ name: org.name, status: "already_exists" })
+        continue
+      }
+
+      await ctx.db.insert("organisations", org)
+      results.push({ name: org.name, status: "created" })
+    }
+
+    console.log("createOrganisations:", JSON.stringify(results, null, 2))
+    return results
+  },
+})
+
+/** Step 2: Bootstrap super admins — run AFTER users have signed in */
+export const bootstrapSuperAdmins = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const cpfOrg = await ctx.db
+      .query("organisations")
+      .filter((q) => q.eq(q.field("name"), "Creating Preferred Futures"))
+      .first()
+
+    if (!cpfOrg) throw new Error("CPF org not found — run createOrganisations first")
+
+    const results: { email: string; status: string }[] = []
+
+    for (const email of SUPER_ADMIN_EMAILS) {
+      const user = await ctx.db
+        .query("users")
+        .withIndex("by_email", (q) => q.eq("email", email))
+        .first()
+
+      if (!user) {
+        results.push({ email, status: "user_not_found — must sign in first" })
+        continue
+      }
+      if (user.deletedAt) {
+        results.push({ email, status: "user_soft_deleted — skipped" })
+        continue
+      }
+
+      const existing = await ctx.db
+        .query("memberships")
+        .withIndex("by_user_org", (q) =>
+          q.eq("userId", user._id).eq("orgId", cpfOrg._id)
+        )
+        .first()
+
+      if (existing && !existing.deletedAt) {
+        if (existing.role !== "super_admin") {
+          await ctx.db.patch(existing._id, { role: "super_admin" })
+          results.push({ email, status: "upgraded_to_super_admin" })
+        } else {
+          results.push({ email, status: "already_super_admin" })
+        }
+      } else if (existing?.deletedAt) {
+        await ctx.db.patch(existing._id, { role: "super_admin", deletedAt: undefined })
+        results.push({ email, status: "restored_as_super_admin" })
+      } else {
+        await ctx.db.insert("memberships", {
+          userId: user._id,
+          orgId: cpfOrg._id,
+          role: "super_admin",
+        })
+        results.push({ email, status: "created_as_super_admin" })
+      }
+    }
+
+    console.log("bootstrapSuperAdmins:", JSON.stringify(results, null, 2))
+    return results
+  },
+})
+
+/** Step 3: Assign orgIds to existing systems by name match */
+export const assignSystemOrgs = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const allSystems = await ctx.db.query("systems").collect()
+    const results: { system: string; org: string; status: string }[] = []
+
+    for (const system of allSystems) {
+      if (system.deletedAt) continue
+      if (system.orgId) {
+        results.push({ system: system.name, org: "(already assigned)", status: "skipped" })
+        continue
+      }
+
+      const orgName = SYSTEM_ORG_MAP[system.name]
+      if (!orgName) {
+        results.push({ system: system.name, org: "(no mapping)", status: "skipped_no_mapping" })
+        continue
+      }
+
+      const org = await ctx.db
+        .query("organisations")
+        .filter((q) => q.eq(q.field("name"), orgName))
+        .first()
+
+      if (!org) {
+        results.push({ system: system.name, org: orgName, status: "org_not_found" })
+        continue
+      }
+
+      await ctx.db.patch(system._id, { orgId: org._id })
+      results.push({ system: system.name, org: orgName, status: "assigned" })
+    }
+
+    console.log("assignSystemOrgs:", JSON.stringify(results, null, 2))
+    return results
+  },
+})

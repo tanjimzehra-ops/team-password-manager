@@ -54,7 +54,7 @@ export function RowSidebar({ rows, activeRow, onRowClick }: RowSidebarProps) {
               key={row.id}
               onClick={() => onRowClick(row.id)}
               className={cn(
-                "relative px-1 py-4 border-b border-slate-700 last:border-b-0 transition-colors",
+                "relative px-1 pt-[100px] pb-[100px] border-b border-slate-700 last:border-b-0 transition-colors",
                 "hover:bg-slate-300 dark:hover:bg-slate-700",
                 activeRow === row.id && "bg-slate-300 dark:bg-slate-700",
                 "flex items-center justify-center",

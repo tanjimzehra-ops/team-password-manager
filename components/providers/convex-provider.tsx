@@ -3,6 +3,12 @@
 import { ConvexProviderWithAuth, ConvexReactClient } from "convex/react"
 import { AuthKitProvider, useAuth, useAccessToken } from "@workos-inc/authkit-nextjs/components"
 import { type ReactNode, useCallback, useState } from "react"
+import { useEnsureUser } from "@/hooks/use-ensure-user"
+
+function UserProvisioner({ children }: { children: ReactNode }) {
+  useEnsureUser()
+  return <>{children}</>
+}
 
 export function ConvexClientProvider({
   expectAuth,
@@ -21,7 +27,7 @@ export function ConvexClientProvider({
   return (
     <AuthKitProvider>
       <ConvexProviderWithAuth client={convex} useAuth={useAuthFromAuthKit}>
-        {children}
+        <UserProvisioner>{children}</UserProvisioner>
       </ConvexProviderWithAuth>
     </AuthKitProvider>
   )

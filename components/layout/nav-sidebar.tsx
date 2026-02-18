@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network } from "lucide-react"
+import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
@@ -200,6 +201,20 @@ export function NavSidebar({
           </div>
 
           <Separator className="my-2" />
+
+          {/* Admin Console */}
+          <Link href="/admin">
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
+                "hover:bg-muted/50"
+              )}
+            >
+              <Shield className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Admin</span>}
+            </Button>
+          </Link>
 
           {/* Settings */}
           <Button
