@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
+import { requireAuth, requireWriteAccess } from "./lib/permissions"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -44,6 +45,8 @@ export const create = mutation({
     gradientValue: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    await requireWriteAccess(ctx, user._id, args.systemId)
     return await ctx.db.insert("elements", args)
   },
 })
@@ -58,6 +61,11 @@ export const update = mutation({
     orderIndex: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    const element = await ctx.db.get(args.id)
+    if (!element) throw new Error("Element not found")
+    await requireWriteAccess(ctx, user._id, element.systemId)
+
     const { id, ...fields } = args
     const updates: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(fields)) {
@@ -79,6 +87,12 @@ export const reorder = mutation({
     ),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    // Check access on first element (all in same system)
+    if (args.updates.length > 0) {
+      const element = await ctx.db.get(args.updates[0].id)
+      if (element) await requireWriteAccess(ctx, user._id, element.systemId)
+    }
     for (const { id, orderIndex } of args.updates) {
       await ctx.db.patch(id, { orderIndex })
     }
@@ -88,6 +102,10 @@ export const reorder = mutation({
 export const remove = mutation({
   args: { id: v.id("elements") },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    const element = await ctx.db.get(args.id)
+    if (!element) throw new Error("Element not found")
+    await requireWriteAccess(ctx, user._id, element.systemId)
     await ctx.db.delete(args.id)
   },
 })

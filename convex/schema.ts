@@ -1,15 +1,67 @@
 import { defineSchema, defineTable } from "convex/server"
 import { v } from "convex/values"
 
+// Role union — 3 MVP roles, expandable to 5 (manager, employee) without migration
+const roleValidator = v.union(
+  v.literal("super_admin"),
+  v.literal("admin"),
+  v.literal("viewer")
+)
+
+// Organisation status
+const orgStatusValidator = v.union(
+  v.literal("active"),
+  v.literal("inactive"),
+  v.literal("trial")
+)
+
 export default defineSchema({
-  // Core system table
+  // ─── Auth & Multi-Tenancy Tables ──────────────────────────────
+
+  // Client organisations (replaces Blazor "Clients" entity)
+  organisations: defineTable({
+    name: v.string(),
+    contactEmail: v.optional(v.string()),
+    contactNumber: v.optional(v.string()),
+    abn: v.optional(v.string()),          // Australian Business Number
+    channel: v.optional(v.string()),      // Sales pipeline source (e.g. "KPMG")
+    createdBy: v.optional(v.id("users")), // Super admin who created it
+    status: orgStatusValidator,
+    deletedAt: v.optional(v.number()),    // Soft delete timestamp (ms)
+  }).index("by_status", ["status"]),
+
+  // Users synced from WorkOS via webhooks
+  users: defineTable({
+    workosId: v.string(),                 // WorkOS user ID
+    email: v.string(),
+    name: v.optional(v.string()),
+    avatarUrl: v.optional(v.string()),
+    deletedAt: v.optional(v.number()),    // Soft delete timestamp (ms)
+  }).index("by_workosId", ["workosId"])
+    .index("by_email", ["email"]),
+
+  // Multi-org membership bridge: user + org + role
+  memberships: defineTable({
+    userId: v.id("users"),
+    orgId: v.id("organisations"),
+    role: roleValidator,
+    deletedAt: v.optional(v.number()),    // Soft delete timestamp (ms)
+  }).index("by_user", ["userId"])
+    .index("by_org", ["orgId"])
+    .index("by_user_org", ["userId", "orgId"]),
+
+  // ─── Core Data Tables ─────────────────────────────────────────
+
+  // Core system table — orgId added for tenancy boundary
   systems: defineTable({
     name: v.string(),
     sector: v.optional(v.string()),
     impact: v.string(),      // Purpose/Vision statement
     dimension: v.string(),   // Delivery culture statement
     challenge: v.string(),   // System context statement
-  }),
+    orgId: v.optional(v.id("organisations")),  // Tenancy boundary (optional during migration)
+    deletedAt: v.optional(v.number()),          // Soft delete timestamp (ms)
+  }).index("by_org", ["orgId"]),
 
   // Elements: outcomes, value_chain, resources
   elements: defineTable({

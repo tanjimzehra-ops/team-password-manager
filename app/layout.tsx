@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 
 import { Analytics } from "@vercel/analytics/next"
+import { withAuth } from "@workos-inc/authkit-nextjs"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/providers/convex-provider"
 import "./globals.css"
@@ -51,15 +52,17 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const { accessToken } = await withAuth()
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${plusJakartaSans.className} font-sans antialiased`}>
-        <ConvexClientProvider>
+        <ConvexClientProvider expectAuth={!!accessToken}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             {children}
           </ThemeProvider>

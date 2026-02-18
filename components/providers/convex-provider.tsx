@@ -1,16 +1,60 @@
 "use client"
 
-import { ConvexProvider, ConvexReactClient } from "convex/react"
-import type { ReactNode } from "react"
+import { ConvexProviderWithAuth, ConvexReactClient } from "convex/react"
+import { AuthKitProvider, useAuth, useAccessToken } from "@workos-inc/authkit-nextjs/components"
+import { type ReactNode, useCallback, useState } from "react"
 
-// When no URL is configured, use a placeholder that won't connect
-// but keeps the provider mounted so hooks don't throw.
-// useQuery will return undefined (loading) forever, which is fine
-// since dataSource !== "convex" in that case.
-const convex = new ConvexReactClient(
-  process.env.NEXT_PUBLIC_CONVEX_URL || "https://placeholder-not-configured.convex.cloud"
-)
+export function ConvexClientProvider({
+  expectAuth,
+  children,
+}: {
+  expectAuth: boolean
+  children: ReactNode
+}) {
+  const [convex] = useState(() => {
+    return new ConvexReactClient(
+      process.env.NEXT_PUBLIC_CONVEX_URL || "https://placeholder-not-configured.convex.cloud",
+      { expectAuth }
+    )
+  })
 
-export function ConvexClientProvider({ children }: { children: ReactNode }) {
-  return <ConvexProvider client={convex}>{children}</ConvexProvider>
+  return (
+    <AuthKitProvider>
+      <ConvexProviderWithAuth client={convex} useAuth={useAuthFromAuthKit}>
+        {children}
+      </ConvexProviderWithAuth>
+    </AuthKitProvider>
+  )
+}
+
+function useAuthFromAuthKit() {
+  const { user, loading: isLoading } = useAuth()
+  const { getAccessToken, refresh } = useAccessToken()
+
+  const isAuthenticated = !!user
+
+  const fetchAccessToken = useCallback(
+    async ({ forceRefreshToken }: { forceRefreshToken?: boolean } = {}): Promise<string | null> => {
+      if (!user) {
+        return null
+      }
+
+      try {
+        if (forceRefreshToken) {
+          return (await refresh()) ?? null
+        }
+        return (await getAccessToken()) ?? null
+      } catch (error) {
+        console.error("Failed to get access token:", error)
+        return null
+      }
+    },
+    [user, refresh, getAccessToken],
+  )
+
+  return {
+    isLoading,
+    isAuthenticated,
+    fetchAccessToken,
+  }
 }

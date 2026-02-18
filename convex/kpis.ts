@@ -1,5 +1,6 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
+import { requireAuth, requireWriteAccess } from "./lib/permissions"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -29,6 +30,8 @@ export const create = mutation({
     orderIndex: v.number(),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    await requireWriteAccess(ctx, user._id, args.systemId)
     return await ctx.db.insert("kpis", args)
   },
 })
@@ -40,6 +43,11 @@ export const update = mutation({
     orderIndex: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    const kpi = await ctx.db.get(args.id)
+    if (!kpi) throw new Error("KPI not found")
+    await requireWriteAccess(ctx, user._id, kpi.systemId)
+
     const { id, ...fields } = args
     const updates: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(fields)) {
@@ -54,6 +62,10 @@ export const update = mutation({
 export const remove = mutation({
   args: { id: v.id("kpis") },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    const kpi = await ctx.db.get(args.id)
+    if (!kpi) throw new Error("KPI not found")
+    await requireWriteAccess(ctx, user._id, kpi.systemId)
     await ctx.db.delete(args.id)
   },
 })
@@ -65,6 +77,9 @@ export const replaceForParent = mutation({
     kpis: v.array(v.string()),
   },
   handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    await requireWriteAccess(ctx, user._id, args.systemId)
+
     // Delete all existing KPIs for this parent
     const existing = await ctx.db
       .query("kpis")
