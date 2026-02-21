@@ -1,15 +1,16 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Download, Upload, RotateCcw } from "lucide-react"
+import { Download, Upload, RotateCcw, HelpCircle } from "lucide-react"
 
 interface FooterProps {
   onExport?: () => void
   onImport?: () => void
   onReset?: () => void
+  onRestartTour?: () => void
 }
 
-export function Footer({ onExport, onImport, onReset }: FooterProps) {
+export function Footer({ onExport, onImport, onReset, onRestartTour }: FooterProps) {
   const handleExport = () => {
     onExport?.()
     // TODO: Implement JSON export
@@ -47,9 +48,17 @@ export function Footer({ onExport, onImport, onReset }: FooterProps) {
             Reset
           </Button>
         </div>
-        <span className="text-sm text-muted-foreground">
-          © 2025, Creating Preferred Futures - Website
-        </span>
+        <div className="flex items-center gap-3">
+          {onRestartTour && (
+            <Button variant="ghost" size="sm" onClick={onRestartTour} className="text-muted-foreground hover:text-foreground">
+              <HelpCircle className="h-4 w-4 mr-2" />
+              Restart Tour
+            </Button>
+          )}
+            <span className="text-sm text-muted-foreground">
+            © 2025, Creating Preferred Futures - Website
+          </span>
+        </div>
       </div>
     </footer>
   )

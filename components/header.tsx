@@ -56,6 +56,7 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
               <ThemeToggle />
               {user && (
                 <Button
+                  data-tour="sign-out"
                   variant="ghost"
                   size="sm"
                   onClick={() => signOut({ returnTo: "/" })}
@@ -82,7 +83,7 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
       {/* View Tabs */}
       <div className="border-b border-border bg-background">
         <div className="px-4">
-          <nav className="flex items-center gap-1 py-2">
+          <nav data-tour="view-tabs" className="flex items-center gap-1 py-2">
             <Button
               variant="ghost"
               size="sm"

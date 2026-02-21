@@ -65,7 +65,7 @@ export function ViewControls({
             </Select>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div data-tour="toolbar-modes" className="flex items-center gap-2">
             <Label className="text-sm text-muted-foreground">Select Mode:</Label>
             <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
               {availableModes.map((mode) => (
@@ -99,7 +99,7 @@ export function ViewControls({
             {onExport && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9">
+                  <Button data-tour="export-button" variant="outline" size="sm" className="h-9">
                     <Download className="h-4 w-4 mr-2" />
                     Export
                   </Button>

@@ -78,6 +78,7 @@ export function NavSidebar({
 
   return (
     <div
+      data-tour="nav-sidebar"
       className={cn(
         "flex flex-col transition-all duration-300 shrink-0 border-r border-border bg-background z-10",
         isCollapsed ? "w-16" : "w-60"

@@ -24,6 +24,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { NodeEditPopup } from "@/components/node-edit-popup"
 import { PerformanceModal } from "@/components/performance-modal"
 import { LibraryPopup } from "@/components/library-popup"
+import { OnboardingTour } from "@/components/onboarding-tour"
 
 // Convex hooks
 import { useConvexSystems } from "@/hooks/convex/use-convex-systems"
@@ -54,6 +55,7 @@ import {
 } from "@/lib/data"
 import type { NodeData } from "@/lib/types"
 import { useToast } from "@/hooks/use-toast"
+import { useOnboardingTour } from "@/hooks/use-onboarding-tour"
 
 // Export functions
 import {
@@ -180,6 +182,9 @@ export default function Page() {
 
   // Portfolio optimistic state
   const { addOptimistic, removeOptimistic, getMergedPortfolios } = usePortfolioState()
+
+  // Onboarding tour
+  const { run: tourRun, stepIndex: tourStepIndex, steps: tourSteps, handleCallback: tourCallback, restartTour } = useOnboardingTour()
 
   // Get current system name for display
   const systemName = useMemo(() => {
@@ -670,7 +675,7 @@ export default function Page() {
         </div>
       </main>
 
-      <Footer />
+      <Footer onRestartTour={restartTour} />
 
       {/* Node Detail Sidebar */}
       <NodeDetailSidebar
@@ -712,6 +717,14 @@ export default function Page() {
         onConnect={handleLibraryConnect}
         onCopy={handleLibraryCopy}
         items={libraryItems}
+      />
+
+      {/* Onboarding Tour */}
+      <OnboardingTour
+        run={tourRun}
+        stepIndex={tourStepIndex}
+        steps={tourSteps}
+        onCallback={tourCallback}
       />
     </div>
     </OrgContext>
