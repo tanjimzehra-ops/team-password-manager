@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
+import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { LandingPage } from "@/components/landing-page"
 import { Header } from "@/components/header"
 import { ViewControls } from "@/components/view-controls"
 import { NavSidebar } from "@/components/layout/nav-sidebar"
@@ -68,7 +70,13 @@ type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "co
 const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
 
 export default function Page() {
+  const { user, loading: authLoading } = useAuth()
   const { toast } = useToast()
+
+  // Show landing page for unauthenticated users
+  if (!authLoading && !user) {
+    return <LandingPage />
+  }
 
   // UI State
   const [showKpi, setShowKpi] = useState(true)
