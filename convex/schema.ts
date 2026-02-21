@@ -129,6 +129,19 @@ export default defineSchema({
   }).index("by_system", ["systemId"])
     .index("by_value_chain", ["valueChainId"]),
 
+  // Audit logs — compliance trail of important mutations
+  auditLogs: defineTable({
+    userId: v.string(),
+    userEmail: v.string(),
+    action: v.string(),
+    resourceType: v.string(),
+    resourceId: v.string(),
+    details: v.optional(v.any()),
+    orgId: v.optional(v.string()),
+    timestamp: v.number(),
+  }).index("by_timestamp", ["timestamp"])
+    .index("by_orgId", ["orgId", "timestamp"]),
+
   // Portfolios - linked to nodes (elements), associated with strategic initiatives
   portfolios: defineTable({
     systemId: v.id("systems"),

@@ -5,6 +5,7 @@ import {
   isSuperAdmin,
   requireRole,
 } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 const roleValidator = v.union(
   v.literal("super_admin"),
@@ -104,13 +105,32 @@ export const create = mutation({
           role: args.role,
           deletedAt: undefined,
         })
+        await logAudit(ctx, {
+          userId: user._id,
+          userEmail: user.email,
+          action: "membership.restore",
+          resourceType: "membership",
+          resourceId: existing._id,
+          details: { targetUserId: String(args.userId), role: args.role },
+          orgId: String(args.orgId),
+        })
         return existing._id
       }
       // Already exists and active — return existing
       return existing._id
     }
 
-    return await ctx.db.insert("memberships", args)
+    const membershipId = await ctx.db.insert("memberships", args)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "membership.create",
+      resourceType: "membership",
+      resourceId: membershipId,
+      details: { targetUserId: String(args.userId), role: args.role },
+      orgId: String(args.orgId),
+    })
+    return membershipId
   },
 })
 
@@ -132,7 +152,17 @@ export const updateRole = mutation({
       throw new Error("Access denied: only super admins can assign super_admin role")
     }
 
+    const oldRole = membership.role
     await ctx.db.patch(args.id, { role: args.role })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "user.roleChange",
+      resourceType: "membership",
+      resourceId: args.id,
+      details: { targetUserId: String(membership.userId), oldRole, newRole: args.role },
+      orgId: String(membership.orgId),
+    })
   },
 })
 
@@ -146,5 +176,14 @@ export const remove = mutation({
 
     await requireRole(ctx, user._id, membership.orgId, ["admin", "super_admin"])
     await ctx.db.patch(args.id, { deletedAt: Date.now() })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "membership.remove",
+      resourceType: "membership",
+      resourceId: args.id,
+      details: { targetUserId: String(membership.userId), role: membership.role },
+      orgId: String(membership.orgId),
+    })
   },
 })

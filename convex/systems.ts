@@ -7,6 +7,7 @@ import {
   getAccessibleOrgIds,
   canAccessSystem,
 } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 /**
  * List systems visible to the current user.
@@ -148,7 +149,17 @@ export const create = mutation({
       await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
     }
 
-    return await ctx.db.insert("systems", args)
+    const systemId = await ctx.db.insert("systems", args)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "system.create",
+      resourceType: "system",
+      resourceId: systemId,
+      details: { name: args.name, sector: args.sector },
+      orgId: args.orgId,
+    })
+    return systemId
   },
 })
 
@@ -168,6 +179,7 @@ export const update = mutation({
     const user = await requireAuth(ctx)
     await requireWriteAccess(ctx, user._id, args.id)
 
+    const system = await ctx.db.get(args.id)
     const { id, ...fields } = args
     const updates: Record<string, string> = {}
     for (const [key, value] of Object.entries(fields)) {
@@ -176,6 +188,15 @@ export const update = mutation({
       }
     }
     await ctx.db.patch(id, updates)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "system.update",
+      resourceType: "system",
+      resourceId: id,
+      details: { updated: Object.keys(updates) },
+      orgId: system?.orgId,
+    })
   },
 })
 
@@ -188,8 +209,18 @@ export const remove = mutation({
     const user = await requireAuth(ctx)
     await requireWriteAccess(ctx, user._id, args.id)
 
+    const system = await ctx.db.get(args.id)
     // Soft delete instead of hard delete
     await ctx.db.patch(args.id, { deletedAt: Date.now() })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "system.delete",
+      resourceType: "system",
+      resourceId: args.id,
+      details: { name: system?.name },
+      orgId: system?.orgId,
+    })
   },
 })
 
