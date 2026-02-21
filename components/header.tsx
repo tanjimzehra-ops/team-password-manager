@@ -5,6 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from 'lucide-react'
 import { useAuth } from "@workos-inc/authkit-nextjs/components"
 import { ThemeToggle } from "./theme-toggle"
+import { OrgSwitcher } from "./org-switcher"
 import { cn } from "@/lib/utils"
 
 type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
@@ -32,15 +33,8 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
               <span className="font-semibold text-lg text-foreground">Jigsaw</span>
             </div>
 
-            {/* Center Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
-              <Button variant="ghost" size="sm" className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">
-                Clients
-              </Button>
-              <Button variant="ghost" size="sm" className="text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted">
-                Admin
-              </Button>
-            </nav>
+            {/* Org Switcher */}
+            {user && <OrgSwitcher />}
 
             {/* Right side */}
             <div className="flex items-center gap-3">

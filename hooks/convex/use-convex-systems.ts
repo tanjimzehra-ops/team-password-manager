@@ -13,6 +13,7 @@ export interface SystemInfo {
   id: string
   name: string
   sector: string
+  orgId?: string
 }
 
 /**
@@ -30,6 +31,7 @@ export function useConvexSystems() {
         id: s._id,
         name: s.name,
         sector: s.sector ?? "",
+        orgId: s.orgId ?? undefined,
       }))
 
   return { data, isLoading }

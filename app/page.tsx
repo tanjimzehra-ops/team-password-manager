@@ -1,7 +1,10 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
+import { useQuery } from "convex/react"
 import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { api } from "@/convex/_generated/api"
+import { OrgContext, type OrgInfo } from "@/hooks/use-org"
 import { LandingPage } from "@/components/landing-page"
 import { Header } from "@/components/header"
 import { ViewControls } from "@/components/view-controls"
@@ -103,8 +106,29 @@ export default function Page() {
   // JSON system adapter (used when Convex is not configured)
   const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("relationships_au_tas")
 
+  // Org selection (multi-tenant)
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const rawOrgs = useQuery(api.organisations.list, isConvexConfigured ? {} : "skip")
+  const orgsLoading = rawOrgs === undefined
+  const orgs: OrgInfo[] = useMemo(
+    () => (rawOrgs ?? []).map((o) => ({ id: o._id, name: o.name, status: o.status })),
+    [rawOrgs]
+  )
+
+  // Auto-select first org when orgs load
+  useEffect(() => {
+    if (selectedOrgId || orgs.length === 0) return
+    setSelectedOrgId(orgs[0].id)
+  }, [orgs, selectedOrgId])
+
   // Convex data
-  const { data: convexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
+  const { data: allConvexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
+
+  // Filter systems by selected org (show legacy systems + selected org's systems)
+  const convexSystems = useMemo(() => {
+    if (!selectedOrgId) return allConvexSystems
+    return allConvexSystems.filter((s) => !s.orgId || s.orgId === selectedOrgId)
+  }, [allConvexSystems, selectedOrgId])
   const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
     isConvexConfigured ? selectedSystemId : null
   )
@@ -122,11 +146,13 @@ export default function Page() {
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
 
-  // Auto-select first system when systems load
+  // Auto-select first system when systems load or org changes
   useEffect(() => {
-    if (selectedSystemId) return
     if (dataSource === "convex" && convexSystems.length > 0) {
-      setSelectedSystemId(convexSystems[0].id)
+      // If current selection isn't in the filtered list, pick the first one
+      if (!selectedSystemId || !convexSystems.find((s) => s.id === selectedSystemId)) {
+        setSelectedSystemId(convexSystems[0].id)
+      }
     }
   }, [dataSource, convexSystems, selectedSystemId])
 
@@ -564,7 +590,15 @@ export default function Page() {
     }
   }
 
+  const orgContextValue = useMemo(() => ({
+    orgs,
+    selectedOrgId,
+    setSelectedOrgId,
+    isLoading: orgsLoading,
+  }), [orgs, selectedOrgId, orgsLoading])
+
   return (
+    <OrgContext value={orgContextValue}>
     <div className="min-h-screen bg-background flex flex-col">
       <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
       <ViewControls
@@ -680,5 +714,6 @@ export default function Page() {
         items={libraryItems}
       />
     </div>
+    </OrgContext>
   )
 }

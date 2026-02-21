@@ -25,7 +25,7 @@ export const list = query({
       // Unauthenticated: show legacy systems only (no orgId)
       return activeSystems
         .filter((s) => !s.orgId)
-        .map((s) => ({ _id: s._id, name: s.name, sector: s.sector }))
+        .map((s) => ({ _id: s._id, name: s.name, sector: s.sector, orgId: s.orgId }))
     }
 
     const { orgIds, isSuperAdmin } = await getAccessibleOrgIds(ctx, user._id)
