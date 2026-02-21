@@ -6,6 +6,7 @@ import {
   getOrgMembership,
   requireRole,
 } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 const orgStatusValidator = v.union(
   v.literal("active"),
@@ -118,6 +119,27 @@ export const remove = mutation({
   },
 })
 
+// List soft-deleted organisations — super admin only
+export const listDeleted = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx)
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      throw new Error("Access denied: only super admins can view deleted organisations")
+    }
+    const allOrgs = await ctx.db.query("organisations").collect()
+    return allOrgs
+      .filter((o) => !!o.deletedAt)
+      .map((o) => ({
+        _id: o._id,
+        name: o.name,
+        status: o.status,
+        contactEmail: o.contactEmail,
+        deletedAt: o.deletedAt!,
+      }))
+  },
+})
+
 // Restore — super admin only
 export const restore = mutation({
   args: { id: v.id("organisations") },
@@ -126,6 +148,17 @@ export const restore = mutation({
     if (!(await isSuperAdmin(ctx, user._id))) {
       throw new Error("Access denied: only super admins can restore organisations")
     }
+    const org = await ctx.db.get(args.id)
+    if (!org) throw new Error("Organisation not found")
+
     await ctx.db.patch(args.id, { deletedAt: undefined })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "org.restore",
+      resourceType: "org",
+      resourceId: args.id,
+      details: { name: org.name },
+    })
   },
 })

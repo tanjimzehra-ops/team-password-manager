@@ -1,6 +1,7 @@
 import { query, mutation, internalMutation } from "./_generated/server"
 import { v } from "convex/values"
 import { getCurrentUser, requireAuth, isSuperAdmin } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 /**
  * Get the current authenticated user's record + role info.
@@ -194,6 +195,26 @@ export const update = mutation({
   },
 })
 
+// List soft-deleted users — super admin only
+export const listDeleted = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx)
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      throw new Error("Access denied: only super admins can view deleted users")
+    }
+    const allUsers = await ctx.db.query("users").collect()
+    return allUsers
+      .filter((u) => !!u.deletedAt)
+      .map((u) => ({
+        _id: u._id,
+        email: u.email,
+        name: u.name,
+        deletedAt: u.deletedAt!,
+      }))
+  },
+})
+
 // Soft delete — super admin only
 export const remove = mutation({
   args: { id: v.id("users") },
@@ -203,5 +224,28 @@ export const remove = mutation({
       throw new Error("Access denied: only super admins can delete users")
     }
     await ctx.db.patch(args.id, { deletedAt: Date.now() })
+  },
+})
+
+// Restore soft-deleted user — super admin only
+export const restore = mutation({
+  args: { id: v.id("users") },
+  handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      throw new Error("Access denied: only super admins can restore users")
+    }
+    const target = await ctx.db.get(args.id)
+    if (!target) throw new Error("User not found")
+
+    await ctx.db.patch(args.id, { deletedAt: undefined })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "user.restore",
+      resourceType: "user",
+      resourceId: args.id,
+      details: { email: target.email, name: target.name },
+    })
   },
 })

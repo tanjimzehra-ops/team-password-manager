@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
-import { Building2, Users, LayoutDashboard, ArrowLeft, Shield, ScrollText } from "lucide-react"
+import { Building2, Users, LayoutDashboard, ArrowLeft, Shield, ScrollText, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/admin/clients", label: "Clients", icon: Building2 },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/audit", label: "Audit Log", icon: ScrollText },
+  { href: "/admin/trash", label: "Trash", icon: Trash2 },
 ]
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

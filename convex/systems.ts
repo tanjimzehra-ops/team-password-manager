@@ -3,6 +3,7 @@ import { v } from "convex/values"
 import {
   getCurrentUser,
   requireAuth,
+  isSuperAdmin,
   requireWriteAccess,
   getAccessibleOrgIds,
   canAccessSystem,
@@ -225,6 +226,29 @@ export const remove = mutation({
 })
 
 /**
+ * List soft-deleted systems — super admin only.
+ */
+export const listDeleted = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireAuth(ctx)
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      throw new Error("Access denied: only super admins can view deleted systems")
+    }
+    const allSystems = await ctx.db.query("systems").collect()
+    return allSystems
+      .filter((s) => !!s.deletedAt)
+      .map((s) => ({
+        _id: s._id,
+        name: s.name,
+        sector: s.sector,
+        orgId: s.orgId,
+        deletedAt: s.deletedAt!,
+      }))
+  },
+})
+
+/**
  * Restore a soft-deleted system. Requires auth + admin/super_admin.
  */
 export const restore = mutation({
@@ -241,5 +265,14 @@ export const restore = mutation({
     }
 
     await ctx.db.patch(args.id, { deletedAt: undefined })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "system.restore",
+      resourceType: "system",
+      resourceId: args.id,
+      details: { name: system.name },
+      orgId: system.orgId,
+    })
   },
 })
