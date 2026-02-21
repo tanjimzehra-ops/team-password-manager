@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 
@@ -47,14 +48,28 @@ export function NavSidebar({
   onCanvasClick
 }: NavSidebarProps) {
   const [systemsExpanded, setSystemsExpanded] = useState(true)
+  const [searchInput, setSearchInput] = useState("")
+  const [searchQuery, setSearchQuery] = useState("")
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
+
+  // Debounce search input by 300ms
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => setSearchQuery(searchInput), 300)
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [searchInput])
 
   // Use provided systems or fallback to defaults
   const displaySystems = systems?.length ? systems : defaultSystems
 
   const DEMO_SYSTEMS = ["MERA", "Central Highlands", "Blank"]
-  const filteredSystems = displaySystems.filter(s =>
-    DEMO_SYSTEMS.some(name => s.name.includes(name))
-  )
+  const filteredSystems = displaySystems
+    .filter(s => DEMO_SYSTEMS.some(name => s.name.includes(name)))
+    .filter(s => {
+      if (!searchQuery) return true
+      const q = searchQuery.toLowerCase()
+      return s.name.toLowerCase().includes(q) || (s.sector?.toLowerCase().includes(q) ?? false)
+    })
 
   // Find if selected system matches by ID or name
   const isSystemSelected = (system: SystemInfo) => {
@@ -149,15 +164,37 @@ export function NavSidebar({
               )}
             </Button>
 
-            {/* Systems List */}
+            {/* Search + Systems List */}
             {!isCollapsed && systemsExpanded && (
-              <div className="pl-11 pr-3 pb-2 space-y-1">
+              <div className="pl-3 pr-3 pb-2 space-y-1">
+                {/* Search Input */}
+                <div className="relative mb-1">
+                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                  <Input
+                    placeholder="Search systems..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="h-7 pl-7 pr-7 text-xs"
+                  />
+                  {searchInput && (
+                    <button
+                      onClick={() => { setSearchInput(""); setSearchQuery("") }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  )}
+                </div>
+
                 {isLoading ? (
                   <div className="flex items-center justify-center py-4">
                     <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
                   </div>
                 ) : (
                   <>
+                    {searchQuery && filteredSystems.length === 0 && (
+                      <p className="text-[10px] text-muted-foreground text-center py-2">No systems found</p>
+                    )}
                     {filteredSystems.map((system) => (
                       <Button
                         key={system.id}
