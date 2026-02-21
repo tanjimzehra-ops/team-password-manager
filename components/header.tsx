@@ -1,9 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from 'lucide-react'
+import { useAuth } from "@workos-inc/authkit-nextjs/components"
 import { ThemeToggle } from "./theme-toggle"
 import { cn } from "@/lib/utils"
 
@@ -16,6 +15,8 @@ interface HeaderProps {
 }
 
 export function Header({ activeTab = "logic-model", onTabChange, systemName = "MERA" }: HeaderProps) {
+  const { user, signOut, loading } = useAuth()
+
   return (
     <>
       {/* Top Navbar */}
@@ -42,14 +43,25 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
 
             {/* Right side */}
             <div className="flex items-center gap-3">
-              <div className="hidden sm:flex items-center gap-2 text-sm">
-                <span className="font-medium text-muted-foreground">Hello, User</span>
-              </div>
+              {user && (
+                <div className="hidden sm:flex items-center gap-2 text-sm">
+                  <span className="font-medium text-muted-foreground">
+                    {user.firstName ? `Hello, ${user.firstName}` : `Hello, ${user.email}`}
+                  </span>
+                </div>
+              )}
               <ThemeToggle />
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground hover:bg-muted">
-                <LogOut className="h-4 w-4 mr-2" />
-                Log out
-              </Button>
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => signOut({ returnTo: "/" })}
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted"
+                >
+                  <LogOut className="h-4 w-4 mr-2" />
+                  <span className="hidden sm:inline">Sign out</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
