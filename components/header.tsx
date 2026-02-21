@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from 'lucide-react'
 import { useAuth } from "@workos-inc/authkit-nextjs/components"
 import { ThemeToggle } from "./theme-toggle"
@@ -45,6 +46,14 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
             <div className="flex items-center gap-3">
               {user && (
                 <div className="hidden sm:flex items-center gap-2 text-sm">
+                  <Avatar className="h-7 w-7">
+                    {user.profilePictureUrl && (
+                      <AvatarImage src={user.profilePictureUrl} alt={user.firstName ?? user.email ?? ""} />
+                    )}
+                    <AvatarFallback className="text-xs bg-muted">
+                      {(user.firstName?.[0] ?? "").toUpperCase()}{(user.lastName?.[0] ?? "").toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                   <span className="font-medium text-muted-foreground">
                     {user.firstName ? `Hello, ${user.firstName}` : `Hello, ${user.email}`}
                   </span>
