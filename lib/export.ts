@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx"
+import ExcelJS from "exceljs"
 import jsPDF from "jspdf"
 import html2canvas from "html2canvas"
 import type {
@@ -7,6 +7,96 @@ import type {
   DevelopmentPathwaysData,
   ConvergenceMapData,
 } from "./types"
+
+// =============================================================================
+// Shared ExcelJS helpers
+// =============================================================================
+
+const TEAL: ExcelJS.FillPattern = {
+  type: "pattern",
+  pattern: "solid",
+  fgColor: { argb: "FF0D9488" },
+}
+
+const TEAL_LIGHT: ExcelJS.FillPattern = {
+  type: "pattern",
+  pattern: "solid",
+  fgColor: { argb: "FFCCFBF1" },
+}
+
+const HEADER_FONT: Partial<ExcelJS.Font> = {
+  bold: true,
+  color: { argb: "FFFFFFFF" },
+  size: 11,
+}
+
+const TITLE_FONT: Partial<ExcelJS.Font> = {
+  bold: true,
+  size: 14,
+  color: { argb: "FF0D9488" },
+}
+
+const THIN_BORDER: Partial<ExcelJS.Borders> = {
+  top: { style: "thin", color: { argb: "FFD1D5DB" } },
+  left: { style: "thin", color: { argb: "FFD1D5DB" } },
+  bottom: { style: "thin", color: { argb: "FFD1D5DB" } },
+  right: { style: "thin", color: { argb: "FFD1D5DB" } },
+}
+
+function autoWidth(ws: ExcelJS.Worksheet) {
+  ws.columns.forEach((col) => {
+    let max = 10
+    col.eachCell?.({ includeEmpty: false }, (cell) => {
+      const len = String(cell.value ?? "").length
+      if (len > max) max = len
+    })
+    col.width = Math.min(max + 4, 50)
+  })
+}
+
+function applyBorders(ws: ExcelJS.Worksheet) {
+  ws.eachRow((row) => {
+    row.eachCell((cell) => {
+      cell.border = THIN_BORDER
+    })
+  })
+}
+
+function addTitleRow(ws: ExcelJS.Worksheet, title: string, colCount: number) {
+  const row = ws.addRow([title])
+  ws.mergeCells(row.number, 1, row.number, Math.max(colCount, 1))
+  const cell = row.getCell(1)
+  cell.font = TITLE_FONT
+  cell.alignment = { vertical: "middle" }
+  row.height = 28
+  ws.addRow([]) // blank spacer
+}
+
+function styleHeaderRow(row: ExcelJS.Row) {
+  row.eachCell((cell) => {
+    cell.font = HEADER_FONT
+    cell.fill = TEAL
+    cell.alignment = { vertical: "middle", wrapText: true }
+  })
+  row.height = 22
+}
+
+function styleRowLabelCell(cell: ExcelJS.Cell) {
+  cell.font = { bold: true, size: 11 }
+  cell.fill = TEAL_LIGHT
+}
+
+async function downloadWorkbook(wb: ExcelJS.Workbook, filename: string) {
+  const buffer = await wb.xlsx.writeBuffer()
+  const blob = new Blob([buffer], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  })
+  const link = document.createElement("a")
+  link.href = URL.createObjectURL(blob)
+  link.download = `${filename}.xlsx`
+  link.click()
+  URL.revokeObjectURL(link.href)
+}
 
 // =============================================================================
 // PDF Export (captures a DOM container)
@@ -79,23 +169,26 @@ export function exportLogicModelCsv(rows: RowData[], filename: string) {
   downloadCsv(lines.join("\n"), filename)
 }
 
-export function exportLogicModelExcel(rows: RowData[], filename: string) {
-  const data: Record<string, string | number>[] = []
+export async function exportLogicModelExcel(rows: RowData[], filename: string) {
+  const wb = new ExcelJS.Workbook()
+  const ws = wb.addWorksheet("Logic Model")
+
+  addTitleRow(ws, filename.replace(/-/g, " "), 5)
+
+  const headerRow = ws.addRow(["Category", "Title", "Description", "KPI Value", "KPI Status"])
+  styleHeaderRow(headerRow)
+
   for (const row of rows) {
     for (const node of row.nodes) {
-      data.push({
-        Category: row.label,
-        Title: node.title,
-        Description: node.description,
-        "KPI Value": node.kpiValue,
-        "KPI Status": node.kpiStatus,
-      })
+      const r = ws.addRow([row.label, node.title, node.description, node.kpiValue, node.kpiStatus])
+      styleRowLabelCell(r.getCell(1))
     }
   }
-  const ws = XLSX.utils.json_to_sheet(data)
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Logic Model")
-  XLSX.writeFile(wb, `${filename}.xlsx`)
+
+  ws.views = [{ state: "frozen", ySplit: 3 }]
+  applyBorders(ws)
+  autoWidth(ws)
+  await downloadWorkbook(wb, filename)
 }
 
 // =============================================================================
@@ -117,31 +210,33 @@ export function exportContributionMapCsv(data: ContributionMapData, filename: st
   downloadCsv(lines.join("\n"), filename)
 }
 
-export function exportContributionMapExcel(data: ContributionMapData, filename: string) {
-  const matrixRows: string[][] = [
-    ["Value Chain", ...data.outcomes.map(o => o.title)],
-  ]
+export async function exportContributionMapExcel(data: ContributionMapData, filename: string) {
+  const wb = new ExcelJS.Workbook()
+  const ws = wb.addWorksheet("Contribution Map")
+  const colCount = data.outcomes.length + 1
+
+  addTitleRow(ws, filename.replace(/-/g, " "), colCount)
+
+  const headerRow = ws.addRow(["Value Chain", ...data.outcomes.map(o => o.title)])
+  styleHeaderRow(headerRow)
+
   for (const vc of data.valueChain) {
-    const row = [vc.title]
+    const values = [vc.title]
     for (const outcome of data.outcomes) {
       const cell = data.cells.find(c => c.valueChainId === vc.id && c.outcomeId === outcome.id)
-      row.push(cell?.content ?? "")
+      values.push(cell?.content ?? "")
     }
-    matrixRows.push(row)
+    const r = ws.addRow(values)
+    styleRowLabelCell(r.getCell(1))
+    r.eachCell((cell) => {
+      cell.alignment = { wrapText: true, vertical: "top" }
+    })
   }
 
-  const ws = XLSX.utils.aoa_to_sheet(matrixRows)
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Contribution Matrix")
-
-  const elementsData = [
-    ...data.outcomes.map(o => ({ Type: "Outcome", Title: o.title, KPI: o.kpiValue, Status: o.kpiStatus })),
-    ...data.valueChain.map(v => ({ Type: "Value Chain", Title: v.title, KPI: v.kpiValue, Status: v.kpiStatus })),
-  ]
-  const ws2 = XLSX.utils.json_to_sheet(elementsData)
-  XLSX.utils.book_append_sheet(wb, ws2, "Elements")
-
-  XLSX.writeFile(wb, `${filename}.xlsx`)
+  ws.views = [{ state: "frozen", ySplit: 3 }]
+  applyBorders(ws)
+  autoWidth(ws)
+  await downloadWorkbook(wb, filename)
 }
 
 // =============================================================================
@@ -163,32 +258,47 @@ export function exportDevelopmentPathwaysCsv(data: DevelopmentPathwaysData, file
   downloadCsv(lines.join("\n"), filename)
 }
 
-export function exportDevelopmentPathwaysExcel(data: DevelopmentPathwaysData, filename: string) {
-  const matrixRows: string[][] = [
-    ["Value Chain", ...data.resources.map(r => r.title)],
-  ]
+export async function exportDevelopmentPathwaysExcel(data: DevelopmentPathwaysData, filename: string) {
+  const wb = new ExcelJS.Workbook()
+  const ws = wb.addWorksheet("Development Pathways")
+  const colCount = data.resources.length + 1
+
+  addTitleRow(ws, filename.replace(/-/g, " "), colCount)
+
+  const headerRow = ws.addRow(["Value Chain", ...data.resources.map(r => r.title)])
+  styleHeaderRow(headerRow)
+
   for (const vc of data.valueChain) {
-    const row = [vc.title]
+    const values = [vc.title]
     for (const resource of data.resources) {
       const cell = data.cells.find(c => c.valueChainId === vc.id && c.resourceId === resource.id)
-      row.push(cell?.content ?? "")
+      values.push(cell?.content ?? "")
     }
-    matrixRows.push(row)
+    const r = ws.addRow(values)
+    styleRowLabelCell(r.getCell(1))
+    r.eachCell((cell) => {
+      cell.alignment = { wrapText: true, vertical: "top" }
+    })
   }
 
-  const ws = XLSX.utils.aoa_to_sheet(matrixRows)
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Development Matrix")
+  // Capabilities section
+  ws.addRow([])
+  const capHeader = ws.addRow(["Resource", "Current Capability", "Necessary Capability"])
+  styleHeaderRow(capHeader)
 
-  const capData = data.resources.map((r, i) => ({
-    Resource: r.title,
-    "Current Capability": data.currentCapabilitiesPerResource[i]?.content ?? "",
-    "Necessary Capability": data.necessaryCapabilities[i]?.content ?? "",
-  }))
-  const ws2 = XLSX.utils.json_to_sheet(capData)
-  XLSX.utils.book_append_sheet(wb, ws2, "Capabilities")
+  for (let i = 0; i < data.resources.length; i++) {
+    const r = ws.addRow([
+      data.resources[i].title,
+      data.currentCapabilitiesPerResource[i]?.content ?? "",
+      data.necessaryCapabilities[i]?.content ?? "",
+    ])
+    styleRowLabelCell(r.getCell(1))
+  }
 
-  XLSX.writeFile(wb, `${filename}.xlsx`)
+  ws.views = [{ state: "frozen", ySplit: 3 }]
+  applyBorders(ws)
+  autoWidth(ws)
+  await downloadWorkbook(wb, filename)
 }
 
 // =============================================================================
@@ -210,29 +320,31 @@ export function exportConvergenceMapCsv(data: ConvergenceMapData, filename: stri
   downloadCsv(lines.join("\n"), filename)
 }
 
-export function exportConvergenceMapExcel(data: ConvergenceMapData, filename: string) {
-  const matrixRows: string[][] = [
-    ["Value Chain", ...data.externalFactors.map(f => f.title)],
-  ]
+export async function exportConvergenceMapExcel(data: ConvergenceMapData, filename: string) {
+  const wb = new ExcelJS.Workbook()
+  const ws = wb.addWorksheet("Convergence Map")
+  const colCount = data.externalFactors.length + 1
+
+  addTitleRow(ws, filename.replace(/-/g, " "), colCount)
+
+  const headerRow = ws.addRow(["Value Chain", ...data.externalFactors.map(f => f.title)])
+  styleHeaderRow(headerRow)
+
   for (const vc of data.valueChain) {
-    const row = [vc.title]
+    const values = [vc.title]
     for (const factor of data.externalFactors) {
       const cell = data.cells.find(c => c.valueChainId === vc.id && c.externalFactorId === factor.id)
-      row.push(cell?.content ?? "")
+      values.push(cell?.content ?? "")
     }
-    matrixRows.push(row)
+    const r = ws.addRow(values)
+    styleRowLabelCell(r.getCell(1))
+    r.eachCell((cell) => {
+      cell.alignment = { wrapText: true, vertical: "top" }
+    })
   }
 
-  const ws = XLSX.utils.aoa_to_sheet(matrixRows)
-  const wb = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(wb, ws, "Convergence Matrix")
-
-  const factorData = data.externalFactors.map(f => ({
-    Title: f.title,
-    Description: f.description,
-  }))
-  const ws2 = XLSX.utils.json_to_sheet(factorData)
-  XLSX.utils.book_append_sheet(wb, ws2, "External Factors")
-
-  XLSX.writeFile(wb, `${filename}.xlsx`)
+  ws.views = [{ state: "frozen", ySplit: 3 }]
+  applyBorders(ws)
+  autoWidth(ws)
+  await downloadWorkbook(wb, filename)
 }

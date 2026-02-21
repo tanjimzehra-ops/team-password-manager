@@ -301,16 +301,16 @@ export default function Page() {
       } else if (format === "excel") {
         switch (activeTab) {
           case "logic-model":
-            exportLogicModelExcel(effectiveLogicGridData, baseName)
+            await exportLogicModelExcel(effectiveLogicGridData, baseName)
             break
           case "contribution-map":
-            exportContributionMapExcel(effectiveContributionMapData, baseName)
+            await exportContributionMapExcel(effectiveContributionMapData, baseName)
             break
           case "development-pathways":
-            exportDevelopmentPathwaysExcel(effectiveDevelopmentPathwaysData, baseName)
+            await exportDevelopmentPathwaysExcel(effectiveDevelopmentPathwaysData, baseName)
             break
           case "convergence-map":
-            exportConvergenceMapExcel(effectiveConvergenceMapData, baseName)
+            await exportConvergenceMapExcel(effectiveConvergenceMapData, baseName)
             break
         }
       }
