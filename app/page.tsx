@@ -110,7 +110,7 @@ export default function Page() {
 
   // Org selection (multi-tenant)
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
-  const rawOrgs = useQuery(api.organisations.list, isConvexConfigured ? {} : "skip")
+  const rawOrgs = useQuery(api.organisations.list, (isConvexConfigured && user) ? {} : "skip")
   const orgsLoading = rawOrgs === undefined
   const orgs: OrgInfo[] = useMemo(
     () => (rawOrgs ?? []).map((o) => ({ id: o._id, name: o.name, status: o.status })),
