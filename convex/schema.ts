@@ -136,7 +136,7 @@ export default defineSchema({
     action: v.string(),
     resourceType: v.string(),
     resourceId: v.string(),
-    details: v.optional(v.any()),
+    details: v.optional(v.record(v.string(), v.union(v.string(), v.number(), v.boolean(), v.array(v.string())))),
     orgId: v.optional(v.string()),
     timestamp: v.number(),
   }).index("by_timestamp", ["timestamp"])

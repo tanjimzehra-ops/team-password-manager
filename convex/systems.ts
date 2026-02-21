@@ -157,7 +157,7 @@ export const create = mutation({
       action: "system.create",
       resourceType: "system",
       resourceId: systemId,
-      details: { name: args.name, sector: args.sector },
+      details: { name: args.name, ...(args.sector && { sector: args.sector }) },
       orgId: args.orgId,
     })
     return systemId
@@ -219,7 +219,7 @@ export const remove = mutation({
       action: "system.delete",
       resourceType: "system",
       resourceId: args.id,
-      details: { name: system?.name },
+      details: { name: system?.name ?? "unknown" },
       orgId: system?.orgId,
     })
   },

@@ -245,7 +245,7 @@ export const restore = mutation({
       action: "user.restore",
       resourceType: "user",
       resourceId: args.id,
-      details: { email: target.email, name: target.name },
+      details: { email: target.email, ...(target.name && { name: target.name }) },
     })
   },
 })

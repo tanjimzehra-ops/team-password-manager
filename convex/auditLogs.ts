@@ -15,7 +15,7 @@ export async function logAudit(
     action: string
     resourceType: string
     resourceId: string
-    details?: Record<string, unknown>
+    details?: Record<string, string | number | boolean | string[]>
     orgId?: string
   }
 ) {

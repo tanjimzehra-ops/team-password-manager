@@ -115,7 +115,16 @@ export const remove = mutation({
     if (!(await isSuperAdmin(ctx, user._id))) {
       throw new Error("Access denied: only super admins can delete organisations")
     }
+    const org = await ctx.db.get(args.id)
     await ctx.db.patch(args.id, { deletedAt: Date.now() })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "org.delete",
+      resourceType: "org",
+      resourceId: args.id,
+      details: { name: org?.name ?? "unknown" },
+    })
   },
 })
 

@@ -8,20 +8,19 @@ export interface OrgInfo {
   status: string
 }
 
-interface OrgContextValue {
+export interface OrgContextValue {
   orgs: OrgInfo[]
   selectedOrgId: string | null
   setSelectedOrgId: (id: string | null) => void
   isLoading: boolean
 }
 
-export const OrgContext = createContext<OrgContextValue>({
-  orgs: [],
-  selectedOrgId: null,
-  setSelectedOrgId: () => {},
-  isLoading: true,
-})
+export const OrgContext = createContext<OrgContextValue | null>(null)
 
 export function useOrg() {
-  return useContext(OrgContext)
+  const context = useContext(OrgContext)
+  if (!context) {
+    throw new Error("useOrg must be used within an OrgProvider")
+  }
+  return context
 }
