@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils"
 import type { ContributionMapData, NodeData } from "@/lib/types"
-import { Plus } from "lucide-react"
+import { Plus, GitBranch } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/empty-state"
 
 interface ContributionMapProps {
   data: ContributionMapData
@@ -38,6 +39,16 @@ export function ContributionMap({
       (c) => c.valueChainId === valueChainId && c.outcomeId === outcomeId
     )
     return cell?.content || ""
+  }
+
+  if (outcomes.length === 0 && valueChain.length === 0) {
+    return (
+      <EmptyState
+        icon={GitBranch}
+        title="No data yet"
+        description="Your Contribution Map will appear once you have elements in your Logic Model."
+      />
+    )
   }
 
   const cultureBannerText =

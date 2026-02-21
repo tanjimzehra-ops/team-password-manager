@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils"
 import type { ConvergenceMapData, NodeData } from "@/lib/types"
-import { Plus } from "lucide-react"
+import { Plus, Target } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/empty-state"
 
 interface ConvergenceMapProps {
   data: ConvergenceMapData
@@ -38,6 +39,16 @@ export function ConvergenceMap({
       (c) => c.valueChainId === valueChainId && c.externalFactorId === externalFactorId
     )
     return cell?.content || ""
+  }
+
+  if (externalFactors.length === 0 && valueChain.length === 0) {
+    return (
+      <EmptyState
+        icon={Target}
+        title="No data yet"
+        description="The Convergence Map shows strategic alignment. Build your system to see it here."
+      />
+    )
   }
 
   return (

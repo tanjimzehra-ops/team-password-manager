@@ -3,7 +3,8 @@ import { useState } from "react"
 import type { RowData, NodeData } from "@/lib/types"
 import { NodeCard } from "./node-card"
 import { Button } from "@/components/ui/button"
-import { Plus, ChevronLeft, ChevronRight, ArrowRight, Book } from "lucide-react"
+import { Plus, ChevronLeft, ChevronRight, ArrowRight, Book, LayoutGrid } from "lucide-react"
+import { EmptyState } from "@/components/empty-state"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -93,6 +94,16 @@ export function LogicGrid({
     } else {
       onNodeClick(node)
     }
+  }
+
+  if (rows.length === 0) {
+    return (
+      <EmptyState
+        icon={LayoutGrid}
+        title="No elements yet"
+        description="Start building your Logic Model. Switch to Edit mode to add your first element."
+      />
+    )
   }
 
   return (

@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils"
 import type { DevelopmentPathwaysData, NodeData } from "@/lib/types"
-import { Plus } from "lucide-react"
+import { Plus, Map } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/empty-state"
 
 interface DevelopmentPathwaysProps {
   data: DevelopmentPathwaysData
@@ -59,6 +60,16 @@ export function DevelopmentPathways({
   const getNecessaryCapability = (resourceIndex: number): string => {
     const cap = necessaryCapabilities[resourceIndex]
     return cap?.content || ""
+  }
+
+  if (resources.length === 0 && valueChain.length === 0) {
+    return (
+      <EmptyState
+        icon={Map}
+        title="No data yet"
+        description="Development Pathways visualises element relationships. Add elements to your Logic Model first."
+      />
+    )
   }
 
   return (
