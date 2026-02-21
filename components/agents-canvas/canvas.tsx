@@ -144,7 +144,10 @@ export function AgentsCanvas({ className }: AgentsCanvasProps) {
 
   const onSelectionChange = useCallback(({ nodes: selectedNodes }: OnSelectionChangeParams) => {
     if (selectedNodes.length === 1) {
-      setSelectedNode(selectedNodes[0].data as AgentNodeType)
+      const agent = agentsData.agents.find(a => a.id === selectedNodes[0].id)
+      if (agent) {
+        setSelectedNode(agent as AgentNodeType)
+      }
     } else {
       setSelectedNode(null)
     }

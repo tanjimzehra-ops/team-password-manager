@@ -1,13 +1,11 @@
 'use client'
 
 import { memo } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import { cn } from '@/lib/utils'
 import { type Agent, priorityColors, statusStyles } from '@/lib/agent-types'
 
-interface AgentNodeData extends Agent {
-  selected?: boolean
-}
+type AgentNodeData = Node<Agent, 'agent'>
 
 export const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => {
   const colors = priorityColors[data.priority]

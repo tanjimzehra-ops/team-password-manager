@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils"
 
 type EditMode = "view" | "edit" | "colour" | "order" | "delete"
-type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map"
+type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
 
 interface ViewControlsProps {
   showKpi: boolean

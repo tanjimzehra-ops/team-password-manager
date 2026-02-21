@@ -1,14 +1,12 @@
 'use client'
 
 import { memo } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import { Terminal } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type Command } from '@/lib/agent-types'
 
-interface CommandNodeData extends Command {
-  selected?: boolean
-}
+type CommandNodeData = Node<Command, 'command'>
 
 export const CommandNode = memo(({ data, selected }: NodeProps<CommandNodeData>) => {
   return (

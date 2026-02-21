@@ -1,14 +1,12 @@
 'use client'
 
 import { memo } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type Node, type NodeProps } from '@xyflow/react'
 import { Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { type Orchestrator } from '@/lib/agent-types'
 
-interface OrchestratorNodeData extends Orchestrator {
-  selected?: boolean
-}
+type OrchestratorNodeData = Node<Orchestrator, 'orchestrator'>
 
 export const OrchestratorNode = memo(({ data, selected }: NodeProps<OrchestratorNodeData>) => {
   return (

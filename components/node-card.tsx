@@ -24,6 +24,7 @@ interface NodeCardProps {
   onDeleteClick?: (node: NodeData) => void
   draggable?: boolean
   onDragStart?: (e: React.DragEvent, node: NodeData) => void
+  onDragEnd?: () => void
   onDrop?: (e: React.DragEvent, node: NodeData) => void
 }
 
@@ -61,6 +62,7 @@ export function NodeCard({
   onDeleteClick,
   draggable = false,
   onDragStart,
+  onDragEnd,
   onDrop,
 }: NodeCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
@@ -110,6 +112,7 @@ export function NodeCard({
       onClick={handleClick}
       draggable={draggable || editMode === "order"}
       onDragStart={handleDragStart}
+      onDragEnd={onDragEnd}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       className={cn(

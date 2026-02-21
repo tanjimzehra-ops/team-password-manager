@@ -7,7 +7,7 @@ import { useAuth } from "@workos-inc/authkit-nextjs/components"
 import { ThemeToggle } from "./theme-toggle"
 import { cn } from "@/lib/utils"
 
-type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map"
+type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
 
 interface HeaderProps {
   activeTab?: ViewTab

@@ -194,8 +194,8 @@ export const developmentPathwaysCells: DevelopmentCell[] = []
 // Map Azure delivery_pathways to DevelopmentCell format
 // Azure uses row/col indices, we need to map to IDs
 meraJson.matrices.delivery_pathways.forEach(cell => {
-  const vcElement = meraJson.logic_model.value_chain[cell.row]
-  const resourceElement = meraJson.logic_model.resources[cell.col]
+  const vcElement = meraJson.logic_model.value_chain[cell.order]
+  const resourceElement = meraJson.logic_model.resources[cell.column]
 
   if (vcElement && resourceElement) {
     developmentPathwaysCells.push({
@@ -294,5 +294,6 @@ export function getConvergenceMapData(): ConvergenceMapData {
     valueChain: valueChainRow?.nodes || [],
     cells: convergenceMapCells,
     kpis: valueChainKpis,
+    factorsPerVC: [],
   }
 }

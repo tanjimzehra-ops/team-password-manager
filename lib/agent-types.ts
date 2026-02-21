@@ -5,6 +5,7 @@ export type AgentStatus = 'operativo' | 'planificado'
 export type NodeType = 'agent' | 'command' | 'orchestrator'
 
 export interface Agent {
+  [key: string]: unknown
   id: string
   name: string
   type: 'agent'
@@ -17,6 +18,7 @@ export interface Agent {
 }
 
 export interface Command {
+  [key: string]: unknown
   id: string
   name: string
   type: 'command'
@@ -26,6 +28,7 @@ export interface Command {
 }
 
 export interface Orchestrator {
+  [key: string]: unknown
   id: string
   name: string
   type: 'orchestrator'

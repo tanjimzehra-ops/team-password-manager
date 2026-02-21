@@ -538,14 +538,16 @@ export function useConvexUpdateFactor() {
   const { toast } = useToast()
 
   const updateFactor = async ({
-    id,
+    systemId,
+    valueChainId,
     content,
   }: {
-    id: string
+    systemId: string
+    valueChainId: string
     content: string
   }) => {
     try {
-      await mutate({ id: id as Id<"factors">, content })
+      await mutate({ systemId: systemId as Id<"systems">, valueChainId: valueChainId as Id<"elements">, content })
       toast({ title: "Factor updated", description: "Factor saved successfully" })
     } catch (err) {
       toast({
