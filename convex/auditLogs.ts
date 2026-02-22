@@ -1,4 +1,5 @@
 import { query } from "./_generated/server"
+import { paginationOptsValidator } from "convex/server"
 import { v } from "convex/values"
 import { requireAuth, isSuperAdmin } from "./lib/permissions"
 import type { MutationCtx } from "./_generated/server"
@@ -27,12 +28,12 @@ export async function logAudit(
 
 /**
  * List recent audit logs — super admin only.
- * Returns last 100 entries, optionally filtered by orgId.
+ * Uses cursor-based pagination via Convex .paginate().
  */
 export const list = query({
   args: {
     orgId: v.optional(v.string()),
-    limit: v.optional(v.number()),
+    paginationOpts: paginationOptsValidator,
   },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
@@ -40,22 +41,18 @@ export const list = query({
       throw new Error("Access denied: only super admins can view audit logs")
     }
 
-    const limit = args.limit ?? 100
-
     if (args.orgId) {
-      const logs = await ctx.db
+      return await ctx.db
         .query("auditLogs")
         .withIndex("by_orgId", (q) => q.eq("orgId", args.orgId))
         .order("desc")
-        .take(limit)
-      return logs
+        .paginate(args.paginationOpts)
     }
 
-    const logs = await ctx.db
+    return await ctx.db
       .query("auditLogs")
       .withIndex("by_timestamp")
       .order("desc")
-      .take(limit)
-    return logs
+      .paginate(args.paginationOpts)
   },
 })

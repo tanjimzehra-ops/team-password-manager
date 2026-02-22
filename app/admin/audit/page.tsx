@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useQuery } from "convex/react"
+import { useQuery, usePaginatedQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -10,6 +10,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Shield } from "lucide-react"
 
@@ -76,12 +77,16 @@ function truncateId(id: string): string {
 
 export default function AuditLogPage() {
   const currentUser = useQuery(api.users.me)
-  const logs = useQuery(api.auditLogs.list, {})
+  const { results: logs, status, loadMore } = usePaginatedQuery(
+    api.auditLogs.list,
+    {},
+    { initialNumItems: 50 }
+  )
   const [actionFilter, setActionFilter] = useState<string>("all")
 
   const isSuperAdmin = currentUser?.isSuperAdmin ?? false
 
-  if (!currentUser || logs === undefined) {
+  if (!currentUser || status === "LoadingFirstPage") {
     return (
       <div className="space-y-6">
         <Skeleton className="h-8 w-40" />
@@ -178,6 +183,25 @@ export default function AuditLogPage() {
           </TableBody>
         </Table>
       </div>
+
+      {/* Pagination */}
+      {status === "CanLoadMore" && (
+        <div className="flex justify-center">
+          <Button variant="outline" onClick={() => loadMore(50)}>
+            Load More
+          </Button>
+        </div>
+      )}
+      {status === "LoadingMore" && (
+        <div className="flex justify-center">
+          <Skeleton className="h-9 w-24" />
+        </div>
+      )}
+      {status === "Exhausted" && logs.length > 0 && (
+        <p className="text-center text-sm text-muted-foreground">
+          All {logs.length} entries loaded.
+        </p>
+      )}
     </div>
   )
 }
