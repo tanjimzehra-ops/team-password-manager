@@ -4,7 +4,7 @@ user_name: 'Nicolas'
 date: '2026-02-22'
 sections_completed: ['technology_stack', 'language_rules', 'framework_rules', 'testing_rules', 'quality_rules', 'workflow_rules', 'anti_patterns']
 status: 'complete'
-rule_count: 62
+rule_count: 69
 optimized_for_llm: true
 ---
 
@@ -49,18 +49,18 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - `/admin/trash` — Soft-deleted records recovery
 - Protected by auth — requires `super_admin` or `admin` role
 
-**Convex Schema (10 tables):**
+**Convex Schema (12 tables):**
 `organisations`, `users`, `memberships`, `systems`, `elements`, `matrixCells`, `kpis`, `capabilities`, `externalValues`, `factors`, `auditLogs`, `portfolios`
 
 **Organisation Statuses:** `active | inactive | trial`
 
 **Portfolios:** First-class entity linked to elements — tracks strategic initiatives with `planning | active | completed` status
 
-**Session History:** Feature development is documented in `sessions/SESSION-*.md` handoff files (sessions 80–86+). Read these for full context on past decisions and implementation details.
+**Session History:** Feature development is documented in `sessions/SESSION-*.md` handoff files (sessions 80–87+). Read these for full context on past decisions and implementation details.
 
 **Build Constraints:**
-- `ignoreBuildErrors: true` — TS errors skipped at build (only skips TS, NOT module resolution)
 - `images.unoptimized: true` — no Next.js image optimisation
+- TypeScript strict mode enforced (`ignoreBuildErrors` removed in Session 85)
 - Path alias `@/*` maps to project root
 - No ESLint config file (uses Next.js defaults)
 - No Prettier config
@@ -94,7 +94,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 
 **Next.js 16:**
 - Auth middleware lives in `proxy.ts` (Next.js 16 convention) — NEVER use `middleware.ts` (deprecated warning)
-- `proxy.ts` intercepts cross-origin RSC redirects to prevent CORS errors on WorkOS auth
+- `proxy.ts` intercepts cross-origin redirects using `Sec-Fetch-Dest` header detection (Next.js 16 strips the `RSC` header before it reaches the proxy)
 - `app/layout.tsx` is a Server Component — uses `withAuth()` from WorkOS for session
 - Route groups: `app/admin/` (protected), `app/sign-in/`, `app/sign-up/`, `app/callback/`
 - Unauthenticated paths: `/`, `/sign-in`, `/sign-up` — everything else requires auth
@@ -109,8 +109,12 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - `use-convex-system.ts` transforms Convex data into UI types — components receive identical shapes regardless of data source
 - `use-convex-mutations.ts` (~818 lines) — all CRUD mutations with automatic reactivity. No manual cache invalidation needed
 - **Security boundary**: Gate at `systems.list` (entry point). Child queries chain through `systemId`
-- **Legacy systems** (orgId=null): visible to all authenticated users during migration
+- **Legacy systems** (orgId=null): visible to all **authenticated** users only (Session 87: `systems.list` now requires `requireAuth()`)
 - Seed execution order: `createOrganisations` → users sign in → `bootstrapSuperAdmins` → `assignSystemOrgs`
+- All mutations wired with `logAudit()` for audit trail — not just systems + memberships
+- Audit logs use cursor-based pagination (`usePaginatedQuery` + `paginationOptsValidator`)
+- Convex functions require separate deployment: `npx convex dev --once` (NOT via Vercel)
+- `useConvexSystems()` uses `useConvexAuth()` guard with `"skip"` pattern for unauthenticated users
 
 **Auth Flow (WorkOS → Convex):**
 - WorkOS JWT `subject` = WorkOS user ID → lookup via `by_workosId` index
@@ -127,7 +131,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 ### Testing Rules
 
 - **No test framework configured** — no Jest, Vitest, or Playwright
-- Errors are caught at build time via `pnpm build` (though `ignoreBuildErrors` skips TS errors)
+- Errors are caught at build time via `pnpm build` (TypeScript strict mode enforced)
 - Validate changes by running `pnpm build` and checking for module resolution errors
 - Manual testing via `pnpm dev` on `http://localhost:3000`
 - Production testing on `https://jigsaw-1-6-rsa.vercel.app`
@@ -202,9 +206,11 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - NEVER use npm or yarn — only pnpm
 - NEVER assume WorkOS JWT contains email/name — it only has `subject` (user ID)
 - NEVER modify `components/ui/` files manually — use shadcn CLI to add/update
+- NEVER check `RSC` header in proxy.ts — Next.js 16 strips it. Use `Sec-Fetch-Dest` instead
+- NEVER place early returns before hook calls in `page.tsx` — violates React 19 rules of hooks (error #300)
 
 **Edge Cases & Gotchas:**
-- `ignoreBuildErrors` only skips TypeScript errors, NOT module resolution errors — missing imports will still fail the build
+- Convex functions require separate deployment via `npx convex dev --once` — NOT deployed through Vercel git push
 - When using parallel agents, they may each modify `page.tsx` — check for merge conflicts
 - pnpm sometimes doesn't link packages properly — run `pnpm install` if module resolution fails
 - Legacy systems without `orgId` are visible to all authenticated users (intentional during migration)
@@ -216,11 +222,10 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - Never expose `WORKOS_API_KEY` or `WORKOS_COOKIE_PASSWORD` to the client
 - Soft deletes use `deletedAt` timestamp — always check for `deletedAt === undefined` in queries
 
-**Known Bug — RSC CORS Redirect:**
-- `proxy.ts` checks `request.headers.get("RSC") === "1"` to intercept cross-origin redirects
-- Some RSC navigations use `?_rsc=` query param instead of the `RSC` header — these bypass the check
-- Symptom: CORS error when unauthenticated user navigates to `/admin` via client-side navigation
-- Fix needed: also check for `_rsc` query parameter in `proxy.ts`
+**Proxy RSC Detection (Session 87 fix):**
+- Next.js 16 strips the `RSC` header before it reaches `proxy.ts` — checking `request.headers.get("RSC")` always returns `null`
+- Instead, use `Sec-Fetch-Dest` header: `empty` = programmatic fetch (redirect to `/`), `document` = browser navigation (let WorkOS handle)
+- The `_rsc` query parameter is also NOT reliable for detection in the proxy
 
 **Key Files Reference:**
 - Main orchestrator: `app/page.tsx`
@@ -236,6 +241,7 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - Admin Console layout: `app/admin/layout.tsx`
 - Organisation CRUD: `app/admin/clients/page.tsx`
 - User management: `app/admin/users/page.tsx`
+- Audit logs: `convex/auditLogs.ts` (backend) + `app/admin/audit/page.tsx` (UI)
 - Session handoffs: `sessions/SESSION-*.md`
 
 ---
@@ -254,4 +260,4 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - Review quarterly for outdated rules
 - Remove rules that become obvious over time
 
-Last Updated: 2026-02-22
+Last Updated: 2026-02-22 (Session 87)
