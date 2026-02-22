@@ -23,21 +23,24 @@ const workosAuth = authkitMiddleware({
         : undefined,
 })
 
-export default async function proxy(request: NextRequest, event: NextFetchEvent) {
-  const response = await workosAuth(request, event)
+// Paths that don't require authentication (must match unauthenticatedPaths above)
+const publicPaths = ["/", "/sign-in", "/sign-up", "/callback"]
 
+export default async function proxy(request: NextRequest, event: NextFetchEvent) {
   // RSC requests (client-side navigation) use fetch(), which cannot follow
-  // cross-origin redirects. When the middleware redirects an unauthenticated
+  // cross-origin redirects. When authkitMiddleware redirects an unauthenticated
   // RSC request to WorkOS, the browser blocks it with a CORS error.
-  // Detect by checking status code (307/302) since the Location header may
-  // not be accessible from the authkit middleware response.
-  // Redirect to the landing page instead so the user gets a full-page auth flow.
+  // Pre-check: if RSC + no session cookie + protected path → redirect to /
   const isRSC = request.headers.get("RSC") === "1" || request.nextUrl.searchParams.has("_rsc")
-  if (isRSC && response && (response.status === 307 || response.status === 302)) {
-    return NextResponse.redirect(new URL("/", request.url))
+  if (isRSC) {
+    const hasSession = request.cookies.has("wos-session")
+    const isPublicPath = publicPaths.some((p) => request.nextUrl.pathname === p)
+    if (!hasSession && !isPublicPath) {
+      return NextResponse.redirect(new URL("/", request.url))
+    }
   }
 
-  return response
+  return workosAuth(request, event)
 }
 
 export const config = {
