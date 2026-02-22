@@ -12,7 +12,6 @@ import { logAudit } from "./auditLogs"
 
 /**
  * List systems visible to the current user.
- * - Unauthenticated: returns all non-deleted systems (legacy/migration support)
  * - Authenticated: returns systems in user's orgs + legacy systems (no orgId)
  * - Super admin: returns all non-deleted systems
  */
@@ -22,13 +21,7 @@ export const list = query({
     const allSystems = await ctx.db.query("systems").collect()
     const activeSystems = allSystems.filter((s) => !s.deletedAt)
 
-    const user = await getCurrentUser(ctx)
-    if (!user) {
-      // Unauthenticated: show legacy systems only (no orgId)
-      return activeSystems
-        .filter((s) => !s.orgId)
-        .map((s) => ({ _id: s._id, name: s.name, sector: s.sector, orgId: s.orgId }))
-    }
+    const user = await requireAuth(ctx)
 
     const { orgIds, isSuperAdmin } = await getAccessibleOrgIds(ctx, user._id)
 
@@ -58,10 +51,9 @@ export const get = query({
     if (!system || system.deletedAt) return null
 
     const user = await getCurrentUser(ctx)
-    // Legacy systems (no orgId) are readable without auth
-    if (!system.orgId) return system
-    // Org-scoped systems require auth
     if (!user) return null
+    // Legacy systems (no orgId) are readable by any authenticated user
+    if (!system.orgId) return system
     if (!(await canAccessSystem(ctx, user._id, args.id))) return null
 
     return system
@@ -78,8 +70,8 @@ export const getFullSystem = query({
     if (!system || system.deletedAt) return null
 
     const user = await getCurrentUser(ctx)
+    if (!user) return null
     if (system.orgId) {
-      if (!user) return null
       if (!(await canAccessSystem(ctx, user._id, args.id))) return null
     }
 
