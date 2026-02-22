@@ -6,7 +6,7 @@
  * We normalise this to match the existing hook interface: { data, isLoading }
  */
 
-import { useQuery } from "convex/react"
+import { useQuery, useConvexAuth } from "convex/react"
 import { api } from "../../convex/_generated/api"
 
 export interface SystemInfo {
@@ -21,7 +21,8 @@ export interface SystemInfo {
  * Returns list of systems for the system selector dropdown
  */
 export function useConvexSystems() {
-  const systems = useQuery(api.systems.list)
+  const { isAuthenticated } = useConvexAuth()
+  const systems = useQuery(api.systems.list, isAuthenticated ? {} : "skip")
 
   const isLoading = systems === undefined
 
