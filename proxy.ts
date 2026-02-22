@@ -27,12 +27,15 @@ const workosAuth = authkitMiddleware({
 const publicPaths = ["/", "/sign-in", "/sign-up", "/callback"]
 
 export default async function proxy(request: NextRequest, event: NextFetchEvent) {
-  // RSC requests (client-side navigation) use fetch(), which cannot follow
-  // cross-origin redirects. When authkitMiddleware redirects an unauthenticated
-  // RSC request to WorkOS, the browser blocks it with a CORS error.
-  // Pre-check: if RSC + no session cookie + protected path → redirect to /
-  const isRSC = request.headers.get("RSC") === "1" || request.nextUrl.searchParams.has("_rsc")
-  if (isRSC) {
+  // Next.js 16 strips the RSC header before it reaches the proxy, so we use
+  // Sec-Fetch-Dest to detect programmatic fetch() requests (client-side navigation).
+  // Browser navigations send Sec-Fetch-Dest: document and can follow cross-origin
+  // redirects. fetch() requests send Sec-Fetch-Dest: empty and CANNOT follow
+  // cross-origin redirects (causes CORS error when WorkOS redirect is returned).
+  const secFetchDest = request.headers.get("sec-fetch-dest")
+  const isFetchRequest = secFetchDest !== null && secFetchDest !== "document"
+
+  if (isFetchRequest) {
     const hasSession = request.cookies.has("wos-session")
     const isPublicPath = publicPaths.some((p) => request.nextUrl.pathname === p)
     if (!hasSession && !isPublicPath) {
