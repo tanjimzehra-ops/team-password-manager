@@ -4,7 +4,7 @@ user_name: 'Nicolas'
 date: '2026-02-22'
 sections_completed: ['technology_stack', 'language_rules', 'framework_rules', 'testing_rules', 'quality_rules', 'workflow_rules', 'anti_patterns']
 status: 'complete'
-rule_count: 52
+rule_count: 62
 optimized_for_llm: true
 ---
 
@@ -30,6 +30,33 @@ _This file contains critical rules and patterns that AI agents must follow when 
 | Forms | react-hook-form + zod | ^7.60.0 / 3.25.76 | — |
 | Package Manager | pnpm | 9.15.0 | Required — not npm/yarn |
 | Deploy | Vercel | — | `vercel.json`, auto-deploy |
+
+## Application Overview
+
+**Jigsaw 1.6** is a strategic planning visualisation tool that renders interactive views for organisational strategy systems.
+
+**5 Interactive Views:**
+1. **Logic Model** — Grid of purpose → outcomes → value chain → resources (`components/logic-grid.tsx`)
+2. **Contribution Map** — Outcomes x Value Chain matrix with KPIs (`components/contribution-map.tsx`)
+3. **Development Pathways** — Resources x Value Chain matrix with capabilities (`components/development-pathways.tsx`)
+4. **Convergence Map** — Value Chain x External Factors matrix (`components/convergence-map.tsx`)
+5. **Agents Canvas** — Interactive flow canvas for agent/command/orchestrator nodes (`components/agents-canvas/`)
+
+**Admin Console** (`app/admin/`):
+- `/admin/clients` — Organisation CRUD (table + dialogs)
+- `/admin/users` — User management + role assignment
+- `/admin/audit` — Audit log viewer (compliance trail)
+- `/admin/trash` — Soft-deleted records recovery
+- Protected by auth — requires `super_admin` or `admin` role
+
+**Convex Schema (10 tables):**
+`organisations`, `users`, `memberships`, `systems`, `elements`, `matrixCells`, `kpis`, `capabilities`, `externalValues`, `factors`, `auditLogs`, `portfolios`
+
+**Organisation Statuses:** `active | inactive | trial`
+
+**Portfolios:** First-class entity linked to elements — tracks strategic initiatives with `planning | active | completed` status
+
+**Session History:** Feature development is documented in `sessions/SESSION-*.md` handoff files (sessions 80–86+). Read these for full context on past decisions and implementation details.
 
 **Build Constraints:**
 - `ignoreBuildErrors: true` — TS errors skipped at build (only skips TS, NOT module resolution)
@@ -189,6 +216,12 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - Never expose `WORKOS_API_KEY` or `WORKOS_COOKIE_PASSWORD` to the client
 - Soft deletes use `deletedAt` timestamp — always check for `deletedAt === undefined` in queries
 
+**Known Bug — RSC CORS Redirect:**
+- `proxy.ts` checks `request.headers.get("RSC") === "1"` to intercept cross-origin redirects
+- Some RSC navigations use `?_rsc=` query param instead of the `RSC` header — these bypass the check
+- Symptom: CORS error when unauthenticated user navigates to `/admin` via client-side navigation
+- Fix needed: also check for `_rsc` query parameter in `proxy.ts`
+
 **Key Files Reference:**
 - Main orchestrator: `app/page.tsx`
 - All mutations: `hooks/convex/use-convex-mutations.ts`
@@ -200,6 +233,10 @@ _This file contains critical rules and patterns that AI agents must follow when 
 - Type definitions: `lib/types.ts`
 - Seed/migration: `convex/seed.ts`
 - Data adapter (JSON fallback): `data/system-adapter.ts`
+- Admin Console layout: `app/admin/layout.tsx`
+- Organisation CRUD: `app/admin/clients/page.tsx`
+- User management: `app/admin/users/page.tsx`
+- Session handoffs: `sessions/SESSION-*.md`
 
 ---
 
