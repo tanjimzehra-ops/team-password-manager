@@ -27,16 +27,14 @@ export default async function proxy(request: NextRequest, event: NextFetchEvent)
   const response = await workosAuth(request, event)
 
   // RSC requests (client-side navigation) use fetch(), which cannot follow
-  // cross-origin redirects. These are detected via the RSC header or the _rsc
-  // query parameter. When the middleware redirects an unauthenticated RSC
-  // request to WorkOS, the browser blocks it with a CORS error.
+  // cross-origin redirects. When the middleware redirects an unauthenticated
+  // RSC request to WorkOS, the browser blocks it with a CORS error.
+  // Detect by checking status code (307/302) since the Location header may
+  // not be accessible from the authkit middleware response.
   // Redirect to the landing page instead so the user gets a full-page auth flow.
   const isRSC = request.headers.get("RSC") === "1" || request.nextUrl.searchParams.has("_rsc")
-  if (isRSC && response) {
-    const location = response.headers.get("location")
-    if (location && !location.startsWith("/") && !location.startsWith(request.nextUrl.origin)) {
-      return NextResponse.redirect(new URL("/", request.url))
-    }
+  if (isRSC && response && (response.status === 307 || response.status === 302)) {
+    return NextResponse.redirect(new URL("/", request.url))
   }
 
   return response
