@@ -1,6 +1,8 @@
 import { authkitMiddleware } from "@workos-inc/authkit-nextjs"
+import type { NextFetchEvent, NextRequest } from "next/server"
+import { NextResponse } from "next/server"
 
-export default authkitMiddleware({
+const workosAuth = authkitMiddleware({
   eagerAuth: true,
   middlewareAuth: {
     enabled: true,
@@ -20,6 +22,24 @@ export default authkitMiddleware({
         ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/callback`
         : undefined,
 })
+
+export default async function proxy(request: NextRequest, event: NextFetchEvent) {
+  const response = await workosAuth(request, event)
+
+  // RSC requests (client-side navigation) use fetch(), which cannot follow
+  // cross-origin redirects. When the middleware redirects an unauthenticated
+  // RSC request to WorkOS, the browser blocks it with a CORS error.
+  // Redirect to the landing page instead so the user gets a full-page auth flow.
+  const isRSC = request.headers.get("RSC") === "1"
+  if (isRSC && response) {
+    const location = response.headers.get("location")
+    if (location && !location.startsWith("/") && !location.startsWith(request.nextUrl.origin)) {
+      return NextResponse.redirect(new URL("/", request.url))
+    }
+  }
+
+  return response
+}
 
 export const config = {
   matcher: [
