@@ -603,7 +603,7 @@ export default function Page() {
   }), [orgs, selectedOrgId, orgsLoading])
 
   return (
-    <OrgContext value={orgContextValue}>
+    <OrgContext.Provider value={orgContextValue}>
     <div className="min-h-screen bg-background flex flex-col">
       <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
       <ViewControls
@@ -727,6 +727,6 @@ export default function Page() {
         onCallback={tourCallback}
       />
     </div>
-    </OrgContext>
+    </OrgContext.Provider>
   )
 }
