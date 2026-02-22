@@ -78,11 +78,6 @@ export default function Page() {
   const { user, loading: authLoading } = useAuth()
   const { toast } = useToast()
 
-  // Show landing page for unauthenticated users
-  if (!authLoading && !user) {
-    return <LandingPage />
-  }
-
   // UI State
   const [showKpi, setShowKpi] = useState(true)
   const [activeTab, setActiveTab] = useState<ViewTab>("logic-model")
@@ -601,6 +596,11 @@ export default function Page() {
     setSelectedOrgId,
     isLoading: orgsLoading,
   }), [orgs, selectedOrgId, orgsLoading])
+
+  // Show landing page for unauthenticated users (must be after all hooks)
+  if (!authLoading && !user) {
+    return <LandingPage />
+  }
 
   return (
     <OrgContext.Provider value={orgContextValue}>
