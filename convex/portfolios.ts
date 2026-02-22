@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { requireAuth, requireWriteAccess } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 export const byElement = query({
   args: { elementId: v.id("elements") },
@@ -40,7 +41,18 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
     await requireWriteAccess(ctx, user._id, args.systemId)
-    return await ctx.db.insert("portfolios", args)
+    const portfolioId = await ctx.db.insert("portfolios", args)
+    const system = await ctx.db.get(args.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "portfolio.create",
+      resourceType: "portfolio",
+      resourceId: portfolioId,
+      details: { title: args.title, status: args.status },
+      orgId: system?.orgId,
+    })
+    return portfolioId
   },
 })
 
@@ -72,6 +84,16 @@ export const update = mutation({
       if (value !== undefined) updates[key] = value
     }
     await ctx.db.patch(id, updates)
+    const system = await ctx.db.get(portfolio.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "portfolio.update",
+      resourceType: "portfolio",
+      resourceId: args.id,
+      details: { updated: Object.keys(updates) },
+      orgId: system?.orgId,
+    })
   },
 })
 
@@ -82,6 +104,16 @@ export const remove = mutation({
     const portfolio = await ctx.db.get(args.id)
     if (!portfolio) throw new Error("Portfolio not found")
     await requireWriteAccess(ctx, user._id, portfolio.systemId)
+    const system = await ctx.db.get(portfolio.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "portfolio.delete",
+      resourceType: "portfolio",
+      resourceId: args.id,
+      details: { title: portfolio.title },
+      orgId: system?.orgId,
+    })
     await ctx.db.delete(args.id)
   },
 })

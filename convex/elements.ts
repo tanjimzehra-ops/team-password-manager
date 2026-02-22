@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { requireAuth, requireWriteAccess } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -47,7 +48,18 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
     await requireWriteAccess(ctx, user._id, args.systemId)
-    return await ctx.db.insert("elements", args)
+    const elementId = await ctx.db.insert("elements", args)
+    const system = await ctx.db.get(args.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "element.create",
+      resourceType: "element",
+      resourceId: elementId,
+      details: { elementType: args.elementType, content: args.content },
+      orgId: system?.orgId,
+    })
+    return elementId
   },
 })
 
@@ -74,6 +86,16 @@ export const update = mutation({
       }
     }
     await ctx.db.patch(id, updates)
+    const system = await ctx.db.get(element.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "element.update",
+      resourceType: "element",
+      resourceId: args.id,
+      details: { updated: Object.keys(updates) },
+      orgId: system?.orgId,
+    })
   },
 })
 
@@ -89,12 +111,25 @@ export const reorder = mutation({
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
     // Check access on first element (all in same system)
+    let element = null
     if (args.updates.length > 0) {
-      const element = await ctx.db.get(args.updates[0].id)
+      element = await ctx.db.get(args.updates[0].id)
       if (element) await requireWriteAccess(ctx, user._id, element.systemId)
     }
     for (const { id, orderIndex } of args.updates) {
       await ctx.db.patch(id, { orderIndex })
+    }
+    if (element) {
+      const system = await ctx.db.get(element.systemId)
+      await logAudit(ctx, {
+        userId: user._id,
+        userEmail: user.email,
+        action: "element.reorder",
+        resourceType: "element",
+        resourceId: args.updates[0]?.id ?? "batch",
+        details: { count: args.updates.length },
+        orgId: system?.orgId,
+      })
     }
   },
 })
@@ -106,6 +141,16 @@ export const remove = mutation({
     const element = await ctx.db.get(args.id)
     if (!element) throw new Error("Element not found")
     await requireWriteAccess(ctx, user._id, element.systemId)
+    const system = await ctx.db.get(element.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "element.delete",
+      resourceType: "element",
+      resourceId: args.id,
+      details: { content: element.content, elementType: element.elementType },
+      orgId: system?.orgId,
+    })
     await ctx.db.delete(args.id)
   },
 })

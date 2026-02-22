@@ -73,11 +73,20 @@ export const create = mutation({
     if (!(await isSuperAdmin(ctx, user._id))) {
       throw new Error("Access denied: only super admins can create organisations")
     }
-    return await ctx.db.insert("organisations", {
+    const orgId = await ctx.db.insert("organisations", {
       ...args,
       createdBy: user._id,
       status: args.status ?? "active",
     })
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "org.create",
+      resourceType: "org",
+      resourceId: orgId,
+      details: { name: args.name },
+    })
+    return orgId
   },
 })
 
@@ -104,6 +113,15 @@ export const update = mutation({
       }
     }
     await ctx.db.patch(id, updates)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "org.update",
+      resourceType: "org",
+      resourceId: args.id,
+      details: { updated: Object.keys(updates) },
+      orgId: args.id,
+    })
   },
 })
 

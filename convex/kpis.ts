@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { requireAuth, requireWriteAccess } from "./lib/permissions"
+import { logAudit } from "./auditLogs"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -32,7 +33,18 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
     await requireWriteAccess(ctx, user._id, args.systemId)
-    return await ctx.db.insert("kpis", args)
+    const kpiId = await ctx.db.insert("kpis", args)
+    const system = await ctx.db.get(args.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "kpi.create",
+      resourceType: "kpi",
+      resourceId: kpiId,
+      details: { content: args.content },
+      orgId: system?.orgId,
+    })
+    return kpiId
   },
 })
 
@@ -56,6 +68,16 @@ export const update = mutation({
       }
     }
     await ctx.db.patch(id, updates)
+    const system = await ctx.db.get(kpi.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "kpi.update",
+      resourceType: "kpi",
+      resourceId: args.id,
+      details: { updated: Object.keys(updates) },
+      orgId: system?.orgId,
+    })
   },
 })
 
@@ -66,6 +88,16 @@ export const remove = mutation({
     const kpi = await ctx.db.get(args.id)
     if (!kpi) throw new Error("KPI not found")
     await requireWriteAccess(ctx, user._id, kpi.systemId)
+    const system = await ctx.db.get(kpi.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "kpi.delete",
+      resourceType: "kpi",
+      resourceId: args.id,
+      details: { content: kpi.content },
+      orgId: system?.orgId,
+    })
     await ctx.db.delete(args.id)
   },
 })
@@ -97,5 +129,15 @@ export const replaceForParent = mutation({
         orderIndex: i,
       })
     }
+    const system = await ctx.db.get(args.systemId)
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "kpi.bulkReplace",
+      resourceType: "kpi",
+      resourceId: args.parentId,
+      details: { deleted: existing.length, created: args.kpis.length },
+      orgId: system?.orgId,
+    })
   },
 })
