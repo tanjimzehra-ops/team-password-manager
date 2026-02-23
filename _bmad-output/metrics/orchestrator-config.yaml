@@ -1,0 +1,97 @@
+# BMAD Orchestrator Config — Jigsaw 1.6 RSA
+# Created: 2026-02-23
+# Owner: Nicolas + Claudia (AI orchestrator)
+
+project:
+  name: "jigsaw-1.6-rsa"
+  root: "/Users/nicolaspt/Jigsaw-1.6-RSA"
+  module: "bmm"
+  testing_enabled: false        # No test framework in place yet
+  testing_framework: null
+  web_research_enabled: true    # Allow CS agent to check latest lib versions
+
+# Model routing — Opus for everything (Angels not active yet)
+routing:
+  default: "anthropic/claude-opus-4"
+  by_workflow:
+    # Planning (high-capability — synthesis + judgment)
+    BP: "anthropic/claude-opus-4"
+    CP: "anthropic/claude-opus-4"
+    CU: "anthropic/claude-opus-4"
+    CA: "anthropic/claude-opus-4"
+    CE: "anthropic/claude-opus-4"
+    IR: "anthropic/claude-opus-4"
+    # Validation (ideally different model — but Opus only for now)
+    VB: "anthropic/claude-opus-4"
+    VP: "anthropic/claude-opus-4"
+    VU: "anthropic/claude-opus-4"
+    VA: "anthropic/claude-opus-4"
+    VE: "anthropic/claude-opus-4"
+    # Implementation — Scrum Master
+    SP: "anthropic/claude-opus-4"
+    CS: "anthropic/claude-opus-4"
+    VS: "anthropic/claude-opus-4"
+    ER: "anthropic/claude-opus-4"
+    # Implementation — Developer (consider Codex 5.3 here later)
+    DS: "anthropic/claude-opus-4"
+    CR: "anthropic/claude-opus-4"
+  thinking:
+    planning: "high"
+    validation: "high"
+    implementation: "medium"
+    code_review: "high"
+    structural: "medium"
+  fallback:
+    context_threshold_pct: 80
+    delegate_to: "anthropic/claude-opus-4"
+
+# Story loop settings
+story_loop:
+  max_cr_iterations: 3
+  auto_validate_story: true
+  skip_vs_if_simple: false
+  run_retrospective: true
+
+# Gate settings — strict from the start (BMAD Help recommendation)
+gates:
+  scoring:
+    smart_min: 3.0
+    holistic_min: 3
+    completeness_min: 75
+    smart_warning: 4.0
+    completeness_warning: 90
+  adversarial:
+    min_findings: 3
+    high_blocks: true
+    medium_blocks: true
+
+# Optional workflows
+optional_workflows:
+  analysis_phase: false          # Skipping — brief already exists (Feature Register v2)
+  ux_design: true                # Jigsaw has significant UI
+  validate_brief: false          # Skipping — going straight to PRD
+  validate_prd: true
+  validate_ux: true
+  validate_architecture: true
+  validate_epics: true
+  validate_story: true
+  code_review: true
+  retrospective: true
+  tea_traceability: false        # No test framework yet
+
+# Failure patterns
+failure_patterns:
+  create_pattern_after: 2
+  alert_human_after: 3
+  auto_mitigate: false
+
+# Human notifications
+notifications:
+  on_gate_fail_required: true
+  on_halt: true
+  on_cr_high_findings: true
+  on_cr_iteration_3: true
+  on_epic_complete: true
+  on_sprint_complete: true
+  on_phase_complete: true
+  channel: "telegram"
