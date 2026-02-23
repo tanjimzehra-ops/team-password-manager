@@ -12,7 +12,7 @@
 import { QueryCtx, MutationCtx } from "../_generated/server"
 import { Id, Doc } from "../_generated/dataModel"
 
-export type Role = "super_admin" | "admin" | "viewer"
+export type Role = "super_admin" | "channel_partner" | "admin" | "viewer"
 
 // ─── Identity Resolution ─────────────────────────────────────────
 
