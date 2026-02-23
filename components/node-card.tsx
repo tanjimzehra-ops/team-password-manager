@@ -18,7 +18,6 @@ interface NodeCardProps {
   isEditMode?: boolean
   editMode?: EditMode
   chipLabel?: string
-  displayMode?: "stage" | "performance"
   onColorChange?: (color: NodeData["color"]) => void
   onEditClick?: (node: NodeData) => void
   onDeleteClick?: (node: NodeData) => void
@@ -56,7 +55,6 @@ export function NodeCard({
   isEditMode = false,
   editMode,
   chipLabel,
-  displayMode = "stage",
   onColorChange,
   onEditClick,
   onDeleteClick,
@@ -68,8 +66,7 @@ export function NodeCard({
   const [showColorPicker, setShowColorPicker] = useState(false)
 
   const colors = editMode === "colour" ? editModeColorMap : viewModeColorMap
-  const isPerformanceMode = displayMode === "performance"
-  const healthBorderColor = isPerformanceMode ? getHealthBorderColor(node.kpiValue) : ""
+  const healthBorderColor = showKpi ? getHealthBorderColor(node.kpiValue) : ""
   const healthStatus = getHealthStatus(node.kpiValue)
 
   // Determine the click handler based on edit mode
@@ -120,8 +117,8 @@ export function NodeCard({
         "hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
         "shadow-md",
         colors[node.color],
-        // In performance mode, override the border color with health-based color
-        isPerformanceMode && healthBorderColor,
+        // Apply health-based border color when showKpi is true
+        healthBorderColor,
         "p-3 min-h-[110px]",
         editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
@@ -150,25 +147,15 @@ export function NodeCard({
         </div>
       )}
 
-      {/* Performance mode: KPI badge in top-right corner */}
-      {isPerformanceMode && (
+      {/* KPI badge in top-right corner - shown when showKpi is true and not in edit mode */}
+      {showKpi && !isEditMode && (
         <Badge
           className={cn(
             "absolute top-1 right-1 z-10 text-sm px-1.5 py-0 border-none",
             healthBadgeColorMap[healthStatus],
           )}
         >
-          {formatKpiValue(node.kpiValue, displayMode)}
-        </Badge>
-      )}
-
-      {/* Stage mode: KPI percentage badge (view mode only) */}
-      {showKpi && !isEditMode && !isPerformanceMode && (
-        <Badge
-          variant="secondary"
-          className="absolute top-1 right-1 z-10 text-sm px-1.5 py-0"
-        >
-          {node.kpiValue}%
+          {formatKpiValue(node.kpiValue)}
         </Badge>
       )}
 

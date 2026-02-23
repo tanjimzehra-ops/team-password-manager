@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { BarChart3, Download } from "lucide-react"
 import {
@@ -25,8 +24,6 @@ interface ViewControlsProps {
   editMode?: EditMode
   onEditModeChange?: (mode: EditMode) => void
   activeTab?: ViewTab
-  displayMode?: "stage" | "performance"
-  onDisplayModeChange?: (mode: "stage" | "performance") => void
   onExport?: (format: "csv" | "excel" | "pdf") => void
   userRole?: UserRole
 }
@@ -37,8 +34,6 @@ export function ViewControls({
   editMode = "view",
   onEditModeChange,
   activeTab = "logic-model",
-  displayMode,
-  onDisplayModeChange,
   onExport,
   userRole,
 }: ViewControlsProps) {
@@ -62,22 +57,6 @@ export function ViewControls({
     <div className="border-b border-border bg-background">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center gap-4 py-4">
-          <div className="flex items-center gap-2">
-            <Label className="text-sm text-muted-foreground">Select Display:</Label>
-            <Select
-              value={displayMode || "stage"}
-              onValueChange={(val) => onDisplayModeChange?.(val as "stage" | "performance")}
-            >
-              <SelectTrigger className="w-[130px] h-9">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="stage">Stage</SelectItem>
-                <SelectItem value="performance">Performance</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div data-tour="toolbar-modes" className="flex items-center gap-2">
             <Label className="text-sm text-muted-foreground">Select Mode:</Label>
             <div className="flex items-center gap-1 bg-muted rounded-lg p-1">

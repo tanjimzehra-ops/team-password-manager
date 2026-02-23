@@ -17,7 +17,6 @@ interface LogicGridProps {
   cultureBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   bottomBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   editMode?: EditMode
-  displayMode?: "stage" | "performance"
   onColorChange?: (nodeId: string, color: NodeData["color"]) => void
   onReorder?: (category: string, fromIndex: number, toIndex: number) => void
   onAddNode?: (category: string) => void
@@ -32,7 +31,6 @@ export function LogicGrid({
   cultureBanner,
   bottomBanner,
   editMode = "view",
-  displayMode,
   onColorChange,
   onReorder,
   onAddNode,
@@ -172,7 +170,7 @@ export function LogicGrid({
                         onClick={() => handleNodeClick(node)}
                         isEditMode={isEditActive}
                         editMode={editMode}
-                        displayMode={displayMode}
+
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
@@ -241,7 +239,7 @@ export function LogicGrid({
                         compact
                         isEditMode={isEditActive}
                         editMode={editMode}
-                        displayMode={displayMode}
+
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
@@ -360,7 +358,7 @@ export function LogicGrid({
                           compact
                           isEditMode={isEditActive}
                           editMode={editMode}
-                          displayMode={displayMode}
+  
                           onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                           onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                           onEditClick={onEditNode ? () => onEditNode(node) : undefined}

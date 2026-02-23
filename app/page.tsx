@@ -22,7 +22,7 @@ import { Spinner } from "@/components/ui/spinner"
 
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
-import { PerformanceModal } from "@/components/performance-modal"
+// PerformanceModal removed in Story 1.8 (Stage/Performance consolidation)
 import { LibraryPopup } from "@/components/library-popup"
 import { OnboardingTour } from "@/components/onboarding-tour"
 
@@ -44,7 +44,7 @@ import {
 // Custom hooks
 import { useEditMode } from "@/hooks/use-edit-mode"
 import type { EditMode } from "@/hooks/use-edit-mode"
-import { usePerformanceMode } from "@/hooks/use-performance-mode"
+// usePerformanceMode removed in Story 1.8 (Stage/Performance consolidation)
 import { useLibrary } from "@/hooks/use-library"
 import { usePortfolioState } from "@/hooks/use-portfolio-state"
 
@@ -87,16 +87,11 @@ export default function Page() {
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null)
   const [detailSidebarOpen, setDetailSidebarOpen] = useState(false)
 
-  // Custom hooks (replace inline useState for editMode and displayMode)
+  // Custom hooks
   const {
     editMode, setEditMode, nodeForEdit, editPopupOpen, nodeToDelete, deleteDialogOpen,
     startEdit, startDelete, closeEdit, closeDelete, resetEditMode,
   } = useEditMode()
-
-  const {
-    displayMode, setDisplayMode, performanceModalOpen, performanceNode,
-    openPerformanceModal, closePerformanceModal,
-  } = usePerformanceMode()
 
   // System selection
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
@@ -584,7 +579,6 @@ export default function Page() {
             rows={effectiveLogicGridData}
             showKpi={showKpi}
             editMode={editMode}
-            displayMode={displayMode}
             onNodeClick={handleNodeClick}
             cultureBanner={effectiveCultureBanner}
             bottomBanner={effectiveBottomBanner}
@@ -653,8 +647,6 @@ export default function Page() {
         editMode={editMode}
         onEditModeChange={setEditMode}
         activeTab={activeTab}
-        displayMode={displayMode}
-        onDisplayModeChange={setDisplayMode}
         onExport={activeTab !== "canvas" ? handleExport : undefined}
       />
 
@@ -738,14 +730,6 @@ export default function Page() {
         initialTitle={nodeForEdit?.title ?? ""}
         initialDescription={nodeForEdit?.description ?? ""}
         onSave={handleEditPopupSave}
-      />
-
-      {/* Performance Modal */}
-      <PerformanceModal
-        isOpen={performanceModalOpen}
-        onClose={closePerformanceModal}
-        node={performanceNode}
-        displayMode={displayMode}
       />
 
       {/* Library Popup */}

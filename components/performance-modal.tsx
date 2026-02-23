@@ -82,7 +82,7 @@ export function PerformanceModal({
                 status === "warning" && "text-amber-600 dark:text-amber-400",
                 status === "critical" && "text-red-600 dark:text-red-400"
               )}>
-                {formatKpiValue(kpiValue, "performance")}
+                {formatKpiValue(kpiValue)}
               </p>
               <p className="text-xs text-muted-foreground capitalize">{status}</p>
             </div>
