@@ -1,7 +1,6 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
-import { requireAuth, requireWriteAccess } from "./lib/permissions"
-import { logAudit } from "./auditLogs"
+import { withWriteAccess } from "./lib/mutations"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -20,62 +19,33 @@ export const upsert = mutation({
     content: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
-    await requireWriteAccess(ctx, user._id, args.systemId)
+    return withWriteAccess(ctx, args.systemId, "factor.upsert", "factor", async () => {
+      const existing = await ctx.db
+        .query("factors")
+        .withIndex("by_value_chain", (q) =>
+          q.eq("valueChainId", args.valueChainId)
+        )
+        .first()
 
-    const existing = await ctx.db
-      .query("factors")
-      .withIndex("by_value_chain", (q) =>
-        q.eq("valueChainId", args.valueChainId)
-      )
-      .first()
-
-    const system = await ctx.db.get(args.systemId)
-    if (existing) {
-      await ctx.db.patch(existing._id, { content: args.content })
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "factor.update",
-        resourceType: "factor",
-        resourceId: existing._id,
-        details: { content: args.content },
-        orgId: system?.orgId,
-      })
-      return existing._id
-    } else {
-      const newId = await ctx.db.insert("factors", args)
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "factor.create",
-        resourceType: "factor",
-        resourceId: newId,
-        details: { content: args.content },
-        orgId: system?.orgId,
-      })
-      return newId
-    }
+      if (existing) {
+        await ctx.db.patch(existing._id, { content: args.content })
+        return existing._id
+      } else {
+        const newId = await ctx.db.insert("factors", args)
+        return newId
+      }
+    })
   },
 })
 
 export const remove = mutation({
   args: { id: v.id("factors") },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
     const factor = await ctx.db.get(args.id)
     if (!factor) throw new Error("Factor not found")
-    await requireWriteAccess(ctx, user._id, factor.systemId)
-    const system = await ctx.db.get(factor.systemId)
-    await logAudit(ctx, {
-      userId: user._id,
-      userEmail: user.email,
-      action: "factor.delete",
-      resourceType: "factor",
-      resourceId: args.id,
-      details: { content: factor.content },
-      orgId: system?.orgId,
+    
+    return withWriteAccess(ctx, factor.systemId, "factor.delete", "factor", async () => {
+      await ctx.db.delete(args.id)
     })
-    await ctx.db.delete(args.id)
   },
 })

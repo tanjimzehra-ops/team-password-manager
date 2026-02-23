@@ -1,7 +1,6 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
-import { requireAuth, requireWriteAccess } from "./lib/permissions"
-import { logAudit } from "./auditLogs"
+import { withWriteAccess } from "./lib/mutations"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
@@ -38,61 +37,32 @@ export const upsert = mutation({
     content: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
-    await requireWriteAccess(ctx, user._id, args.systemId)
+    return withWriteAccess(ctx, args.systemId, "capability.upsert", "capability", async () => {
+      const existing = await ctx.db
+        .query("capabilities")
+        .withIndex("by_resource", (q) => q.eq("resourceId", args.resourceId))
+        .filter((q) => q.eq(q.field("capabilityType"), args.capabilityType))
+        .first()
 
-    const existing = await ctx.db
-      .query("capabilities")
-      .withIndex("by_resource", (q) => q.eq("resourceId", args.resourceId))
-      .filter((q) => q.eq(q.field("capabilityType"), args.capabilityType))
-      .first()
-
-    const system = await ctx.db.get(args.systemId)
-    if (existing) {
-      await ctx.db.patch(existing._id, { content: args.content })
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "capability.update",
-        resourceType: "capability",
-        resourceId: existing._id,
-        details: { capabilityType: args.capabilityType },
-        orgId: system?.orgId,
-      })
-      return existing._id
-    } else {
-      const newId = await ctx.db.insert("capabilities", args)
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "capability.create",
-        resourceType: "capability",
-        resourceId: newId,
-        details: { capabilityType: args.capabilityType },
-        orgId: system?.orgId,
-      })
-      return newId
-    }
+      if (existing) {
+        await ctx.db.patch(existing._id, { content: args.content })
+        return existing._id
+      } else {
+        const newId = await ctx.db.insert("capabilities", args)
+        return newId
+      }
+    })
   },
 })
 
 export const remove = mutation({
   args: { id: v.id("capabilities") },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
     const cap = await ctx.db.get(args.id)
     if (!cap) throw new Error("Capability not found")
-    await requireWriteAccess(ctx, user._id, cap.systemId)
-    const system = await ctx.db.get(cap.systemId)
-    await logAudit(ctx, {
-      userId: user._id,
-      userEmail: user.email,
-      action: "capability.delete",
-      resourceType: "capability",
-      resourceId: args.id,
-      details: { capabilityType: cap.capabilityType },
-      orgId: system?.orgId,
+    
+    return withWriteAccess(ctx, cap.systemId, "capability.delete", "capability", async () => {
+      await ctx.db.delete(args.id)
     })
-    await ctx.db.delete(args.id)
   },
 })
