@@ -1,7 +1,6 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
-import { requireAuth, requireWriteAccess } from "./lib/permissions"
-import { logAudit } from "./auditLogs"
+import { withWriteAccess } from "./lib/mutations"
 
 export const bySystemAndType = query({
   args: {
@@ -35,66 +34,49 @@ export const upsert = mutation({
     content: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
-    await requireWriteAccess(ctx, user._id, args.systemId)
+    return withWriteAccess(
+      ctx,
+      args.systemId,
+      "matrixCell.upsert",
+      "matrixCell",
+      async () => {
+        const existing = await ctx.db
+          .query("matrixCells")
+          .withIndex("by_row", (q) =>
+            q
+              .eq("systemId", args.systemId)
+              .eq("matrixType", args.matrixType)
+              .eq("rowElementId", args.rowElementId)
+          )
+          .filter((q) => q.eq(q.field("colElementId"), args.colElementId))
+          .first()
 
-    const existing = await ctx.db
-      .query("matrixCells")
-      .withIndex("by_row", (q) =>
-        q
-          .eq("systemId", args.systemId)
-          .eq("matrixType", args.matrixType)
-          .eq("rowElementId", args.rowElementId)
-      )
-      .filter((q) => q.eq(q.field("colElementId"), args.colElementId))
-      .first()
-
-    const system = await ctx.db.get(args.systemId)
-    if (existing) {
-      await ctx.db.patch(existing._id, { content: args.content })
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "matrixCell.update",
-        resourceType: "matrixCell",
-        resourceId: existing._id,
-        details: { matrixType: args.matrixType },
-        orgId: system?.orgId,
-      })
-      return existing._id
-    } else {
-      const newId = await ctx.db.insert("matrixCells", args)
-      await logAudit(ctx, {
-        userId: user._id,
-        userEmail: user.email,
-        action: "matrixCell.create",
-        resourceType: "matrixCell",
-        resourceId: newId,
-        details: { matrixType: args.matrixType },
-        orgId: system?.orgId,
-      })
-      return newId
-    }
+        if (existing) {
+          await ctx.db.patch(existing._id, { content: args.content })
+          return existing._id
+        } else {
+          const newId = await ctx.db.insert("matrixCells", args)
+          return newId
+        }
+      }
+    )
   },
 })
 
 export const remove = mutation({
   args: { id: v.id("matrixCells") },
   handler: async (ctx, args) => {
-    const user = await requireAuth(ctx)
     const cell = await ctx.db.get(args.id)
     if (!cell) throw new Error("Matrix cell not found")
-    await requireWriteAccess(ctx, user._id, cell.systemId)
-    const system = await ctx.db.get(cell.systemId)
-    await logAudit(ctx, {
-      userId: user._id,
-      userEmail: user.email,
-      action: "matrixCell.delete",
-      resourceType: "matrixCell",
-      resourceId: args.id,
-      details: { matrixType: cell.matrixType },
-      orgId: system?.orgId,
-    })
-    await ctx.db.delete(args.id)
+
+    return withWriteAccess(
+      ctx,
+      cell.systemId,
+      "matrixCell.delete",
+      "matrixCell",
+      async () => {
+        await ctx.db.delete(args.id)
+      }
+    )
   },
 })
