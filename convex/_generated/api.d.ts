@@ -10,10 +10,13 @@
 
 import type * as auditLogs from "../auditLogs.js";
 import type * as capabilities from "../capabilities.js";
+import type * as channels from "../channels.js";
 import type * as elements from "../elements.js";
 import type * as externalValues from "../externalValues.js";
 import type * as factors from "../factors.js";
+import type * as invitations from "../invitations.js";
 import type * as kpis from "../kpis.js";
+import type * as lib_mutations from "../lib/mutations.js";
 import type * as lib_permissions from "../lib/permissions.js";
 import type * as matrixCells from "../matrixCells.js";
 import type * as memberships from "../memberships.js";
@@ -32,10 +35,13 @@ import type {
 declare const fullApi: ApiFromModules<{
   auditLogs: typeof auditLogs;
   capabilities: typeof capabilities;
+  channels: typeof channels;
   elements: typeof elements;
   externalValues: typeof externalValues;
   factors: typeof factors;
+  invitations: typeof invitations;
   kpis: typeof kpis;
+  "lib/mutations": typeof lib_mutations;
   "lib/permissions": typeof lib_permissions;
   matrixCells: typeof matrixCells;
   memberships: typeof memberships;
