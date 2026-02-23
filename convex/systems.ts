@@ -25,19 +25,30 @@ export const list = query({
 
     const { orgIds, isSuperAdmin, isChannelPartner } = await getAccessibleOrgIds(ctx, user._id)
 
+    // Join with orgs to get org name
+    const orgs = await ctx.db.query("organisations").collect()
+    const orgMap = new Map(orgs.map((o) => [o._id.toString(), o.name]))
+
     if (isSuperAdmin) {
       return activeSystems.map((s) => ({
         _id: s._id,
         name: s.name,
         sector: s.sector,
         orgId: s.orgId,
+        orgName: s.orgId ? (orgMap.get(s.orgId.toString()) ?? "Unknown") : undefined,
       }))
     }
 
     // User sees: legacy systems (no orgId) + their org's systems
     return activeSystems
       .filter((s) => !s.orgId || orgIds.includes(s.orgId))
-      .map((s) => ({ _id: s._id, name: s.name, sector: s.sector, orgId: s.orgId }))
+      .map((s) => ({
+        _id: s._id,
+        name: s.name,
+        sector: s.sector,
+        orgId: s.orgId,
+        orgName: s.orgId ? (orgMap.get(s.orgId.toString()) ?? "Unknown") : undefined,
+      }))
   },
 })
 

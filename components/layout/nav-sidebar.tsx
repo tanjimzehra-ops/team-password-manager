@@ -12,6 +12,7 @@ interface SystemInfo {
   id: string
   name: string
   sector?: string | null
+  orgName?: string | null
 }
 
 interface NavSidebarProps {
@@ -208,6 +209,7 @@ export function NavSidebar({
                             : "text-muted-foreground hover:bg-muted/50"
                         )}
                         onClick={() => onSystemSelect?.(system.id)}
+                        title={system.orgName ? `${system.name} (${system.orgName})` : system.name}
                       >
                         <span className={cn(
                           "w-2 h-2 rounded-full shrink-0", 
@@ -215,11 +217,15 @@ export function NavSidebar({
                         )} />
                         <div className="flex flex-col items-start overflow-hidden">
                           <span className="truncate w-full">{system.name}</span>
-                          {system.sector && (
+                          {system.orgName ? (
+                            <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                              {system.orgName}
+                            </span>
+                          ) : system.sector ? (
                             <span className="text-[10px] text-muted-foreground/70 truncate w-full">
                               {system.sector}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </Button>
                     ))}
@@ -228,6 +234,7 @@ export function NavSidebar({
                       size="sm"
                       className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50 opacity-50 cursor-not-allowed"
                       disabled
+                      title="Add System - Coming soon"
                     >
                       <Plus className="h-3 w-3" />
                       Add System
