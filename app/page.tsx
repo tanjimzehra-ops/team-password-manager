@@ -668,7 +668,7 @@ export default function Page() {
           Using static demo data. Configure Convex to enable real-time data.
         </div>
       )}
-      {dataSource === "convex" && (
+      {dataSource === "convex" && process.env.NODE_ENV === "development" && (
         <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 text-center">
           Connected to Convex (real-time)
         </div>

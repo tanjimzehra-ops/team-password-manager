@@ -30,9 +30,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Jigsaw - Project MERA Australia",
-  description: "Circular renewable energy globally from locally generated waste - shared people, planet & prosperity futures",
-  generator: "v0.app",
+  title: "Jigsaw — Strategic Planning System",
+  description: "Visualise and manage your organisation's strategy through Logic Models, Contribution Maps, Development Pathways, and Convergence Maps.",
   icons: {
     icon: [
       {
