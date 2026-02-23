@@ -122,7 +122,7 @@ export const getFullSystem = query({
 
 /**
  * Create a new system. Requires auth + admin/super_admin role.
- * orgId is optional during migration but will be required post-Block 5.
+ * orgId is required to ensure data isolation for new systems.
  */
 export const create = mutation({
   args: {
@@ -131,16 +131,14 @@ export const create = mutation({
     impact: v.string(),
     dimension: v.string(),
     challenge: v.string(),
-    orgId: v.optional(v.id("organisations")),
+    orgId: v.id("organisations"),
   },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
 
-    // If orgId provided, verify admin/super_admin in that org
-    if (args.orgId) {
-      const { requireRole } = await import("./lib/permissions")
-      await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
-    }
+    // Verify admin/super_admin in the org
+    const { requireRole } = await import("./lib/permissions")
+    await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
 
     const systemId = await ctx.db.insert("systems", args)
     await logAudit(ctx, {
