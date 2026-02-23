@@ -632,6 +632,18 @@ export default function Page() {
     isLoading: orgsLoading,
   }), [orgs, selectedOrgId, orgsLoading])
 
+  // Show loading spinner while auth state is being determined
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Spinner className="w-8 h-8" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   // Show landing page for unauthenticated users (must be after all hooks)
   if (!authLoading && !user) {
     return <LandingPage />
