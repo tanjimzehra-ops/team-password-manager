@@ -93,7 +93,7 @@ export function NodeEditPopup({
                 value={titleValue}
                 onChange={(e) => setTitleValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Enter node title..."
+                placeholder="e.g., Increase market share by 20%"
                 className="min-h-[60px] resize-none text-sm"
                 autoFocus
               />
@@ -109,7 +109,7 @@ export function NodeEditPopup({
                 value={descriptionValue}
                 onChange={(e) => setDescriptionValue(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Enter node description..."
+                placeholder="Describe this element in detail..."
                 className="min-h-[100px] resize-y text-sm"
               />
             </div>

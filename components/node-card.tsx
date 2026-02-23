@@ -65,6 +65,9 @@ export function NodeCard({
 }: NodeCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
 
+  // Detect empty nodes
+  const isEmpty = !node.title || node.title.trim() === ""
+
   const colors = editMode === "colour" ? editModeColorMap : viewModeColorMap
   const healthBorderColor = showKpi ? getHealthBorderColor(node.kpiValue) : ""
   const healthStatus = getHealthStatus(node.kpiValue)
@@ -122,6 +125,8 @@ export function NodeCard({
         "p-3 min-h-[110px]",
         editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
+        // Empty node styling - muted appearance in view mode
+        isEmpty && editMode !== "colour" && "opacity-60 border-dashed",
       )}
     >
       {/* Edit mode overlays */}
@@ -179,7 +184,11 @@ export function NodeCard({
       )}
 
       <h3 className={cn("font-bold leading-tight text-center text-sm mb-2")}>
-        {node.title}
+        {isEmpty ? (
+          <span className="text-muted-foreground italic">Empty — click to edit</span>
+        ) : (
+          node.title
+        )}
       </h3>
 
       {/* Description only for non-compact (Outcomes) cards */}

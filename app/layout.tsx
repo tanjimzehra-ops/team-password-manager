@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { withAuth } from "@workos-inc/authkit-nextjs"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/providers/convex-provider"
+import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
 import { Plus_Jakarta_Sans, Lora, IBM_Plex_Mono, Geist as V0_Font_Geist, Geist_Mono as V0_Font_Geist_Mono, Source_Serif_4 as V0_Font_Source_Serif_4 } from 'next/font/google'
@@ -66,6 +67,7 @@ export default async function RootLayout({
             {children}
           </ThemeProvider>
         </ConvexClientProvider>
+        <Toaster />
         <Analytics />
       </body>
     </html>
