@@ -79,6 +79,38 @@ export async function isSuperAdmin(
 }
 
 /**
+ * Check if user is a channel partner (has channel_partner role in ANY org).
+ */
+export async function isChannelPartner(
+  ctx: QueryCtx | MutationCtx,
+  userId: Id<"users">
+): Promise<boolean> {
+  const memberships = await getUserMemberships(ctx, userId)
+  return memberships.some((m) => m.role === "channel_partner")
+}
+
+/**
+ * Get all channel IDs where the user is a channel partner.
+ */
+export async function getPartnerChannelIds(
+  ctx: QueryCtx | MutationCtx,
+  userId: Id<"users">
+): Promise<Id<"channels">[]> {
+  const memberships = await getUserMemberships(ctx, userId)
+  const partnerMemberships = memberships.filter((m) => m.role === "channel_partner")
+
+  // Get the channelId from each org where user is channel_partner
+  const channelIds: Id<"channels">[] = []
+  for (const m of partnerMemberships) {
+    const org = await ctx.db.get(m.orgId)
+    if (org?.channelId && !channelIds.includes(org.channelId)) {
+      channelIds.push(org.channelId)
+    }
+  }
+  return channelIds
+}
+
+/**
  * Get user's membership in a specific org. Returns null if no membership.
  */
 export async function getOrgMembership(
@@ -137,6 +169,7 @@ export async function requireRole(
  * - Systems without orgId (legacy) are accessible to all authenticated users
  * - Systems with orgId require org membership
  * - Super admins can access everything
+ * - Channel partners can access systems in their channel's orgs
  */
 export async function canAccessSystem(
   ctx: QueryCtx | MutationCtx,
@@ -151,6 +184,17 @@ export async function canAccessSystem(
 
   // Super admins access everything
   if (await isSuperAdmin(ctx, userId)) return true
+
+  // Channel partners can access systems in their channel's orgs
+  if (system.orgId) {
+    const channelIds = await getPartnerChannelIds(ctx, userId)
+    if (channelIds.length > 0) {
+      const org = await ctx.db.get(system.orgId)
+      if (org?.channelId && channelIds.includes(org.channelId)) {
+        return true
+      }
+    }
+  }
 
   // Check org membership
   const membership = await getOrgMembership(ctx, userId, system.orgId)
@@ -184,15 +228,43 @@ export async function requireWriteAccess(
 export async function getAccessibleOrgIds(
   ctx: QueryCtx | MutationCtx,
   userId: Id<"users">
-): Promise<{ orgIds: Id<"organisations">[]; isSuperAdmin: boolean }> {
+): Promise<{ orgIds: Id<"organisations">[]; isSuperAdmin: boolean; isChannelPartner: boolean }> {
   const superAdmin = await isSuperAdmin(ctx, userId)
   if (superAdmin) {
-    return { orgIds: [], isSuperAdmin: true }
+    return { orgIds: [], isSuperAdmin: true, isChannelPartner: false }
   }
 
   const memberships = await getUserMemberships(ctx, userId)
+  const directOrgIds = memberships.map((m) => m.orgId)
+
+  // Check if user is a channel partner
+  const partnerMemberships = memberships.filter((m) => m.role === "channel_partner")
+  if (partnerMemberships.length > 0) {
+    // Get all channel IDs from partner orgs
+    const channelIds: Id<"channels">[] = []
+    for (const m of partnerMemberships) {
+      const org = await ctx.db.get(m.orgId)
+      if (org?.channelId && !channelIds.includes(org.channelId)) {
+        channelIds.push(org.channelId)
+      }
+    }
+
+    // Get ALL orgs in those channels
+    if (channelIds.length > 0) {
+      const allOrgs = await ctx.db.query("organisations").collect()
+      const channelOrgIds = allOrgs
+        .filter((o) => !o.deletedAt && o.channelId && channelIds.includes(o.channelId))
+        .map((o) => o._id)
+
+      // Merge direct + channel org IDs (deduplicate)
+      const allOrgIds = [...new Set([...directOrgIds, ...channelOrgIds])]
+      return { orgIds: allOrgIds, isSuperAdmin: false, isChannelPartner: true }
+    }
+  }
+
   return {
-    orgIds: memberships.map((m) => m.orgId),
+    orgIds: directOrgIds,
     isSuperAdmin: false,
+    isChannelPartner: false,
   }
 }

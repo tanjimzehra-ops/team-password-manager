@@ -23,7 +23,7 @@ export const list = query({
 
     const user = await requireAuth(ctx)
 
-    const { orgIds, isSuperAdmin } = await getAccessibleOrgIds(ctx, user._id)
+    const { orgIds, isSuperAdmin, isChannelPartner } = await getAccessibleOrgIds(ctx, user._id)
 
     if (isSuperAdmin) {
       return activeSystems.map((s) => ({
