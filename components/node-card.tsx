@@ -208,7 +208,7 @@ export function NodeCard({
       )}
 
       {/* KPI input - only in edit mode */}
-      {showKpi && isEditMode && (
+      {showKpi && editMode === "edit" && (
         <div className="mt-auto pt-2">
           <Input
             type="number"

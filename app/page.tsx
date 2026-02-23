@@ -38,6 +38,7 @@ import {
   useConvexCreatePortfolio,
   useConvexUpdatePortfolio,
   useConvexDeletePortfolio,
+  useConvexCreateElement,
 } from "@/hooks/convex/use-convex-mutations"
 
 // Custom hooks
@@ -139,6 +140,7 @@ export default function Page() {
   const convexCreatePortfolio = useConvexCreatePortfolio()
   const convexUpdatePortfolio = useConvexUpdatePortfolio()
   const convexDeletePortfolio = useConvexDeletePortfolio()
+  const convexCreateElement = useConvexCreateElement()
 
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
@@ -442,9 +444,48 @@ export default function Page() {
     }
   }
 
-  // Add node handler (placeholder - opens library)
-  const handleAddNode = (category: string) => {
-    openLibrary(category as NodeData["category"])
+  // Add node handler - creates new element directly
+  const handleAddNode = async (category: string) => {
+    if (dataSource !== "convex" || !convexSystemData) return
+
+    // Map category to elementType
+    const categoryToElementType: Record<string, "outcome" | "value_chain" | "resource"> = {
+      outcomes: "outcome",
+      "value-chain": "value_chain",
+      resources: "resource",
+    }
+
+    const elementType = categoryToElementType[category]
+    if (!elementType) return
+
+    // Get current count of nodes in this category for orderIndex
+    const row = effectiveLogicGridData.find((r) => r.category === category)
+    const orderIndex = row?.nodes.length ?? 0
+
+    try {
+      const newElementId = await convexCreateElement.createElement({
+        systemId: convexSystemData.system.id,
+        elementType,
+        content: "",
+        description: "",
+        orderIndex,
+      })
+
+      // Create a minimal NodeData for the new element and open edit popup
+      const newNode: NodeData = {
+        id: newElementId,
+        title: "",
+        description: "",
+        kpiValue: 0,
+        kpiStatus: "healthy",
+        category: category as NodeData["category"],
+        color: "primary",
+      }
+
+      startEdit(newNode)
+    } catch {
+      // Error handling is done within the hook
+    }
   }
 
   // Delete node handler

@@ -124,7 +124,7 @@ export function LogicGrid({
                   <p className="text-white font-bold text-center text-[22px] leading-tight">
                     {row.nodes[0]?.title}
                   </p>
-                  {showKpi && isEditActive && (
+                  {showKpi && editMode === "edit" && (
                     <Input
                       type="number"
                       defaultValue={row.nodes[0]?.kpiValue}
@@ -133,7 +133,7 @@ export function LogicGrid({
                     />
                   )}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
                       <ArrowRight className="h-3 w-3" />
@@ -184,7 +184,7 @@ export function LogicGrid({
                     </div>
                   ))}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button
                       variant="outline"
@@ -253,7 +253,7 @@ export function LogicGrid({
                     </div>
                   ))}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button
                       variant="outline"
@@ -317,7 +317,7 @@ export function LogicGrid({
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
@@ -372,7 +372,7 @@ export function LogicGrid({
                       </div>
                     ))}
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
@@ -429,7 +429,7 @@ export function LogicGrid({
                   >
                     <p className="text-white font-medium text-center text-lg leading-tight">{bottomBanner.title}</p>
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
