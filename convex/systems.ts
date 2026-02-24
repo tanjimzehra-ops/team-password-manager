@@ -3,6 +3,7 @@ import { v } from "convex/values"
 import {
   getCurrentUser,
   requireAuth,
+  requireRole,
   isSuperAdmin,
   requireWriteAccess,
   getAccessibleOrgIds,
@@ -148,7 +149,6 @@ export const create = mutation({
     const user = await requireAuth(ctx)
 
     // Verify admin/super_admin in the org
-    const { requireRole } = await import("./lib/permissions")
     await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
 
     const systemId = await ctx.db.insert("systems", args)
