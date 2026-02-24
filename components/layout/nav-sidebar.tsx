@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
+import { AddSystemDialog } from "@/components/add-system-dialog"
 
 interface SystemInfo {
   id: string
@@ -51,6 +52,7 @@ export function NavSidebar({
   const [systemsExpanded, setSystemsExpanded] = useState(true)
   const [searchInput, setSearchInput] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const [addSystemOpen, setAddSystemOpen] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   // Debounce search input by 300ms
@@ -232,9 +234,9 @@ export function NavSidebar({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50 opacity-50 cursor-not-allowed"
-                      disabled
-                      title="Add System - Coming soon"
+                      className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
+                      onClick={() => setAddSystemOpen(true)}
+                      title="Add System"
                     >
                       <Plus className="h-3 w-3" />
                       Add System
@@ -288,6 +290,8 @@ export function NavSidebar({
           </Button>
         </div>
       </div>
+
+      <AddSystemDialog open={addSystemOpen} onOpenChange={setAddSystemOpen} />
     </div>
   )
 }
