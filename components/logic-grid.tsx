@@ -83,6 +83,18 @@ export function LogicGrid({
     setDragCategory(null)
   }
 
+  const handleMoveNode = (
+    category: string,
+    fromIndex: number,
+    direction: -1 | 1,
+    nodeCount: number
+  ) => {
+    if (editMode !== "order") return
+    const toIndex = fromIndex + direction
+    if (toIndex < 0 || toIndex >= nodeCount) return
+    onReorder?.(category, fromIndex, toIndex)
+  }
+
   // Click handler for nodes - routes based on edit mode
   const handleNodeClick = (node: NodeData) => {
     if (editMode === "edit") {
@@ -177,6 +189,11 @@ export function LogicGrid({
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
+                        showReorderArrows={editMode === "order"}
+                        onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                        onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                        disableMoveUp={index === 0}
+                        disableMoveDown={index === row.nodes.length - 1}
                         chipLabel={`Objective ${index + 1}`}
                       />
                     </div>
@@ -246,6 +263,11 @@ export function LogicGrid({
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
+                        showReorderArrows={editMode === "order"}
+                        onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                        onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                        disableMoveUp={index === 0}
+                        disableMoveDown={index === row.nodes.length - 1}
                         chipLabel={`VC ${index + 1}`}
                       />
                     </div>
@@ -365,6 +387,11 @@ export function LogicGrid({
                           draggable={editMode === "order"}
                           onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                           onDragEnd={handleDragEnd}
+                          showReorderArrows={editMode === "order"}
+                          onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                          onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                          disableMoveUp={index === 0}
+                          disableMoveDown={index === row.nodes.length - 1}
                           chipLabel={`Resource ${index + 1}`}
                         />
                       </div>
