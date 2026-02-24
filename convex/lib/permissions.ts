@@ -20,15 +20,19 @@ export type Role = "super_admin" | "channel_partner" | "admin" | "viewer"
  * Get the authenticated user's Convex record from JWT identity.
  * Returns null if not authenticated or user not found in DB.
  *
- * DEV BYPASS: When CONVEX_DEV_BYPASS_AUTH env var is set to "true",
- * returns the first super_admin user without requiring JWT auth.
- * This is for local development only — never set in production.
+ * DEV BYPASS: When CONVEX_DEV_BYPASS_AUTH env var is set to "true"
+ * AND CONVEX_IS_PRODUCTION is NOT "true", returns the first super_admin
+ * user without requiring JWT auth. Double-gated so the bypass cannot
+ * activate in production even if the env var is accidentally set.
  */
 export async function getCurrentUser(
   ctx: QueryCtx | MutationCtx
 ): Promise<Doc<"users"> | null> {
   // Dev bypass: skip JWT auth, return the primary super_admin user (Nicolas)
-  if (process.env.CONVEX_DEV_BYPASS_AUTH === "true") {
+  // SECURITY: requires BOTH flags — bypass ON and production OFF
+  const bypassEnabled = process.env.CONVEX_DEV_BYPASS_AUTH === "true"
+  const isProduction = process.env.CONVEX_IS_PRODUCTION === "true"
+  if (bypassEnabled && !isProduction) {
     // Try to find Nicolas's user by email
     const devUser = await ctx.db
       .query("users")

@@ -3,19 +3,22 @@
 /**
  * Auth hook wrapper that supports dev bypass mode.
  *
- * When NEXT_PUBLIC_DEV_BYPASS_AUTH=true:
+ * When NEXT_PUBLIC_DEV_BYPASS_AUTH=true AND NODE_ENV=development:
  * - Returns a fake user object (always authenticated)
  * - No WorkOS dependency
  *
- * When disabled:
+ * When disabled (or in production builds):
  * - Delegates to WorkOS useAuth() as normal
  *
- * This file is safe in production — the env var is never set there.
+ * Double-gated: even if the env var leaks, production builds
+ * (NODE_ENV=production) will never activate the bypass.
  */
 
 import { useAuth as useWorkOSAuth } from "@workos-inc/authkit-nextjs/components"
 
-const DEV_BYPASS = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true"
+const DEV_BYPASS =
+  process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true" &&
+  process.env.NODE_ENV === "development"
 
 // Fake user for dev bypass (matches WorkOS user shape)
 const FAKE_DEV_USER = {
