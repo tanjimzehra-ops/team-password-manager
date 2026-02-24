@@ -19,6 +19,7 @@ import { NodeDetailSidebar } from "@/components/node-detail-sidebar"
 import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import { LayoutGrid, PlusCircle } from "lucide-react"
 
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
@@ -140,12 +141,25 @@ export default function Page() {
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
 
-  // Auto-select first system when systems load or org changes
+  // Restore selected system from localStorage, or clear if current selection is invalid
   useEffect(() => {
-    if (dataSource === "convex" && convexSystems.length > 0) {
-      // If current selection isn't in the filtered list, pick the first one
-      if (!selectedSystemId || !convexSystems.find((s) => s.id === selectedSystemId)) {
-        setSelectedSystemId(convexSystems[0].id)
+    if (dataSource !== "convex" || convexSystems.length === 0) return
+
+    // If current selection isn't in the filtered list (e.g. org switch), clear it
+    if (selectedSystemId && !convexSystems.find((s) => s.id === selectedSystemId)) {
+      setSelectedSystemId(null)
+      return
+    }
+
+    // On initial load with no selection, try to restore from localStorage
+    if (!selectedSystemId) {
+      try {
+        const saved = localStorage.getItem("jigsaw-selected-system")
+        if (saved && convexSystems.find((s) => s.id === saved)) {
+          setSelectedSystemId(saved)
+        }
+      } catch {
+        // localStorage unavailable (SSR, privacy mode)
       }
     }
   }, [dataSource, convexSystems, selectedSystemId])
@@ -209,6 +223,11 @@ export default function Page() {
   const handleSystemSelect = (systemId: string) => {
     if (dataSource === "convex") {
       setSelectedSystemId(systemId)
+      try {
+        localStorage.setItem("jigsaw-selected-system", systemId)
+      } catch {
+        // localStorage unavailable
+      }
     } else {
       // JSON mode: use system name as key
       const systemKey = systemId.toLowerCase() as SystemName
@@ -565,11 +584,45 @@ export default function Page() {
     </div>
   )
 
+  // Render empty state when no system is selected
+  const renderEmptyState = () => {
+    const hasSystems = dataSource === "convex" ? convexSystems.length > 0 : true
+
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
+          {hasSystems ? (
+            <>
+              <LayoutGrid className="w-12 h-12 text-muted-foreground/50" />
+              <h2 className="text-xl font-semibold text-foreground">Welcome to Jigsaw</h2>
+              <p className="text-muted-foreground">
+                Select a system from the sidebar to begin viewing and editing your strategic plan.
+              </p>
+            </>
+          ) : (
+            <>
+              <PlusCircle className="w-12 h-12 text-muted-foreground/50" />
+              <h2 className="text-xl font-semibold text-foreground">No systems available</h2>
+              <p className="text-muted-foreground">
+                Create your first system to get started with strategic planning.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   // Render main content based on active tab
   const renderMainContent = () => {
     // Show loading while fetching data
     if (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) {
       return renderLoading()
+    }
+
+    // Show empty state when no system is selected
+    if (dataSource === "convex" && !selectedSystemId) {
+      return renderEmptyState()
     }
 
     switch (activeTab) {
@@ -680,7 +733,7 @@ export default function Page() {
           <NavSidebar
             isCollapsed={navSidebarCollapsed}
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={dataSource === "convex" ? (selectedSystemId || systemName) : selectedJsonSystem}
+            selectedSystem={dataSource === "convex" ? (selectedSystemId ?? "") : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
             systems={
               dataSource === "convex"
