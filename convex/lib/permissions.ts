@@ -5,7 +5,7 @@
  * - Auth boundary is at systems.list (entry point)
  * - All child queries chain through systemId
  * - Mutations always require auth + role check
- * - Systems without orgId (legacy) are visible to all authenticated users
+ * - Systems without orgId (legacy) are super-admin only
  * - Super admins see everything across all orgs
  */
 
@@ -195,7 +195,7 @@ export async function requireRole(
 
 /**
  * Check if a user can access a specific system.
- * - Systems without orgId (legacy) are accessible to all authenticated users
+ * - Systems without orgId (legacy) are super-admin only
  * - Systems with orgId require org membership
  * - Super admins can access everything
  * - Channel partners can access systems in their channel's orgs
@@ -208,11 +208,11 @@ export async function canAccessSystem(
   const system = await ctx.db.get(systemId)
   if (!system || system.deletedAt) return false
 
-  // Legacy systems (no orgId) are accessible to all authenticated users
-  if (!system.orgId) return true
-
   // Super admins access everything
   if (await isSuperAdmin(ctx, userId)) return true
+
+  // Legacy systems (no orgId) are accessible only to super admins
+  if (!system.orgId) return false
 
   // Channel partners can access systems in their channel's orgs
   if (system.orgId) {
@@ -232,7 +232,7 @@ export async function canAccessSystem(
 
 /**
  * Require write access to a system. Must be admin or super_admin in the system's org.
- * Legacy systems (no orgId) allow writes from any authenticated user.
+ * Legacy systems (no orgId) allow writes from super admins only.
  */
 export async function requireWriteAccess(
   ctx: MutationCtx,
@@ -243,8 +243,13 @@ export async function requireWriteAccess(
   if (!system) throw new Error("System not found")
   if (system.deletedAt) throw new Error("System has been deleted")
 
-  // Legacy systems (no orgId) — any authenticated user can write (migration period)
-  if (!system.orgId) return
+  // Legacy systems (no orgId) are writable only by super admins.
+  if (!system.orgId) {
+    if (!(await isSuperAdmin(ctx, userId))) {
+      throw new Error("Access denied: legacy systems require super admin remediation")
+    }
+    return
+  }
 
   // Require admin or super_admin role in the system's org
   await requireRole(ctx, userId, system.orgId, ["admin", "super_admin"])

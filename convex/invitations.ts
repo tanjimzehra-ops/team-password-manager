@@ -6,7 +6,8 @@ import {
   getOrgMembership,
 } from "./lib/permissions"
 import { logAudit } from "./auditLogs"
-import { sha256 } from "./lib/crypto"
+import { sha256, randomToken } from "./lib/crypto"
+import { emailsMatch, normalizeEmail } from "./lib/email"
 
 // Role validator for invitations: only admin and viewer
 const invitationRoleValidator = v.union(
@@ -14,22 +15,11 @@ const invitationRoleValidator = v.union(
   v.literal("viewer")
 )
 
-// Invitation status validator
-const invitationStatusValidator = v.union(
-  v.literal("pending"),
-  v.literal("accepted"),
-  v.literal("declined"),
-  v.literal("expired")
-)
-
 /**
- * Generate a secure random token for invitations
- * Uses Math.random() since Convex doesn't have Node's crypto module
+ * Generate a secure random token for invitations.
  */
 function generateToken(): string {
-  return Array.from({ length: 32 }, () =>
-    Math.random().toString(36).charAt(2)
-  ).join("")
+  return randomToken(32)
 }
 
 /**
@@ -95,6 +85,7 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
+    const invitationEmail = normalizeEmail(args.email)
 
     // Require admin or super_admin role in the org
     await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
@@ -108,7 +99,7 @@ export const create = mutation({
 
     // Create the invitation (store HASHED token only)
     const invitationId = await ctx.db.insert("invitations", {
-      email: args.email,
+      email: invitationEmail,
       orgId: args.orgId,
       role: args.role,
       token: hashedToken,
@@ -125,7 +116,7 @@ export const create = mutation({
       resourceType: "invitation",
       resourceId: invitationId,
       details: {
-        email: args.email,
+        email: invitationEmail,
         role: args.role,
         orgId: args.orgId,
       },
@@ -229,6 +220,10 @@ export const accept = mutation({
     // Check status is pending
     if (invitation.status !== "pending") {
       throw new Error(`Invitation has already been ${invitation.status}`)
+    }
+
+    if (!emailsMatch(user.email, invitation.email)) {
+      throw new Error("Access denied: invitation is not for this account")
     }
 
     // Check if user is already a member of this org

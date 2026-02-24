@@ -122,3 +122,19 @@ export function sha256(message: string): string {
   // Convert to hex string
   return hash.map((h) => (h >>> 0).toString(16).padStart(8, "0")).join("")
 }
+
+/**
+ * Generate a cryptographically secure token as a hex string.
+ */
+export function randomToken(byteLength = 32): string {
+  const cryptoApi = (globalThis as unknown as {
+    crypto?: { getRandomValues: (arr: Uint8Array) => Uint8Array }
+  }).crypto
+  if (!cryptoApi?.getRandomValues) {
+    throw new Error("Secure randomness API unavailable")
+  }
+
+  const bytes = new Uint8Array(byteLength)
+  cryptoApi.getRandomValues(bytes)
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("")
+}

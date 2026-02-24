@@ -21,10 +21,12 @@ interface NavSidebarProps {
   onToggle: () => void
   selectedSystem?: string
   onSystemSelect?: (systemId: string) => void
+  onSystemCreated?: (systemId: string) => void
   systems?: SystemInfo[]
   isLoading?: boolean
   showCanvas?: boolean
   onCanvasClick?: () => void
+  canAddSystem?: boolean
 }
 
 // Default static systems for JSON-mode fallback
@@ -44,10 +46,12 @@ export function NavSidebar({
   onToggle,
   selectedSystem = "",
   onSystemSelect,
+  onSystemCreated,
   systems,
   isLoading = false,
   showCanvas = false,
-  onCanvasClick
+  onCanvasClick,
+  canAddSystem = true,
 }: NavSidebarProps) {
   const [systemsExpanded, setSystemsExpanded] = useState(true)
   const [searchInput, setSearchInput] = useState("")
@@ -230,16 +234,18 @@ export function NavSidebar({
                         </div>
                       </Button>
                     ))}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
-                      onClick={() => setAddSystemOpen(true)}
-                      title="Add System"
-                    >
-                      <Plus className="h-3 w-3" />
-                      Add System
-                    </Button>
+                    {canAddSystem && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
+                        onClick={() => setAddSystemOpen(true)}
+                        title="Add System"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Add System
+                      </Button>
+                    )}
                   </>
                 )}
               </div>
@@ -290,7 +296,11 @@ export function NavSidebar({
         </div>
       </div>
 
-      <AddSystemDialog open={addSystemOpen} onOpenChange={setAddSystemOpen} />
+      <AddSystemDialog
+        open={addSystemOpen}
+        onOpenChange={setAddSystemOpen}
+        onSystemCreated={onSystemCreated}
+      />
     </div>
   )
 }

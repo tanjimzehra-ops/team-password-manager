@@ -1,9 +1,12 @@
 /**
  * Data migrations — run via CLI:
- *   npx convex run migrations:assignLegacyOrgIds
+ *   npx convex run migrations:assignLegacyOrgIds '{"confirm":"ASSIGN_LEGACY_ORGS"}'
  */
 
 import { mutation } from "./_generated/server"
+import { v } from "convex/values"
+import { logAudit } from "./auditLogs"
+import { requireAuth, isSuperAdmin } from "./lib/permissions"
 
 // System name → Organisation name (mirrors seed.ts SYSTEM_ORG_MAP)
 const SYSTEM_ORG_MAP: Record<string, string> = {
@@ -23,8 +26,20 @@ const DEFAULT_ORG = "Creating Preferred Futures"
  * Idempotent — safe to run multiple times.
  */
 export const assignLegacyOrgIds = mutation({
-  args: {},
-  handler: async (ctx) => {
+  args: {
+    confirm: v.string(),
+    dryRun: v.optional(v.boolean()),
+  },
+  handler: async (ctx, args) => {
+    const user = await requireAuth(ctx)
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      throw new Error("Access denied: only super admins can run migrations")
+    }
+    if (args.confirm !== "ASSIGN_LEGACY_ORGS") {
+      throw new Error("Confirmation token mismatch")
+    }
+
+    const dryRun = args.dryRun === true
     const allSystems = await ctx.db.query("systems").collect()
     const allOrgs = await ctx.db.query("organisations").collect()
 
@@ -54,7 +69,9 @@ export const assignLegacyOrgIds = mutation({
         : defaultOrgId
       const targetOrgName = mappedOrgName ?? DEFAULT_ORG
 
-      await ctx.db.patch(system._id, { orgId: targetOrgId })
+      if (!dryRun) {
+        await ctx.db.patch(system._id, { orgId: targetOrgId })
+      }
       results.push({
         system: system.name,
         org: targetOrgName,
@@ -62,7 +79,27 @@ export const assignLegacyOrgIds = mutation({
       })
     }
 
-    console.log("assignLegacyOrgIds:", JSON.stringify(results, null, 2))
-    return results
+    const changedCount = results.filter((r) => r.status !== "already_assigned").length
+    await logAudit(ctx, {
+      userId: user._id,
+      userEmail: user.email,
+      action: "migration.assignLegacyOrgIds",
+      resourceType: "migration",
+      resourceId: "assignLegacyOrgIds",
+      details: {
+        totalSystems: results.length,
+        changedCount,
+        dryRun,
+      },
+    })
+
+    const summary = {
+      dryRun,
+      totalSystems: results.length,
+      changedCount,
+      alreadyAssignedCount: results.length - changedCount,
+    }
+    console.log("assignLegacyOrgIds:", JSON.stringify({ summary, results }, null, 2))
+    return { summary, results }
   },
 })

@@ -19,9 +19,10 @@ import { useToast } from "@/hooks/use-toast"
 interface AddSystemDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  onSystemCreated?: (systemId: string) => void
 }
 
-export function AddSystemDialog({ open, onOpenChange }: AddSystemDialogProps) {
+export function AddSystemDialog({ open, onOpenChange, onSystemCreated }: AddSystemDialogProps) {
   const orgs = useQuery(api.organisations.list)
   const createSystem = useMutation(api.systems.create)
   const { toast } = useToast()
@@ -43,7 +44,7 @@ export function AddSystemDialog({ open, onOpenChange }: AddSystemDialogProps) {
 
     setSaving(true)
     try {
-      await createSystem({
+      const systemId = await createSystem({
         name: name.trim(),
         sector: sector.trim() || undefined,
         impact: "",
@@ -51,6 +52,7 @@ export function AddSystemDialog({ open, onOpenChange }: AddSystemDialogProps) {
         challenge: "",
         orgId: orgId as Id<"organisations">,
       })
+      onSystemCreated?.(String(systemId))
       toast({ title: "System created", description: `"${name.trim()}" has been created.` })
       resetForm()
       onOpenChange(false)

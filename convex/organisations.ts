@@ -3,6 +3,7 @@ import { v } from "convex/values"
 import {
   requireAuth,
   isSuperAdmin,
+  getAccessibleOrgIds,
   getOrgMembership,
   requireRole,
 } from "./lib/permissions"
@@ -32,13 +33,10 @@ export const list = query({
       return activeOrgs
     }
 
-    // Non-super-admin: filter to orgs where user has membership
-    const memberships = await ctx.db
-      .query("memberships")
-      .withIndex("by_user", (q) => q.eq("userId", user._id))
-      .collect()
-    const orgIds = new Set(memberships.filter((m) => !m.deletedAt).map((m) => String(m.orgId)))
-    return activeOrgs.filter((o) => orgIds.has(String(o._id)))
+    // Non-super-admin: filter to orgs where user has direct or channel-partner access
+    const { orgIds } = await getAccessibleOrgIds(ctx, user._id)
+    const accessibleOrgIds = new Set(orgIds.map((id) => String(id)))
+    return activeOrgs.filter((o) => accessibleOrgIds.has(String(o._id)))
   },
 })
 

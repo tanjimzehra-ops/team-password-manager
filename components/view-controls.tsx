@@ -13,10 +13,12 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-
-type EditMode = "view" | "edit" | "colour" | "order" | "delete"
-type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
-type UserRole = "super_admin" | "admin" | "viewer" | "channel_partner"
+import {
+  getAvailableModesForRole,
+  type EditMode,
+  type ViewTab,
+  type UserRole,
+} from "@/lib/rbac"
 
 interface ViewControlsProps {
   showKpi: boolean
@@ -37,21 +39,7 @@ export function ViewControls({
   onExport,
   userRole,
 }: ViewControlsProps) {
-  // Determine which modes are available for the current view and user role
-  const getAvailableModes = (): EditMode[] => {
-    // Viewers can only access view and colour modes
-    if (userRole === "viewer") {
-      return ["view", "colour"]
-    }
-
-    // Admin users get full access based on the active tab
-    if (activeTab === "logic-model" || activeTab === "convergence-map") {
-      return ["view", "edit", "colour", "order", "delete"]
-    }
-    return ["view", "edit", "colour"]
-  }
-
-  const availableModes = getAvailableModes()
+  const availableModes = getAvailableModesForRole(activeTab, userRole ?? null)
 
   return (
     <div className="border-b border-border bg-background">

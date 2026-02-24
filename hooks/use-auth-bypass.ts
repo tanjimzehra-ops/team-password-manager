@@ -15,10 +15,7 @@
  */
 
 import { useAuth as useWorkOSAuth } from "@workos-inc/authkit-nextjs/components"
-
-const DEV_BYPASS =
-  process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true" &&
-  process.env.NODE_ENV === "development"
+import { isDevBypassEnabled } from "@/lib/dev-bypass"
 
 // Fake user for dev bypass (matches WorkOS user shape)
 const FAKE_DEV_USER = {
@@ -34,7 +31,7 @@ const FAKE_DEV_USER = {
 }
 
 export function useAuthBypass() {
-  if (DEV_BYPASS) {
+  if (isDevBypassEnabled) {
     return {
       user: FAKE_DEV_USER,
       loading: false,
@@ -42,6 +39,5 @@ export function useAuthBypass() {
     }
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useWorkOSAuth()
 }

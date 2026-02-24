@@ -11,6 +11,7 @@ const workosAuth = authkitMiddleware({
       "/",           // Main app (reads are public for legacy systems)
       "/sign-in",
       "/sign-up",
+      "/invite/:token",
     ],
     // Everything else (including /admin/*) requires authentication
   },
@@ -26,6 +27,11 @@ const workosAuth = authkitMiddleware({
 // Paths that don't require authentication (must match unauthenticatedPaths above)
 const publicPaths = ["/", "/sign-in", "/sign-up", "/callback"]
 
+function isPublicPath(pathname: string): boolean {
+  if (publicPaths.includes(pathname)) return true
+  return pathname.startsWith("/invite/")
+}
+
 export default async function proxy(request: NextRequest, event: NextFetchEvent) {
   // Next.js 16 strips the RSC header before it reaches the proxy, so we use
   // Sec-Fetch-Dest to detect programmatic fetch() requests (client-side navigation).
@@ -37,8 +43,7 @@ export default async function proxy(request: NextRequest, event: NextFetchEvent)
 
   if (isFetchRequest) {
     const hasSession = request.cookies.has("wos-session")
-    const isPublicPath = publicPaths.some((p) => request.nextUrl.pathname === p)
-    if (!hasSession && !isPublicPath) {
+    if (!hasSession && !isPublicPath(request.nextUrl.pathname)) {
       return NextResponse.redirect(new URL("/", request.url))
     }
   }

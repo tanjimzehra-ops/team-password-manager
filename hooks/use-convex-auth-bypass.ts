@@ -15,16 +15,12 @@
  */
 
 import { useConvexAuth } from "convex/react"
-
-const DEV_BYPASS =
-  process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true" &&
-  process.env.NODE_ENV === "development"
+import { isDevBypassEnabled } from "@/lib/dev-bypass"
 
 export function useConvexAuthBypass() {
-  if (DEV_BYPASS) {
+  if (isDevBypassEnabled) {
     return { isAuthenticated: true, isLoading: false }
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   return useConvexAuth()
 }

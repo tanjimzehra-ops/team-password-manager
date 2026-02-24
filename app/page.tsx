@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useCallback } from "react"
 import { useQuery } from "convex/react"
 import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
@@ -71,8 +71,13 @@ import {
   exportConvergenceMapCsv,
   exportConvergenceMapExcel,
 } from "@/lib/export"
-
-type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
+import {
+  canCreateSystemForRole,
+  canMutateForRole,
+  getAvailableModesForRole,
+  type UserRole,
+  type ViewTab,
+} from "@/lib/rbac"
 
 const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
 
@@ -101,19 +106,51 @@ export default function Page() {
   const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("relationships_au_tas")
 
   // Org selection (multi-tenant)
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const [selectedOrgId, setSelectedOrgIdState] = useState<string | null>(null)
+  const [hasInitializedOrgSelection, setHasInitializedOrgSelection] = useState(false)
+  const setSelectedOrgId = useCallback((id: string | null) => {
+    setSelectedOrgIdState(id)
+    setHasInitializedOrgSelection(true)
+  }, [])
   const rawOrgs = useQuery(api.organisations.list, (isConvexConfigured && user) ? {} : "skip")
+  const me = useQuery(api.users.me, (isConvexConfigured && user) ? {} : "skip")
   const orgsLoading = rawOrgs === undefined
   const orgs: OrgInfo[] = useMemo(
     () => (rawOrgs ?? []).map((o) => ({ id: o._id, name: o.name, status: o.status })),
     [rawOrgs]
   )
 
-  // Auto-select first org when orgs load
+  const effectiveRole = useMemo<UserRole | null>(() => {
+    if (!isConvexConfigured) return "super_admin"
+    if (!me) return null
+    if (me.isSuperAdmin) return "super_admin"
+    if (me.memberships.some((m) => m.role === "channel_partner")) return "channel_partner"
+
+    if (selectedOrgId) {
+      const selectedMembership = me.memberships.find((m) => String(m.orgId) === selectedOrgId)
+      if (selectedMembership) return selectedMembership.role as UserRole
+    }
+
+    const hasAdmin = me.memberships.some((m) => m.role === "admin")
+    return hasAdmin ? "admin" : "viewer"
+  }, [me, selectedOrgId])
+
+  const canMutate = canMutateForRole(effectiveRole)
+  const canAddSystem = canCreateSystemForRole(effectiveRole)
+
+  // Auto-select first org for non-super-admin users when orgs load.
   useEffect(() => {
-    if (selectedOrgId || orgs.length === 0) return
-    setSelectedOrgId(orgs[0].id)
-  }, [orgs, selectedOrgId])
+    if (hasInitializedOrgSelection || orgs.length === 0 || !me) return
+
+    if (me.isSuperAdmin) {
+      // Preserve explicit "All clients" (null) for super admins.
+      setHasInitializedOrgSelection(true)
+      return
+    }
+
+    setSelectedOrgIdState(orgs[0].id)
+    setHasInitializedOrgSelection(true)
+  }, [orgs, me, hasInitializedOrgSelection])
 
   // Convex data
   const { data: allConvexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
@@ -121,7 +158,7 @@ export default function Page() {
   // Scope systems to the selected client/org. If no org is selected, show all accessible systems.
   const convexSystems = useMemo(() => {
     if (!selectedOrgId) return allConvexSystems
-    return allConvexSystems.filter((s) => !s.orgId || s.orgId === selectedOrgId)
+    return allConvexSystems.filter((s) => s.orgId === selectedOrgId)
   }, [allConvexSystems, selectedOrgId])
   const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
     isConvexConfigured ? selectedSystemId : null
@@ -163,6 +200,26 @@ export default function Page() {
       }
     }
   }, [dataSource, convexSystems, selectedSystemId])
+
+  useEffect(() => {
+    const allowedModes = getAvailableModesForRole(activeTab, effectiveRole)
+    if (!allowedModes.includes(editMode)) {
+      setEditMode("view")
+    }
+  }, [activeTab, editMode, effectiveRole, setEditMode])
+
+  const handleEditModeChange = useCallback((mode: EditMode) => {
+    const allowedModes = getAvailableModesForRole(activeTab, effectiveRole)
+    if (!allowedModes.includes(mode)) {
+      toast({
+        title: "Access denied",
+        description: "Your role cannot use that mode.",
+        variant: "destructive",
+      })
+      return
+    }
+    setEditMode(mode)
+  }, [activeTab, effectiveRole, setEditMode, toast])
 
   // Get current JSON adapter for static data
   const jsonAdapter = useMemo(() => {
@@ -274,7 +331,7 @@ export default function Page() {
 
   // Save handler for NodeDetailSidebar (Convex only)
   const handleNodeSave = async (updatedNode: NodeData) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
 
     if (updatedNode.id.startsWith("cell-")) {
       // Matrix cell: use metadata keys for reliable ID extraction
@@ -469,7 +526,7 @@ export default function Page() {
 
   // Color change handler (Convex only)
   const handleColorChange = async (nodeId: string, color: NodeData["color"]) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     await convexUpdateElementColor.updateElementColor({
       id: nodeId,
       color: color as "primary" | "secondary" | "accent" | "muted",
@@ -478,7 +535,7 @@ export default function Page() {
 
   // Reorder handler (Convex only)
   const handleReorder = async (category: string, fromIndex: number, toIndex: number) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
     const row = effectiveLogicGridData.find(r => r.category === category)
     if (!row) return
     const nodes = [...row.nodes]
@@ -495,7 +552,7 @@ export default function Page() {
 
   // Add node handler - creates new element directly
   const handleAddNode = async (category: string) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
 
     // Map category to elementType
     const categoryToElementType: Record<string, "outcome" | "value_chain" | "resource"> = {
@@ -539,18 +596,20 @@ export default function Page() {
 
   // Delete node handler
   const handleDeleteNode = (nodeId: string) => {
+    if (!canMutate) return
     const node = effectiveLogicGridData.flatMap(r => r.nodes).find(n => n.id === nodeId)
     if (node) startDelete(node)
   }
 
   // Edit node handler
   const handleEditNode = (node: NodeData) => {
+    if (!canMutate) return
     startEdit(node)
   }
 
   // Edit popup save
   const handleEditPopupSave = async (data: { title: string; description: string }) => {
-    if (!nodeForEdit || dataSource !== "convex") return
+    if (!canMutate || !nodeForEdit || dataSource !== "convex") return
     await convexUpdateElement.updateElement({
       id: nodeForEdit.id,
       content: data.title,
@@ -561,7 +620,7 @@ export default function Page() {
 
   // Portfolio handlers
   const handlePortfolioCreate = async (data: { title: string; description: string; date: string; progress: number; status: string; elementId: string }) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
     addOptimistic({
       id: `temp-${Date.now()}`,
       ...data,
@@ -579,7 +638,7 @@ export default function Page() {
   }
 
   const handlePortfolioUpdate = async (id: string, data: { title: string; description: string; date: string; progress: number; status: string }) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     await convexUpdatePortfolio.updatePortfolio({
       id,
       title: data.title,
@@ -591,7 +650,7 @@ export default function Page() {
   }
 
   const handlePortfolioDelete = async (id: string) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     removeOptimistic(id)
     await convexDeletePortfolio.deletePortfolio({ id })
   }
@@ -775,9 +834,10 @@ export default function Page() {
         showKpi={showKpi}
         onToggleKpi={setShowKpi}
         editMode={editMode}
-        onEditModeChange={setEditMode}
+        onEditModeChange={handleEditModeChange}
         activeTab={activeTab}
         onExport={activeTab !== "canvas" ? handleExport : undefined}
+        userRole={effectiveRole ?? undefined}
       />
 
       {/* Data Source Indicator — JSON fallback only */}
@@ -795,6 +855,7 @@ export default function Page() {
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
             selectedSystem={dataSource === "convex" ? (selectedSystemId ?? "") : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
+            onSystemCreated={handleSystemSelect}
             systems={
               dataSource === "convex"
                 ? convexSystems.map((s) => ({ id: s.id, name: s.name, sector: s.sector, orgName: s.orgName }))
@@ -803,6 +864,7 @@ export default function Page() {
             isLoading={dataSource === "convex" ? convexSystemsLoading : false}
             showCanvas={activeTab === "canvas"}
             onCanvasClick={() => setActiveTab("canvas")}
+            canAddSystem={dataSource === "convex" && canAddSystem}
           />
 
           {/* Row Labels Sidebar - Only show for Logic Model */}
@@ -823,7 +885,7 @@ export default function Page() {
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => setEditMode("view")}
+                  onClick={() => handleEditModeChange("view")}
                 >
                   Done Editing
                 </Button>
@@ -840,11 +902,11 @@ export default function Page() {
         node={selectedNode}
         isOpen={detailSidebarOpen}
         onClose={handleCloseDetail}
-        onSave={dataSource === "convex" ? handleNodeSave : undefined}
+        onSave={dataSource === "convex" && canMutate ? handleNodeSave : undefined}
         portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
-        onPortfolioCreate={dataSource === "convex" ? handlePortfolioCreate : undefined}
-        onPortfolioUpdate={dataSource === "convex" ? handlePortfolioUpdate : undefined}
-        onPortfolioDelete={dataSource === "convex" ? handlePortfolioDelete : undefined}
+        onPortfolioCreate={dataSource === "convex" && canMutate ? handlePortfolioCreate : undefined}
+        onPortfolioUpdate={dataSource === "convex" && canMutate ? handlePortfolioUpdate : undefined}
+        onPortfolioDelete={dataSource === "convex" && canMutate ? handlePortfolioDelete : undefined}
       />
 
       {/* Edit Popup */}

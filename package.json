@@ -7,6 +7,10 @@
     "build": "next build",
     "dev": "next dev -p 3000",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm lint && pnpm test && pnpm typecheck && pnpm build",
     "start": "next start"
   },
   "dependencies": {
@@ -73,9 +77,12 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^10.0.2",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.56.1",
+    "vitest": "^4.0.18"
   }
 }

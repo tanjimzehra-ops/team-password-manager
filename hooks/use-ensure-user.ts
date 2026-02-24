@@ -5,8 +5,7 @@ import { useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { useConvexAuthBypass } from "./use-convex-auth-bypass"
 import { useAuthBypass as useAuth } from "./use-auth-bypass"
-
-const DEV_BYPASS = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true"
+import { isDevBypassEnabled } from "@/lib/dev-bypass"
 
 /**
  * Auto-provisions the authenticated user's record in Convex on first sign-in.
@@ -22,7 +21,7 @@ export function useEnsureUser() {
 
   useEffect(() => {
     // In dev bypass mode, skip user provisioning
-    if (DEV_BYPASS) return
+    if (isDevBypassEnabled) return
     if (convexLoading || authLoading || !isAuthenticated || !user) return
 
     // Skip if we already synced this exact user (by WorkOS user ID)
