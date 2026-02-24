@@ -17,7 +17,11 @@ const roleValidator = v.union(
 export const byUser = query({
   args: { userId: v.id("users") },
   handler: async (ctx, args) => {
-    await requireAuth(ctx)
+    const caller = await requireAuth(ctx)
+    const callerIsSuperAdmin = await isSuperAdmin(ctx, caller._id)
+    if (!callerIsSuperAdmin && String(caller._id) !== String(args.userId)) {
+      return []
+    }
     const memberships = await ctx.db
       .query("memberships")
       .withIndex("by_user", (q) => q.eq("userId", args.userId))
@@ -49,7 +53,11 @@ export const getByUserOrg = query({
     orgId: v.id("organisations"),
   },
   handler: async (ctx, args) => {
-    await requireAuth(ctx)
+    const caller = await requireAuth(ctx)
+    const callerIsSuperAdmin = await isSuperAdmin(ctx, caller._id)
+    if (!callerIsSuperAdmin && String(caller._id) !== String(args.userId)) {
+      return null
+    }
     const membership = await ctx.db
       .query("memberships")
       .withIndex("by_user_org", (q) =>

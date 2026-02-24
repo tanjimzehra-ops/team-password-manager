@@ -15,11 +15,7 @@ export function getHealthStatus(healthIndex: number): "healthy" | "warning" | "c
   return "critical"
 }
 
-export function formatKpiValue(kpiValue: number, displayMode: "stage" | "health" | "performance"): string {
-  if (displayMode === "health" || displayMode === "performance") {
-    const healthIndex = calculateHealthIndex(kpiValue)
-    return healthIndex.toFixed(1)
-  }
+export function formatKpiValue(kpiValue: number): string {
   return `${Math.round(kpiValue)}%`
 }
 

@@ -14,6 +14,7 @@ import type { ReactNode } from "react"
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/clients", label: "Clients", icon: Building2 },
+  { href: "/admin/channels", label: "Channels", icon: Shield },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/audit", label: "Audit Log", icon: ScrollText },
   { href: "/admin/trash", label: "Trash", icon: Trash2 },

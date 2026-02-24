@@ -1,11 +1,15 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { requireAuth, requireWriteAccess } from "./lib/permissions"
+import { withReadAccess } from "./lib/queries"
 import { logAudit } from "./auditLogs"
 
 export const byElement = query({
   args: { elementId: v.id("elements") },
   handler: async (ctx, args) => {
+    const element = await ctx.db.get(args.elementId)
+    if (!element) return []
+    await withReadAccess(ctx, element.systemId)
     return await ctx.db
       .query("portfolios")
       .withIndex("by_element", (q) => q.eq("elementId", args.elementId))
@@ -16,6 +20,7 @@ export const byElement = query({
 export const bySystem = query({
   args: { systemId: v.id("systems") },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("portfolios")
       .withIndex("by_system", (q) => q.eq("systemId", args.systemId))

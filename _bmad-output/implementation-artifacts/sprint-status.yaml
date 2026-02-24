@@ -1,0 +1,52 @@
+# Sprint Status — Jigsaw 1.6 RSA — Remediation Sprint
+# Source of truth for story-level tracking
+# Updated by: Orchestrator (Claudia)
+# Created: 2026-02-25
+
+project: "jigsaw-1.6-rsa"
+current_sprint: 2
+sprint_goal: "Fix all P0 security blockers + P1 UX issues from post-sprint review"
+branch: "sprint/full-pipeline"
+
+# STATUS DEFINITIONS:
+# backlog       — Not yet started
+# ready-for-dev — Story file created, ready for dev agent
+# in-progress   — Dev agent working on it
+# in-review     — Code review pending
+# done          — Completed and verified
+
+development_status:
+  # Epic 8: Post-Sprint Remediation
+  epic-8:
+    status: done
+    title: "Post-Sprint Remediation (Security + UX)"
+
+  8-1-query-access-control:
+    status: done
+    priority: P0
+    title: "Implement withReadAccess for all queries"
+
+  8-2-hash-invitation-tokens:
+    status: done
+    priority: P0
+    title: "Hash invitation tokens + restrict exposure"
+
+  8-3-isolate-dev-bypass:
+    status: done
+    priority: P0
+    title: "Isolate dev auth bypass from production"
+
+  8-4-enable-add-system:
+    status: done
+    priority: P1
+    title: "Enable Add System button with creation dialog"
+
+  8-5-empty-state-on-load:
+    status: done
+    priority: P1
+    title: "Empty state on app load"
+
+  8-6-minor-fixes:
+    status: done
+    priority: P1
+    title: "Hide Convex indicator + migrate legacy systems"

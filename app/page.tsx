@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useCallback } from "react"
 import { useQuery } from "convex/react"
-import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
 import { OrgContext, type OrgInfo } from "@/hooks/use-org"
 import { LandingPage } from "@/components/landing-page"
@@ -19,10 +19,11 @@ import { NodeDetailSidebar } from "@/components/node-detail-sidebar"
 import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
+import { AlertTriangle, LayoutGrid, PlusCircle } from "lucide-react"
 
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
-import { PerformanceModal } from "@/components/performance-modal"
+// PerformanceModal removed in Story 1.8 (Stage/Performance consolidation)
 import { LibraryPopup } from "@/components/library-popup"
 import { OnboardingTour } from "@/components/onboarding-tour"
 
@@ -38,12 +39,13 @@ import {
   useConvexCreatePortfolio,
   useConvexUpdatePortfolio,
   useConvexDeletePortfolio,
+  useConvexCreateElement,
 } from "@/hooks/convex/use-convex-mutations"
 
 // Custom hooks
 import { useEditMode } from "@/hooks/use-edit-mode"
 import type { EditMode } from "@/hooks/use-edit-mode"
-import { usePerformanceMode } from "@/hooks/use-performance-mode"
+// usePerformanceMode removed in Story 1.8 (Stage/Performance consolidation)
 import { useLibrary } from "@/hooks/use-library"
 import { usePortfolioState } from "@/hooks/use-portfolio-state"
 
@@ -69,8 +71,13 @@ import {
   exportConvergenceMapCsv,
   exportConvergenceMapExcel,
 } from "@/lib/export"
-
-type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "convergence-map" | "canvas"
+import {
+  canCreateSystemForRole,
+  canMutateForRole,
+  getAvailableModesForRole,
+  type UserRole,
+  type ViewTab,
+} from "@/lib/rbac"
 
 const isConvexConfigured = !!process.env.NEXT_PUBLIC_CONVEX_URL
 
@@ -79,23 +86,18 @@ export default function Page() {
   const { toast } = useToast()
 
   // UI State
-  const [showKpi, setShowKpi] = useState(true)
+  const [showKpi, setShowKpi] = useState(false)
   const [activeTab, setActiveTab] = useState<ViewTab>("logic-model")
   const [navSidebarCollapsed, setNavSidebarCollapsed] = useState(false)
   const [activeRow, setActiveRow] = useState<string | null>(null)
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null)
   const [detailSidebarOpen, setDetailSidebarOpen] = useState(false)
 
-  // Custom hooks (replace inline useState for editMode and displayMode)
+  // Custom hooks
   const {
     editMode, setEditMode, nodeForEdit, editPopupOpen, nodeToDelete, deleteDialogOpen,
     startEdit, startDelete, closeEdit, closeDelete, resetEditMode,
   } = useEditMode()
-
-  const {
-    displayMode, setDisplayMode, performanceModalOpen, performanceNode,
-    openPerformanceModal, closePerformanceModal,
-  } = usePerformanceMode()
 
   // System selection
   const [selectedSystemId, setSelectedSystemId] = useState<string | null>(null)
@@ -104,27 +106,59 @@ export default function Page() {
   const [selectedJsonSystem, setSelectedJsonSystem] = useState<SystemName>("relationships_au_tas")
 
   // Org selection (multi-tenant)
-  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(null)
+  const [selectedOrgId, setSelectedOrgIdState] = useState<string | null>(null)
+  const [hasInitializedOrgSelection, setHasInitializedOrgSelection] = useState(false)
+  const setSelectedOrgId = useCallback((id: string | null) => {
+    setSelectedOrgIdState(id)
+    setHasInitializedOrgSelection(true)
+  }, [])
   const rawOrgs = useQuery(api.organisations.list, (isConvexConfigured && user) ? {} : "skip")
+  const me = useQuery(api.users.me, (isConvexConfigured && user) ? {} : "skip")
   const orgsLoading = rawOrgs === undefined
   const orgs: OrgInfo[] = useMemo(
     () => (rawOrgs ?? []).map((o) => ({ id: o._id, name: o.name, status: o.status })),
     [rawOrgs]
   )
 
-  // Auto-select first org when orgs load
+  const effectiveRole = useMemo<UserRole | null>(() => {
+    if (!isConvexConfigured) return "super_admin"
+    if (!me) return null
+    if (me.isSuperAdmin) return "super_admin"
+    if (me.memberships.some((m) => m.role === "channel_partner")) return "channel_partner"
+
+    if (selectedOrgId) {
+      const selectedMembership = me.memberships.find((m) => String(m.orgId) === selectedOrgId)
+      if (selectedMembership) return selectedMembership.role as UserRole
+    }
+
+    const hasAdmin = me.memberships.some((m) => m.role === "admin")
+    return hasAdmin ? "admin" : "viewer"
+  }, [me, selectedOrgId])
+
+  const canMutate = canMutateForRole(effectiveRole)
+  const canAddSystem = canCreateSystemForRole(effectiveRole)
+
+  // Auto-select first org for non-super-admin users when orgs load.
   useEffect(() => {
-    if (selectedOrgId || orgs.length === 0) return
-    setSelectedOrgId(orgs[0].id)
-  }, [orgs, selectedOrgId])
+    if (hasInitializedOrgSelection || orgs.length === 0 || !me) return
+
+    if (me.isSuperAdmin) {
+      // Preserve explicit "All clients" (null) for super admins.
+      setHasInitializedOrgSelection(true)
+      return
+    }
+
+    setSelectedOrgIdState(orgs[0].id)
+    setHasInitializedOrgSelection(true)
+  }, [orgs, me, hasInitializedOrgSelection])
 
   // Convex data
   const { data: allConvexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
 
-  // Filter systems by selected org (show legacy systems + selected org's systems)
+  // Scope systems to the selected client/org. If no org is selected, show all accessible systems.
   const convexSystems = useMemo(() => {
     if (!selectedOrgId) return allConvexSystems
-    return allConvexSystems.filter((s) => !s.orgId || s.orgId === selectedOrgId)
+    return allConvexSystems.filter((s) => s.orgId === selectedOrgId)
   }, [allConvexSystems, selectedOrgId])
   const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
     isConvexConfigured ? selectedSystemId : null
@@ -139,32 +173,99 @@ export default function Page() {
   const convexCreatePortfolio = useConvexCreatePortfolio()
   const convexUpdatePortfolio = useConvexUpdatePortfolio()
   const convexDeletePortfolio = useConvexDeletePortfolio()
+  const convexCreateElement = useConvexCreateElement()
 
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
 
-  // Auto-select first system when systems load or org changes
+  // Restore selected system from localStorage, or clear if current selection is invalid
   useEffect(() => {
-    if (dataSource === "convex" && convexSystems.length > 0) {
-      // If current selection isn't in the filtered list, pick the first one
-      if (!selectedSystemId || !convexSystems.find((s) => s.id === selectedSystemId)) {
-        setSelectedSystemId(convexSystems[0].id)
+    if (dataSource !== "convex" || convexSystems.length === 0) return
+
+    // If current selection isn't in the filtered list (e.g. org switch), clear it
+    if (selectedSystemId && !convexSystems.find((s) => s.id === selectedSystemId)) {
+      setSelectedSystemId(null)
+      return
+    }
+
+    // On initial load with no selection, try to restore from localStorage
+    if (!selectedSystemId) {
+      try {
+        const saved = localStorage.getItem("jigsaw-selected-system")
+        if (saved && convexSystems.find((s) => s.id === saved)) {
+          setSelectedSystemId(saved)
+        }
+      } catch {
+        // localStorage unavailable (SSR, privacy mode)
       }
     }
   }, [dataSource, convexSystems, selectedSystemId])
+
+  useEffect(() => {
+    const allowedModes = getAvailableModesForRole(activeTab, effectiveRole)
+    if (!allowedModes.includes(editMode)) {
+      setEditMode("view")
+    }
+  }, [activeTab, editMode, effectiveRole, setEditMode])
+
+  const handleEditModeChange = useCallback((mode: EditMode) => {
+    const allowedModes = getAvailableModesForRole(activeTab, effectiveRole)
+    if (!allowedModes.includes(mode)) {
+      toast({
+        title: "Access denied",
+        description: "Your role cannot use that mode.",
+        variant: "destructive",
+      })
+      return
+    }
+    setEditMode(mode)
+  }, [activeTab, effectiveRole, setEditMode, toast])
 
   // Get current JSON adapter for static data
   const jsonAdapter = useMemo(() => {
     return getSystemAdapter(selectedJsonSystem)
   }, [selectedJsonSystem])
 
-  // Data: Convex pre-transformed > JSON fallback
-  const effectiveLogicGridData = convexSystemData?.initialData ?? jsonAdapter.initialData
-  const effectiveCultureBanner = convexSystemData?.cultureBanner ?? jsonAdapter.cultureBanner
-  const effectiveBottomBanner = convexSystemData?.bottomBanner ?? jsonAdapter.bottomBanner
-  const effectiveContributionMapData = convexSystemData?.contributionMapData ?? jsonAdapter.getContributionMapData()
-  const effectiveDevelopmentPathwaysData = convexSystemData?.developmentPathwaysData ?? jsonAdapter.getDevelopmentPathwaysData()
-  const effectiveConvergenceMapData = convexSystemData?.convergenceMapData ?? jsonAdapter.getConvergenceMapData()
+  // Never fall back to JSON demo content when Convex mode is active.
+  const effectiveLogicGridData = dataSource === "convex"
+    ? (convexSystemData?.initialData ?? [])
+    : jsonAdapter.initialData
+  const effectiveCultureBanner = dataSource === "convex"
+    ? (convexSystemData?.cultureBanner ?? { id: "culture-banner", title: "", kpiValue: 100, kpiStatus: "healthy" as const })
+    : jsonAdapter.cultureBanner
+  const effectiveBottomBanner = dataSource === "convex"
+    ? (convexSystemData?.bottomBanner ?? { id: "bottom-banner", title: "", kpiValue: 100, kpiStatus: "healthy" as const })
+    : jsonAdapter.bottomBanner
+  const effectiveContributionMapData = dataSource === "convex"
+    ? (convexSystemData?.contributionMapData ?? {
+        outcomes: [],
+        valueChain: [],
+        valueChainKpis: [],
+        outcomeKpis: [],
+        cells: [],
+      })
+    : jsonAdapter.getContributionMapData()
+  const effectiveDevelopmentPathwaysData = dataSource === "convex"
+    ? (convexSystemData?.developmentPathwaysData ?? {
+        resources: [],
+        valueChain: [],
+        currentCapabilitiesPerResource: [],
+        currentCapabilitiesPerVC: [],
+        necessaryCapabilities: [],
+        cells: [],
+        kpis: [],
+        dimension: "",
+      })
+    : jsonAdapter.getDevelopmentPathwaysData()
+  const effectiveConvergenceMapData = dataSource === "convex"
+    ? (convexSystemData?.convergenceMapData ?? {
+        externalFactors: [],
+        valueChain: [],
+        cells: [],
+        kpis: [],
+        factorsPerVC: [],
+      })
+    : jsonAdapter.getConvergenceMapData()
 
   // Library hook (depends on effectiveLogicGridData)
   const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
@@ -183,12 +284,14 @@ export default function Page() {
 
   // Get current system name for display
   const systemName = useMemo(() => {
-    if (dataSource === "convex" && convexSystemData) {
-      return convexSystemData.system.name
+    if (dataSource === "convex") {
+      if (!selectedSystemId) return null
+      if (convexSystemData) return convexSystemData.system.name
+      return convexSystems.find((s) => s.id === selectedSystemId)?.name ?? null
     }
     // JSON mode: use adapter name
-    return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.['System'] || selectedJsonSystem.toUpperCase()
-  }, [dataSource, convexSystemData, jsonAdapter, selectedJsonSystem])
+    return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.["System"] || selectedJsonSystem.toUpperCase()
+  }, [dataSource, convexSystemData, convexSystems, jsonAdapter, selectedJsonSystem, selectedSystemId])
 
   // Handler functions
   const handleNodeClick = (node: NodeData) => {
@@ -212,6 +315,11 @@ export default function Page() {
   const handleSystemSelect = (systemId: string) => {
     if (dataSource === "convex") {
       setSelectedSystemId(systemId)
+      try {
+        localStorage.setItem("jigsaw-selected-system", systemId)
+      } catch {
+        // localStorage unavailable
+      }
     } else {
       // JSON mode: use system name as key
       const systemKey = systemId.toLowerCase() as SystemName
@@ -223,7 +331,7 @@ export default function Page() {
 
   // Save handler for NodeDetailSidebar (Convex only)
   const handleNodeSave = async (updatedNode: NodeData) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
 
     if (updatedNode.id.startsWith("cell-")) {
       // Matrix cell: use metadata keys for reliable ID extraction
@@ -269,7 +377,7 @@ export default function Page() {
 
   // Export handler
   const handleExport = async (format: "csv" | "excel" | "pdf") => {
-    const baseName = `${systemName}-${activeTab}`
+    const baseName = `${systemName ?? "jigsaw"}-${activeTab}`
 
     try {
       if (format === "pdf") {
@@ -418,7 +526,7 @@ export default function Page() {
 
   // Color change handler (Convex only)
   const handleColorChange = async (nodeId: string, color: NodeData["color"]) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     await convexUpdateElementColor.updateElementColor({
       id: nodeId,
       color: color as "primary" | "secondary" | "accent" | "muted",
@@ -427,7 +535,7 @@ export default function Page() {
 
   // Reorder handler (Convex only)
   const handleReorder = async (category: string, fromIndex: number, toIndex: number) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
     const row = effectiveLogicGridData.find(r => r.category === category)
     if (!row) return
     const nodes = [...row.nodes]
@@ -442,25 +550,66 @@ export default function Page() {
     }
   }
 
-  // Add node handler (placeholder - opens library)
-  const handleAddNode = (category: string) => {
-    openLibrary(category as NodeData["category"])
+  // Add node handler - creates new element directly
+  const handleAddNode = async (category: string) => {
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
+
+    // Map category to elementType
+    const categoryToElementType: Record<string, "outcome" | "value_chain" | "resource"> = {
+      outcomes: "outcome",
+      "value-chain": "value_chain",
+      resources: "resource",
+    }
+
+    const elementType = categoryToElementType[category]
+    if (!elementType) return
+
+    // Get current count of nodes in this category for orderIndex
+    const row = effectiveLogicGridData.find((r) => r.category === category)
+    const orderIndex = row?.nodes.length ?? 0
+
+    try {
+      const newElementId = await convexCreateElement.createElement({
+        systemId: convexSystemData.system.id,
+        elementType,
+        content: "",
+        description: "",
+        orderIndex,
+      })
+
+      // Create a minimal NodeData for the new element and open edit popup
+      const newNode: NodeData = {
+        id: newElementId,
+        title: "",
+        description: "",
+        kpiValue: 0,
+        kpiStatus: "healthy",
+        category: category as NodeData["category"],
+        color: "primary",
+      }
+
+      startEdit(newNode)
+    } catch {
+      // Error handling is done within the hook
+    }
   }
 
   // Delete node handler
   const handleDeleteNode = (nodeId: string) => {
+    if (!canMutate) return
     const node = effectiveLogicGridData.flatMap(r => r.nodes).find(n => n.id === nodeId)
     if (node) startDelete(node)
   }
 
   // Edit node handler
   const handleEditNode = (node: NodeData) => {
+    if (!canMutate) return
     startEdit(node)
   }
 
   // Edit popup save
   const handleEditPopupSave = async (data: { title: string; description: string }) => {
-    if (!nodeForEdit || dataSource !== "convex") return
+    if (!canMutate || !nodeForEdit || dataSource !== "convex") return
     await convexUpdateElement.updateElement({
       id: nodeForEdit.id,
       content: data.title,
@@ -471,7 +620,7 @@ export default function Page() {
 
   // Portfolio handlers
   const handlePortfolioCreate = async (data: { title: string; description: string; date: string; progress: number; status: string; elementId: string }) => {
-    if (dataSource !== "convex" || !convexSystemData) return
+    if (!canMutate || dataSource !== "convex" || !convexSystemData) return
     addOptimistic({
       id: `temp-${Date.now()}`,
       ...data,
@@ -489,7 +638,7 @@ export default function Page() {
   }
 
   const handlePortfolioUpdate = async (id: string, data: { title: string; description: string; date: string; progress: number; status: string }) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     await convexUpdatePortfolio.updatePortfolio({
       id,
       title: data.title,
@@ -501,7 +650,7 @@ export default function Page() {
   }
 
   const handlePortfolioDelete = async (id: string) => {
-    if (dataSource !== "convex") return
+    if (!canMutate || dataSource !== "convex") return
     removeOptimistic(id)
     await convexDeletePortfolio.deletePortfolio({ id })
   }
@@ -529,11 +678,75 @@ export default function Page() {
     </div>
   )
 
+  // Render empty state when no system is selected
+  const renderEmptyState = () => {
+    const hasSystems = dataSource === "convex" ? convexSystems.length > 0 : true
+
+    return (
+      <div className="flex-1 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
+          {hasSystems ? (
+            <>
+              <LayoutGrid className="w-12 h-12 text-muted-foreground/50" />
+              <h2 className="text-xl font-semibold text-foreground">Welcome to Jigsaw</h2>
+              <p className="text-muted-foreground">
+                Select a system from the sidebar to begin viewing and editing your strategic plan.
+              </p>
+            </>
+          ) : (
+            <>
+              <PlusCircle className="w-12 h-12 text-muted-foreground/50" />
+              <h2 className="text-xl font-semibold text-foreground">No systems available</h2>
+              <p className="text-muted-foreground">
+                Create your first system to get started with strategic planning.
+              </p>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  const renderSystemUnavailableState = () => (
+    <div className="flex-1 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
+        <AlertTriangle className="w-12 h-12 text-amber-500/70" />
+        <h2 className="text-xl font-semibold text-foreground">System unavailable</h2>
+        <p className="text-muted-foreground">
+          The selected system could not be loaded. It may have been deleted, moved, or is no longer accessible.
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setSelectedSystemId(null)
+            try {
+              localStorage.removeItem("jigsaw-selected-system")
+            } catch {
+              // localStorage unavailable
+            }
+          }}
+        >
+          Back to system list
+        </Button>
+      </div>
+    </div>
+  )
+
   // Render main content based on active tab
   const renderMainContent = () => {
     // Show loading while fetching data
     if (dataSource === "convex" && (convexSystemsLoading || (selectedSystemId && convexSystemLoading))) {
       return renderLoading()
+    }
+
+    // Show empty state when no system is selected
+    if (dataSource === "convex" && !selectedSystemId) {
+      return renderEmptyState()
+    }
+
+    // Selected system exists but did not resolve to data
+    if (dataSource === "convex" && selectedSystemId && !convexSystemData) {
+      return renderSystemUnavailableState()
     }
 
     switch (activeTab) {
@@ -543,7 +756,6 @@ export default function Page() {
             rows={effectiveLogicGridData}
             showKpi={showKpi}
             editMode={editMode}
-            displayMode={displayMode}
             onNodeClick={handleNodeClick}
             cultureBanner={effectiveCultureBanner}
             bottomBanner={effectiveBottomBanner}
@@ -597,6 +809,18 @@ export default function Page() {
     isLoading: orgsLoading,
   }), [orgs, selectedOrgId, orgsLoading])
 
+  // Show loading spinner while auth state is being determined
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Spinner className="w-8 h-8" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   // Show landing page for unauthenticated users (must be after all hooks)
   if (!authLoading && !user) {
     return <LandingPage />
@@ -610,22 +834,16 @@ export default function Page() {
         showKpi={showKpi}
         onToggleKpi={setShowKpi}
         editMode={editMode}
-        onEditModeChange={setEditMode}
+        onEditModeChange={handleEditModeChange}
         activeTab={activeTab}
-        displayMode={displayMode}
-        onDisplayModeChange={setDisplayMode}
         onExport={activeTab !== "canvas" ? handleExport : undefined}
+        userRole={effectiveRole ?? undefined}
       />
 
-      {/* Data Source Indicator */}
+      {/* Data Source Indicator — JSON fallback only */}
       {dataSource === "json" && (
         <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
           Using static demo data. Configure Convex to enable real-time data.
-        </div>
-      )}
-      {dataSource === "convex" && (
-        <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 text-center">
-          Connected to Convex (real-time)
         </div>
       )}
 
@@ -635,16 +853,18 @@ export default function Page() {
           <NavSidebar
             isCollapsed={navSidebarCollapsed}
             onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={dataSource === "convex" ? (selectedSystemId || systemName) : selectedJsonSystem}
+            selectedSystem={dataSource === "convex" ? (selectedSystemId ?? "") : selectedJsonSystem}
             onSystemSelect={handleSystemSelect}
+            onSystemCreated={handleSystemSelect}
             systems={
               dataSource === "convex"
-                ? convexSystems.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                ? convexSystems.map((s) => ({ id: s.id, name: s.name, sector: s.sector, orgName: s.orgName }))
                 : undefined
             }
             isLoading={dataSource === "convex" ? convexSystemsLoading : false}
             showCanvas={activeTab === "canvas"}
             onCanvasClick={() => setActiveTab("canvas")}
+            canAddSystem={dataSource === "convex" && canAddSystem}
           />
 
           {/* Row Labels Sidebar - Only show for Logic Model */}
@@ -665,7 +885,7 @@ export default function Page() {
                 <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => setEditMode("view")}
+                  onClick={() => handleEditModeChange("view")}
                 >
                   Done Editing
                 </Button>
@@ -682,11 +902,11 @@ export default function Page() {
         node={selectedNode}
         isOpen={detailSidebarOpen}
         onClose={handleCloseDetail}
-        onSave={dataSource === "convex" ? handleNodeSave : undefined}
+        onSave={dataSource === "convex" && canMutate ? handleNodeSave : undefined}
         portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
-        onPortfolioCreate={dataSource === "convex" ? handlePortfolioCreate : undefined}
-        onPortfolioUpdate={dataSource === "convex" ? handlePortfolioUpdate : undefined}
-        onPortfolioDelete={dataSource === "convex" ? handlePortfolioDelete : undefined}
+        onPortfolioCreate={dataSource === "convex" && canMutate ? handlePortfolioCreate : undefined}
+        onPortfolioUpdate={dataSource === "convex" && canMutate ? handlePortfolioUpdate : undefined}
+        onPortfolioDelete={dataSource === "convex" && canMutate ? handlePortfolioDelete : undefined}
       />
 
       {/* Edit Popup */}
@@ -699,21 +919,13 @@ export default function Page() {
         onSave={handleEditPopupSave}
       />
 
-      {/* Performance Modal */}
-      <PerformanceModal
-        isOpen={performanceModalOpen}
-        onClose={closePerformanceModal}
-        node={performanceNode}
-        displayMode={displayMode}
-      />
-
       {/* Library Popup */}
       <LibraryPopup
         isOpen={libraryOpen}
         onClose={closeLibrary}
         category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
         currentSystemId={selectedSystemId ?? ""}
-        currentSystemName={systemName}
+        currentSystemName={systemName ?? "Jigsaw"}
         onConnect={handleLibraryConnect}
         onCopy={handleLibraryCopy}
         items={libraryItems}

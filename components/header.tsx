@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from 'lucide-react'
-import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { ThemeToggle } from "./theme-toggle"
 import { OrgSwitcher } from "./org-switcher"
 import { cn } from "@/lib/utils"
@@ -13,11 +13,13 @@ type ViewTab = "logic-model" | "contribution-map" | "development-pathways" | "co
 interface HeaderProps {
   activeTab?: ViewTab
   onTabChange?: (tab: ViewTab) => void
-  systemName?: string
+  systemName?: string | null
 }
 
-export function Header({ activeTab = "logic-model", onTabChange, systemName = "MERA" }: HeaderProps) {
-  const { user, signOut, loading } = useAuth()
+export function Header({ activeTab = "logic-model", onTabChange, systemName = null }: HeaderProps) {
+  const auth = useAuth()
+  const { user } = auth
+  const signOut = "signOut" in auth ? auth.signOut : undefined
 
   return (
     <>
@@ -59,7 +61,7 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
                   data-tour="sign-out"
                   variant="ghost"
                   size="sm"
-                  onClick={() => signOut({ returnTo: "/" })}
+                  onClick={() => signOut?.({ returnTo: "/" })}
                   className="text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
@@ -75,7 +77,13 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = "M
       <div className="border-b border-border bg-muted/30">
         <div className="px-4 py-3">
           <h1 className="text-lg font-medium text-foreground">
-            creating Preferred Futures: <span className="font-bold">{systemName}</span>
+            {systemName ? (
+              <>
+                creating Preferred Futures: <span className="font-bold">{systemName}</span>
+              </>
+            ) : (
+              <span className="font-bold">Jigsaw</span>
+            )}
           </h1>
         </div>
       </div>

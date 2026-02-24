@@ -6,7 +6,7 @@ import type { EditMode } from "@/hooks/use-edit-mode"
 import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { GripVertical, Trash2, Palette } from "lucide-react"
+import { ChevronDown, ChevronUp, GripVertical, Palette, Trash2 } from "lucide-react"
 import { InlineColorPicker } from "@/components/inline-color-picker"
 import { getHealthBorderColor, formatKpiValue, getHealthStatus } from "@/lib/kpi-utils"
 
@@ -18,7 +18,6 @@ interface NodeCardProps {
   isEditMode?: boolean
   editMode?: EditMode
   chipLabel?: string
-  displayMode?: "stage" | "performance"
   onColorChange?: (color: NodeData["color"]) => void
   onEditClick?: (node: NodeData) => void
   onDeleteClick?: (node: NodeData) => void
@@ -26,6 +25,11 @@ interface NodeCardProps {
   onDragStart?: (e: React.DragEvent, node: NodeData) => void
   onDragEnd?: () => void
   onDrop?: (e: React.DragEvent, node: NodeData) => void
+  showReorderArrows?: boolean
+  onMoveUp?: () => void
+  onMoveDown?: () => void
+  disableMoveUp?: boolean
+  disableMoveDown?: boolean
 }
 
 const editModeColorMap = {
@@ -56,7 +60,6 @@ export function NodeCard({
   isEditMode = false,
   editMode,
   chipLabel,
-  displayMode = "stage",
   onColorChange,
   onEditClick,
   onDeleteClick,
@@ -64,12 +67,19 @@ export function NodeCard({
   onDragStart,
   onDragEnd,
   onDrop,
+  showReorderArrows = false,
+  onMoveUp,
+  onMoveDown,
+  disableMoveUp = false,
+  disableMoveDown = false,
 }: NodeCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
 
+  // Detect empty nodes
+  const isEmpty = !node.title || node.title.trim() === ""
+
   const colors = editMode === "colour" ? editModeColorMap : viewModeColorMap
-  const isPerformanceMode = displayMode === "performance"
-  const healthBorderColor = isPerformanceMode ? getHealthBorderColor(node.kpiValue) : ""
+  const healthBorderColor = showKpi ? getHealthBorderColor(node.kpiValue) : ""
   const healthStatus = getHealthStatus(node.kpiValue)
 
   // Determine the click handler based on edit mode
@@ -120,11 +130,13 @@ export function NodeCard({
         "hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
         "shadow-md",
         colors[node.color],
-        // In performance mode, override the border color with health-based color
-        isPerformanceMode && healthBorderColor,
+        // Apply health-based border color when showKpi is true
+        healthBorderColor,
         "p-3 min-h-[110px]",
         editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
+        // Empty node styling - muted appearance in view mode
+        isEmpty && editMode !== "colour" && "opacity-60 border-dashed",
       )}
     >
       {/* Edit mode overlays */}
@@ -139,7 +151,45 @@ export function NodeCard({
       {/* Order mode: Drag grip icon */}
       {editMode === "order" && (
         <div className="absolute top-1 left-1 z-10">
-          <GripVertical className="h-4 w-4 text-white/80" />
+          <GripVertical className="h-4 w-4 text-muted-foreground/80" />
+        </div>
+      )}
+
+      {/* Order mode: Up/down arrow controls */}
+      {editMode === "order" && showReorderArrows && (
+        <div className="absolute top-1 right-1 z-10 flex flex-col">
+          <button
+            type="button"
+            className={cn(
+              "h-4 w-4 inline-flex items-center justify-center rounded-sm",
+              "text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground",
+              disableMoveUp && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground/80",
+            )}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (!disableMoveUp) onMoveUp?.()
+            }}
+            aria-label="Move up"
+            disabled={disableMoveUp}
+          >
+            <ChevronUp className="h-3 w-3" />
+          </button>
+          <button
+            type="button"
+            className={cn(
+              "h-4 w-4 inline-flex items-center justify-center rounded-sm",
+              "text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground",
+              disableMoveDown && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground/80",
+            )}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (!disableMoveDown) onMoveDown?.()
+            }}
+            aria-label="Move down"
+            disabled={disableMoveDown}
+          >
+            <ChevronDown className="h-3 w-3" />
+          </button>
         </div>
       )}
 
@@ -150,25 +200,15 @@ export function NodeCard({
         </div>
       )}
 
-      {/* Performance mode: KPI badge in top-right corner */}
-      {isPerformanceMode && (
+      {/* KPI badge in top-right corner - shown when showKpi is true and not in edit mode */}
+      {showKpi && !isEditMode && (
         <Badge
           className={cn(
             "absolute top-1 right-1 z-10 text-sm px-1.5 py-0 border-none",
             healthBadgeColorMap[healthStatus],
           )}
         >
-          {formatKpiValue(node.kpiValue, displayMode)}
-        </Badge>
-      )}
-
-      {/* Stage mode: KPI percentage badge (view mode only) */}
-      {showKpi && !isEditMode && !isPerformanceMode && (
-        <Badge
-          variant="secondary"
-          className="absolute top-1 right-1 z-10 text-sm px-1.5 py-0"
-        >
-          {node.kpiValue}%
+          {formatKpiValue(node.kpiValue)}
         </Badge>
       )}
 
@@ -192,7 +232,11 @@ export function NodeCard({
       )}
 
       <h3 className={cn("font-bold leading-tight text-center text-sm mb-2")}>
-        {node.title}
+        {isEmpty ? (
+          <span className="text-muted-foreground italic">Empty — click to edit</span>
+        ) : (
+          node.title
+        )}
       </h3>
 
       {/* Description only for non-compact (Outcomes) cards */}
@@ -208,7 +252,7 @@ export function NodeCard({
       )}
 
       {/* KPI input - only in edit mode */}
-      {showKpi && isEditMode && (
+      {showKpi && editMode === "edit" && (
         <div className="mt-auto pt-2">
           <Input
             type="number"

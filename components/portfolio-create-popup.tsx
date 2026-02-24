@@ -59,7 +59,6 @@ export function PortfolioCreatePopup({
       setShowList(false)
       setPortfolios(existingPortfolios)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- only reset when dialog opens; existingPortfolios changes every render and would clear typing
   }, [isOpen])
 
   const handleSave = () => {

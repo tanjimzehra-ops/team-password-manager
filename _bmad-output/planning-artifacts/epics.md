@@ -844,3 +844,240 @@ So that I know what permissions I have.
 ---
 
 *End of Epic & Story Breakdown*
+
+---
+
+## Epic 8: Post-Sprint Remediation (Security + UX)
+
+**Goal:** Address all critical security gaps (query-side access control, token hashing, dev bypass isolation) and UX issues (Add System, empty state, Convex indicator) discovered during post-sprint code review and owner QA.
+
+**Source:** `remediation-plan.md` + `code-review-report.md`
+
+**Priority:** P0 stories MUST pass before merge to main. P1 stories MUST pass before client demo.
+
+**FR Coverage:** FR-007 (data isolation), FR-008 (invitations security), FR-025 (Add System), FR-026 (new systems empty), FR-035 (Convex indicator)
+
+---
+
+### Story 8.1: Implement Query-Side Access Control (withReadAccess)
+
+As a **system administrator**,
+I want all data queries to verify authentication and system access,
+So that clients cannot read other clients' data even if they know a systemId.
+
+**Priority:** 🔴 P0 — MERGE BLOCKER
+
+**Acceptance Criteria:**
+
+**Given** a user is not authenticated
+**When** they call any bySystem or bySystemAndType query
+**Then** the query returns empty results or throws an auth error
+
+**Given** a user is authenticated but does NOT have access to a system
+**When** they call bySystem with that systemId
+**Then** the query returns empty results or throws an access denied error
+
+**Given** a user is authenticated and HAS access to a system
+**When** they call bySystem with that systemId
+**Then** the query returns the expected data
+
+**Implementation Notes:**
+- Create `withReadAccess(ctx, systemId)` in `convex/lib/queries.ts` (new file)
+- Calls `getCurrentUser()` + `canAccessSystem()` before returning data
+- Apply to ALL query endpoints: elements.bySystem, elements.bySystemAndType, kpis.bySystem, kpis.byParent, capabilities.bySystem, capabilities.bySystemAndType, matrixCells.bySystemAndType, factors.bySystem, externalValues.bySystem
+- For kpis.byParent: resolve parent's systemId first, then check access
+- Must work with dev bypass (CONVEX_DEV_BYPASS_AUTH)
+- Do NOT change mutation logic (already protected by withWriteAccess)
+
+**Files to modify:**
+- `convex/lib/queries.ts` (NEW)
+- `convex/elements.ts` (add withReadAccess to queries)
+- `convex/kpis.ts` (add withReadAccess to queries)
+- `convex/capabilities.ts` (add withReadAccess to queries)
+- `convex/matrixCells.ts` (add withReadAccess to queries)
+- `convex/factors.ts` (add withReadAccess to queries)
+- `convex/externalValues.ts` (add withReadAccess to queries)
+
+**Trace:** REM-001, FR-007, NFR-005
+
+---
+
+### Story 8.2: Hash Invitation Tokens + Restrict Exposure
+
+As a **system administrator**,
+I want invitation tokens to be hashed before storage and not exposed to org members,
+So that compromised databases or curious org members cannot misuse invitation links.
+
+**Priority:** 🔴 P0 — MERGE BLOCKER
+
+**Acceptance Criteria:**
+
+**Given** an invitation is created
+**When** the token is stored in Convex
+**Then** it is stored as a SHA-256 hash (not plaintext)
+
+**Given** a user visits /invite/[token]
+**When** getByToken is called
+**Then** the incoming token is hashed before querying the database
+
+**Given** an admin views pending invitations via listByOrg
+**When** the response is returned
+**Then** it does NOT include the raw token field
+
+**Implementation Notes:**
+- Use a pure-JS SHA-256 implementation (Convex doesn't have Node crypto)
+- Add `js-sha256` package or implement minimal SHA-256 in `convex/lib/crypto.ts`
+- Hash token in `invitations.create` before storage
+- Hash incoming token in `invitations.getByToken` before DB lookup
+- Remove `token` field from `invitations.listByOrg` response
+- Return the raw invite URL only once at creation time (to the admin who created it)
+- Existing plaintext tokens in DB should be invalidated (set status to "expired")
+
+**Files to modify:**
+- `convex/lib/crypto.ts` (NEW — SHA-256 helper)
+- `convex/invitations.ts` (hash on create, hash on lookup, strip from list)
+- `package.json` (add js-sha256 if using external lib)
+
+**Trace:** REM-002, FR-009
+
+---
+
+### Story 8.3: Isolate Dev Auth Bypass from Production Code
+
+As a **developer**,
+I want the dev auth bypass to be impossible to accidentally enable in production,
+So that a misconfigured environment variable cannot bypass all authentication.
+
+**Priority:** 🔴 P0 — MERGE BLOCKER
+
+**Acceptance Criteria:**
+
+**Given** the application is deployed to production (Vercel)
+**When** CONVEX_DEV_BYPASS_AUTH is accidentally set to "true"
+**Then** the bypass code does NOT execute (additional guard prevents it)
+
+**Given** the developer runs locally with CONVEX_DEV_BYPASS_AUTH=true
+**When** permissions.ts getCurrentUser is called
+**Then** the bypass works normally for local development
+
+**Implementation Notes:**
+- Add a secondary guard: check `process.env.CONVEX_IS_DEV_DEPLOYMENT` or equivalent Convex env
+- OR: Remove bypass from permissions.ts entirely and use a separate `convex/lib/dev-auth.ts` that is only imported in dev
+- Frontend bypass hooks should check `process.env.NODE_ENV === "development"` as additional guard
+- Document the bypass mechanism in `DEV_BYPASS.md`
+- Verify Convex production deployment does NOT have the env var set
+
+**Files to modify:**
+- `convex/lib/permissions.ts` (add production guard)
+- `hooks/use-auth-bypass.ts` (add NODE_ENV guard)
+- `hooks/use-convex-auth-bypass.ts` (add NODE_ENV guard)
+- `DEV_BYPASS.md` (NEW — documentation)
+
+**Trace:** REM-003
+
+---
+
+### Story 8.4: Enable Add System Button with Creation Dialog
+
+As a **Super Admin or Channel Partner**,
+I want to click "Add System" and create a new system through a dialog,
+So that I can set up new client systems without developer intervention.
+
+**Priority:** 🟡 P1
+
+**Acceptance Criteria:**
+
+**Given** I am a Super Admin or Channel Partner
+**When** I click "Add System" in the sidebar
+**Then** a modal/dialog opens with fields: System Name (required), Sector (optional), Organisation (dropdown of my accessible orgs)
+
+**Given** I fill in the required fields and submit
+**When** the system is created
+**Then** it appears in the sidebar immediately and is auto-selected
+
+**Given** I am a Viewer or Admin (not SA/CP)
+**When** the sidebar renders
+**Then** the "Add System" button is hidden or disabled
+
+**Implementation Notes:**
+- Remove `disabled` and `cursor-not-allowed` from the Add System button
+- Add role check: show only for super_admin and channel_partner
+- Create an AddSystemDialog component with shadcn Dialog
+- Use `systems.create` mutation (already requires orgId)
+- Organisation dropdown uses `organisations.list` filtered by user's accessible orgs
+- After creation, auto-select the new system in the sidebar
+
+**Files to modify:**
+- `components/layout/nav-sidebar.tsx` (enable button, add dialog trigger)
+- `components/add-system-dialog.tsx` (NEW — creation dialog)
+- `convex/organisations.ts` (may need a listAccessible query)
+
+**Trace:** REM-004, FR-025
+
+---
+
+### Story 8.5: Empty State on App Load
+
+As a **user**,
+I want the app to show a welcome screen when no system is selected,
+So that I'm not confused by seeing another client's data on first load.
+
+**Priority:** 🟡 P1
+
+**Acceptance Criteria:**
+
+**Given** I open the app for the first time (or after clearing state)
+**When** no system is selected
+**Then** the main area shows a welcome message: "Select a system from the sidebar to begin"
+
+**Given** I have no systems available
+**When** the app loads
+**Then** the main area shows: "No systems available. Create your first system to get started." with a CTA button
+
+**Given** I select a system
+**When** I reload the page
+**Then** my last selected system is remembered (via localStorage)
+
+**Implementation Notes:**
+- Change `selectedSystemId` default from auto-selecting first system to `null`
+- Add empty state component in main area when `selectedSystemId` is null
+- Persist selection in localStorage: `jigsaw-selected-system`
+- On load, restore from localStorage if the system still exists
+
+**Files to modify:**
+- `app/page.tsx` (remove auto-select, add empty state, add localStorage persistence)
+
+**Trace:** REM-005, FR-026
+
+---
+
+### Story 8.6: Hide Convex Indicator + Migrate Legacy Systems + Minor Fixes
+
+As a **user**,
+I want no technical indicators visible and all systems showing correct org names,
+So that the app looks professional and data appears clean.
+
+**Priority:** 🟡 P1
+
+**Acceptance Criteria:**
+
+**Given** the app is running in any environment
+**When** the page renders
+**Then** the "Connected to Convex (real-time)" indicator is NOT visible
+
+**Given** legacy systems exist without orgId
+**When** the migration script runs
+**Then** all systems have a valid orgId and display correct org names
+
+**Implementation Notes:**
+- Remove or hide Convex indicator unconditionally (not just in production)
+- Create a one-time migration function in `convex/migrations.ts` to assign orgId to legacy systems
+- Run migration via `npx convex run migrations:assignLegacyOrgIds`
+
+**Files to modify:**
+- `app/page.tsx` (remove Convex indicator entirely)
+- `convex/migrations.ts` (NEW — legacy system migration)
+
+**Trace:** REM-006, REM-007, FR-028, FR-035
+
+---

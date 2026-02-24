@@ -17,7 +17,6 @@ interface LogicGridProps {
   cultureBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   bottomBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   editMode?: EditMode
-  displayMode?: "stage" | "performance"
   onColorChange?: (nodeId: string, color: NodeData["color"]) => void
   onReorder?: (category: string, fromIndex: number, toIndex: number) => void
   onAddNode?: (category: string) => void
@@ -32,7 +31,6 @@ export function LogicGrid({
   cultureBanner,
   bottomBanner,
   editMode = "view",
-  displayMode,
   onColorChange,
   onReorder,
   onAddNode,
@@ -85,6 +83,18 @@ export function LogicGrid({
     setDragCategory(null)
   }
 
+  const handleMoveNode = (
+    category: string,
+    fromIndex: number,
+    direction: -1 | 1,
+    nodeCount: number
+  ) => {
+    if (editMode !== "order") return
+    const toIndex = fromIndex + direction
+    if (toIndex < 0 || toIndex >= nodeCount) return
+    onReorder?.(category, fromIndex, toIndex)
+  }
+
   // Click handler for nodes - routes based on edit mode
   const handleNodeClick = (node: NodeData) => {
     if (editMode === "edit") {
@@ -124,7 +134,7 @@ export function LogicGrid({
                   <p className="text-white font-bold text-center text-[22px] leading-tight">
                     {row.nodes[0]?.title}
                   </p>
-                  {showKpi && isEditActive && (
+                  {showKpi && editMode === "edit" && (
                     <Input
                       type="number"
                       defaultValue={row.nodes[0]?.kpiValue}
@@ -133,7 +143,7 @@ export function LogicGrid({
                     />
                   )}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
                       <ArrowRight className="h-3 w-3" />
@@ -172,19 +182,24 @@ export function LogicGrid({
                         onClick={() => handleNodeClick(node)}
                         isEditMode={isEditActive}
                         editMode={editMode}
-                        displayMode={displayMode}
+
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
+                        showReorderArrows={editMode === "order"}
+                        onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                        onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                        disableMoveUp={index === 0}
+                        disableMoveDown={index === row.nodes.length - 1}
                         chipLabel={`Objective ${index + 1}`}
                       />
                     </div>
                   ))}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button
                       variant="outline"
@@ -241,19 +256,24 @@ export function LogicGrid({
                         compact
                         isEditMode={isEditActive}
                         editMode={editMode}
-                        displayMode={displayMode}
+
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
+                        showReorderArrows={editMode === "order"}
+                        onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                        onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                        disableMoveUp={index === 0}
+                        disableMoveDown={index === row.nodes.length - 1}
                         chipLabel={`VC ${index + 1}`}
                       />
                     </div>
                   ))}
                 </div>
-                {isEditActive && (
+                {editMode === "edit" && (
                   <div className="flex flex-col justify-center gap-1 pl-2">
                     <Button
                       variant="outline"
@@ -317,7 +337,7 @@ export function LogicGrid({
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
@@ -360,19 +380,24 @@ export function LogicGrid({
                           compact
                           isEditMode={isEditActive}
                           editMode={editMode}
-                          displayMode={displayMode}
+  
                           onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                           onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                           onEditClick={onEditNode ? () => onEditNode(node) : undefined}
                           draggable={editMode === "order"}
                           onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                           onDragEnd={handleDragEnd}
+                          showReorderArrows={editMode === "order"}
+                          onMoveUp={() => handleMoveNode(row.category, index, -1, row.nodes.length)}
+                          onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
+                          disableMoveUp={index === 0}
+                          disableMoveDown={index === row.nodes.length - 1}
                           chipLabel={`Resource ${index + 1}`}
                         />
                       </div>
                     ))}
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"
@@ -429,7 +454,7 @@ export function LogicGrid({
                   >
                     <p className="text-white font-medium text-center text-lg leading-tight">{bottomBanner.title}</p>
                   </div>
-                  {isEditActive && (
+                  {editMode === "edit" && (
                     <div className="flex flex-col justify-center gap-1 pl-2">
                       <Button
                         variant="outline"

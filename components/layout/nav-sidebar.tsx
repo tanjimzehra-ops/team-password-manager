@@ -7,11 +7,13 @@ import { Input } from "@/components/ui/input"
 import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
+import { AddSystemDialog } from "@/components/add-system-dialog"
 
 interface SystemInfo {
   id: string
   name: string
   sector?: string | null
+  orgName?: string | null
 }
 
 interface NavSidebarProps {
@@ -19,13 +21,15 @@ interface NavSidebarProps {
   onToggle: () => void
   selectedSystem?: string
   onSystemSelect?: (systemId: string) => void
+  onSystemCreated?: (systemId: string) => void
   systems?: SystemInfo[]
   isLoading?: boolean
   showCanvas?: boolean
   onCanvasClick?: () => void
+  canAddSystem?: boolean
 }
 
-// Default static systems for fallback
+// Default static systems for JSON-mode fallback
 const defaultSystems: SystemInfo[] = [
   { id: "mera", name: "MERA", sector: "Clean Energy" },
   { id: "kiraa", name: "Kiraa", sector: "AI Tech" },
@@ -42,14 +46,17 @@ export function NavSidebar({
   onToggle,
   selectedSystem = "",
   onSystemSelect,
+  onSystemCreated,
   systems,
   isLoading = false,
   showCanvas = false,
-  onCanvasClick
+  onCanvasClick,
+  canAddSystem = true,
 }: NavSidebarProps) {
   const [systemsExpanded, setSystemsExpanded] = useState(true)
   const [searchInput, setSearchInput] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
+  const [addSystemOpen, setAddSystemOpen] = useState(false)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   // Debounce search input by 300ms
@@ -59,17 +66,14 @@ export function NavSidebar({
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
   }, [searchInput])
 
-  // Use provided systems or fallback to defaults
-  const displaySystems = systems?.length ? systems : defaultSystems
+  // When systems are provided (Convex mode), always render exactly that list.
+  const displaySystems = systems ?? defaultSystems
 
-  const DEMO_SYSTEMS = ["MERA", "Central Highlands", "Blank"]
-  const filteredSystems = displaySystems
-    .filter(s => DEMO_SYSTEMS.some(name => s.name.includes(name)))
-    .filter(s => {
-      if (!searchQuery) return true
-      const q = searchQuery.toLowerCase()
-      return s.name.toLowerCase().includes(q) || (s.sector?.toLowerCase().includes(q) ?? false)
-    })
+  const filteredSystems = displaySystems.filter((s) => {
+    if (!searchQuery) return true
+    const q = searchQuery.toLowerCase()
+    return s.name.toLowerCase().includes(q) || (s.sector?.toLowerCase().includes(q) ?? false)
+  })
 
   // Find if selected system matches by ID or name
   const isSystemSelected = (system: SystemInfo) => {
@@ -193,8 +197,10 @@ export function NavSidebar({
                   </div>
                 ) : (
                   <>
-                    {searchQuery && filteredSystems.length === 0 && (
-                      <p className="text-[10px] text-muted-foreground text-center py-2">No systems found</p>
+                    {filteredSystems.length === 0 && (
+                      <p className="text-[10px] text-muted-foreground text-center py-2">
+                        {searchQuery ? "No systems found" : "No systems available"}
+                      </p>
                     )}
                     {filteredSystems.map((system) => (
                       <Button
@@ -208,6 +214,7 @@ export function NavSidebar({
                             : "text-muted-foreground hover:bg-muted/50"
                         )}
                         onClick={() => onSystemSelect?.(system.id)}
+                        title={system.orgName ? `${system.name} (${system.orgName})` : system.name}
                       >
                         <span className={cn(
                           "w-2 h-2 rounded-full shrink-0", 
@@ -215,23 +222,30 @@ export function NavSidebar({
                         )} />
                         <div className="flex flex-col items-start overflow-hidden">
                           <span className="truncate w-full">{system.name}</span>
-                          {system.sector && (
+                          {system.orgName ? (
+                            <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                              {system.orgName}
+                            </span>
+                          ) : system.sector ? (
                             <span className="text-[10px] text-muted-foreground/70 truncate w-full">
                               {system.sector}
                             </span>
-                          )}
+                          ) : null}
                         </div>
                       </Button>
                     ))}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50 opacity-50 cursor-not-allowed"
-                      disabled
-                    >
-                      <Plus className="h-3 w-3" />
-                      Add System
-                    </Button>
+                    {canAddSystem && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
+                        onClick={() => setAddSystemOpen(true)}
+                        title="Add System"
+                      >
+                        <Plus className="h-3 w-3" />
+                        Add System
+                      </Button>
+                    )}
                   </>
                 )}
               </div>
@@ -281,6 +295,12 @@ export function NavSidebar({
           </Button>
         </div>
       </div>
+
+      <AddSystemDialog
+        open={addSystemOpen}
+        onOpenChange={setAddSystemOpen}
+        onSystemCreated={onSystemCreated}
+      />
     </div>
   )
 }

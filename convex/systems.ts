@@ -4,6 +4,10 @@ import {
   getCurrentUser,
   requireAuth,
   isSuperAdmin,
+  isChannelPartner,
+  getOrgMembership,
+  getPartnerChannelIds,
+  requireRole,
   requireWriteAccess,
   getAccessibleOrgIds,
   canAccessSystem,
@@ -12,7 +16,7 @@ import { logAudit } from "./auditLogs"
 
 /**
  * List systems visible to the current user.
- * - Authenticated: returns systems in user's orgs + legacy systems (no orgId)
+ * - Authenticated: returns systems in user's accessible orgs
  * - Super admin: returns all non-deleted systems
  */
 export const list = query({
@@ -25,19 +29,30 @@ export const list = query({
 
     const { orgIds, isSuperAdmin } = await getAccessibleOrgIds(ctx, user._id)
 
+    // Join with orgs to get org name
+    const orgs = await ctx.db.query("organisations").collect()
+    const orgMap = new Map(orgs.map((o) => [o._id.toString(), o.name]))
+
     if (isSuperAdmin) {
       return activeSystems.map((s) => ({
         _id: s._id,
         name: s.name,
         sector: s.sector,
         orgId: s.orgId,
+        orgName: s.orgId ? (orgMap.get(s.orgId.toString()) ?? "Unknown") : undefined,
       }))
     }
 
-    // User sees: legacy systems (no orgId) + their org's systems
+    // User sees systems in their accessible orgs.
     return activeSystems
-      .filter((s) => !s.orgId || orgIds.includes(s.orgId))
-      .map((s) => ({ _id: s._id, name: s.name, sector: s.sector, orgId: s.orgId }))
+      .filter((s) => !!s.orgId && orgIds.includes(s.orgId))
+      .map((s) => ({
+        _id: s._id,
+        name: s.name,
+        sector: s.sector,
+        orgId: s.orgId,
+        orgName: s.orgId ? (orgMap.get(s.orgId.toString()) ?? "Unknown") : undefined,
+      }))
   },
 })
 
@@ -52,8 +67,6 @@ export const get = query({
 
     const user = await getCurrentUser(ctx)
     if (!user) return null
-    // Legacy systems (no orgId) are readable by any authenticated user
-    if (!system.orgId) return system
     if (!(await canAccessSystem(ctx, user._id, args.id))) return null
 
     return system
@@ -71,9 +84,7 @@ export const getFullSystem = query({
 
     const user = await getCurrentUser(ctx)
     if (!user) return null
-    if (system.orgId) {
-      if (!(await canAccessSystem(ctx, user._id, args.id))) return null
-    }
+    if (!(await canAccessSystem(ctx, user._id, args.id))) return null
 
     const [elements, matrixCells, kpis, capabilities, externalValues, factors, portfolios] =
       await Promise.all([
@@ -121,8 +132,8 @@ export const getFullSystem = query({
 })
 
 /**
- * Create a new system. Requires auth + admin/super_admin role.
- * orgId is optional during migration but will be required post-Block 5.
+ * Create a new system. Requires auth + super_admin/channel_partner role.
+ * orgId is required to ensure data isolation for new systems.
  */
 export const create = mutation({
   args: {
@@ -131,15 +142,34 @@ export const create = mutation({
     impact: v.string(),
     dimension: v.string(),
     challenge: v.string(),
-    orgId: v.optional(v.id("organisations")),
+    orgId: v.id("organisations"),
   },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
+    const targetOrg = await ctx.db.get(args.orgId)
+    if (!targetOrg || targetOrg.deletedAt) {
+      throw new Error("Organisation not found")
+    }
 
-    // If orgId provided, verify admin/super_admin in that org
-    if (args.orgId) {
-      const { requireRole } = await import("./lib/permissions")
-      await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
+    // Super admins can create systems in any org.
+    if (!(await isSuperAdmin(ctx, user._id))) {
+      // Non-super-admin callers must be channel partners scoped to the target org.
+      if (!(await isChannelPartner(ctx, user._id))) {
+        throw new Error("Access denied: only super admins or channel partners can create systems")
+      }
+
+      const directMembership = await getOrgMembership(ctx, user._id, args.orgId)
+      const hasDirectPartnerMembership = directMembership?.role === "channel_partner"
+      let hasChannelAccess = false
+
+      if (targetOrg.channelId) {
+        const partnerChannelIds = await getPartnerChannelIds(ctx, user._id)
+        hasChannelAccess = partnerChannelIds.includes(targetOrg.channelId)
+      }
+
+      if (!hasDirectPartnerMembership && !hasChannelAccess) {
+        throw new Error("Access denied: channel partner is not scoped to this organisation")
+      }
     }
 
     const systemId = await ctx.db.insert("systems", args)
@@ -252,7 +282,6 @@ export const restore = mutation({
 
     // Check org access if system has orgId
     if (system.orgId) {
-      const { requireRole } = await import("./lib/permissions")
       await requireRole(ctx, user._id, system.orgId, ["admin", "super_admin"])
     }
 

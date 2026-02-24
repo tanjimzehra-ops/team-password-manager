@@ -2,6 +2,7 @@ import { query, mutation, internalMutation } from "./_generated/server"
 import { v } from "convex/values"
 import { getCurrentUser, requireAuth, isSuperAdmin } from "./lib/permissions"
 import { logAudit } from "./auditLogs"
+import { emailsMatch, normalizeEmail } from "./lib/email"
 
 /**
  * Get the current authenticated user's record + role info.
@@ -31,6 +32,11 @@ export const me = query({
 export const getByWorkosId = query({
   args: { workosId: v.string() },
   handler: async (ctx, args) => {
+    const caller = await requireAuth(ctx)
+    const callerIsSuperAdmin = await isSuperAdmin(ctx, caller._id)
+    if (!callerIsSuperAdmin && caller.workosId !== args.workosId) {
+      return null
+    }
     return await ctx.db
       .query("users")
       .withIndex("by_workosId", (q) => q.eq("workosId", args.workosId))
@@ -42,6 +48,18 @@ export const getByWorkosId = query({
 export const getByEmail = query({
   args: { email: v.string() },
   handler: async (ctx, args) => {
+    const normalizedEmail = normalizeEmail(args.email)
+    const caller = await requireAuth(ctx)
+    const callerIsSuperAdmin = await isSuperAdmin(ctx, caller._id)
+    if (!callerIsSuperAdmin && !emailsMatch(caller.email, normalizedEmail)) {
+      return null
+    }
+    const byNormalized = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", normalizedEmail))
+      .first()
+    if (byNormalized) return byNormalized
+
     return await ctx.db
       .query("users")
       .withIndex("by_email", (q) => q.eq("email", args.email))
@@ -53,6 +71,11 @@ export const getByEmail = query({
 export const get = query({
   args: { id: v.id("users") },
   handler: async (ctx, args) => {
+    const caller = await requireAuth(ctx)
+    const callerIsSuperAdmin = await isSuperAdmin(ctx, caller._id)
+    if (!callerIsSuperAdmin && String(caller._id) !== String(args.id)) {
+      return null
+    }
     return await ctx.db.get(args.id)
   },
 })
@@ -88,7 +111,7 @@ export const getOrCreateMe = mutation({
     if (!identity) throw new Error("Not authenticated")
 
     // Resolve profile: prefer frontend args (from WorkOS session), fallback to JWT claims
-    const resolvedEmail = args.email || identity.email || ""
+    const resolvedEmail = normalizeEmail(args.email || identity.email || "")
     const resolvedName = args.name || identity.name
     const resolvedAvatar = args.avatarUrl || identity.pictureUrl
 
@@ -120,6 +143,7 @@ export const getOrCreateMe = mutation({
       if (byEmail && !byEmail.deletedAt) {
         await ctx.db.patch(byEmail._id, {
           workosId: identity.subject,
+          email: resolvedEmail,
           name: resolvedName || byEmail.name,
           avatarUrl: resolvedAvatar || byEmail.avatarUrl,
         })
@@ -146,6 +170,7 @@ export const upsertFromWorkos = internalMutation({
     avatarUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
+    const normalizedEmail = normalizeEmail(args.email)
     const existing = await ctx.db
       .query("users")
       .withIndex("by_workosId", (q) => q.eq("workosId", args.workosId))
@@ -153,7 +178,7 @@ export const upsertFromWorkos = internalMutation({
 
     if (existing) {
       await ctx.db.patch(existing._id, {
-        email: args.email,
+        email: normalizedEmail,
         name: args.name,
         avatarUrl: args.avatarUrl,
       })
@@ -162,7 +187,7 @@ export const upsertFromWorkos = internalMutation({
 
     return await ctx.db.insert("users", {
       workosId: args.workosId,
-      email: args.email,
+      email: normalizedEmail,
       name: args.name,
       avatarUrl: args.avatarUrl,
     })
@@ -188,7 +213,9 @@ export const update = mutation({
     const updates: Record<string, unknown> = {}
     for (const [key, value] of Object.entries(fields)) {
       if (value !== undefined) {
-        updates[key] = value
+        updates[key] = key === "email" && typeof value === "string"
+          ? normalizeEmail(value)
+          : value
       }
     }
     await ctx.db.patch(id, updates)

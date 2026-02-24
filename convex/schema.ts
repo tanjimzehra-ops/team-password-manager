@@ -1,9 +1,10 @@
 import { defineSchema, defineTable } from "convex/server"
 import { v } from "convex/values"
 
-// Role union — 3 MVP roles, expandable to 5 (manager, employee) without migration
+// Role union — 4 roles (manager, employee) without migration
 const roleValidator = v.union(
   v.literal("super_admin"),
+  v.literal("channel_partner"),
   v.literal("admin"),
   v.literal("viewer")
 )
@@ -18,6 +19,17 @@ const orgStatusValidator = v.union(
 export default defineSchema({
   // ─── Auth & Multi-Tenancy Tables ──────────────────────────────
 
+  // Channel partners (resellers, MSPs, etc.)
+  channels: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    contactEmail: v.optional(v.string()),
+    status: v.union(v.literal("active"), v.literal("inactive")),
+    createdBy: v.optional(v.id("users")),
+    deletedAt: v.optional(v.number()),
+  }).index("by_slug", ["slug"])
+    .index("by_status", ["status"]),
+
   // Client organisations (replaces Blazor "Clients" entity)
   organisations: defineTable({
     name: v.string(),
@@ -25,10 +37,12 @@ export default defineSchema({
     contactNumber: v.optional(v.string()),
     abn: v.optional(v.string()),          // Australian Business Number
     channel: v.optional(v.string()),      // Sales pipeline source (e.g. "KPMG")
+    channelId: v.optional(v.id("channels")), // Link to channel partner
     createdBy: v.optional(v.id("users")), // Super admin who created it
     status: orgStatusValidator,
     deletedAt: v.optional(v.number()),    // Soft delete timestamp (ms)
-  }).index("by_status", ["status"]),
+  }).index("by_status", ["status"])
+    .index("by_channel", ["channelId"]),
 
   // Users synced from WorkOS via webhooks
   users: defineTable({
@@ -49,6 +63,27 @@ export default defineSchema({
   }).index("by_user", ["userId"])
     .index("by_org", ["orgId"])
     .index("by_user_org", ["userId", "orgId"]),
+
+  // Invitations for new users to join an organisation
+  invitations: defineTable({
+    email: v.string(),
+    orgId: v.id("organisations"),
+    role: roleValidator,
+    token: v.string(),           // SHA-256 hashed token
+    status: v.union(
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("declined"),
+      v.literal("expired")
+    ),
+    invitedBy: v.id("users"),
+    expiresAt: v.number(),       // Timestamp ms
+    acceptedAt: v.optional(v.number()),
+    deletedAt: v.optional(v.number()),
+  }).index("by_token", ["token"])
+    .index("by_email", ["email"])
+    .index("by_org", ["orgId"])
+    .index("by_status", ["status"]),
 
   // ─── Core Data Tables ─────────────────────────────────────────
 
