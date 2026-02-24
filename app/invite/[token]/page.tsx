@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation"
 import { useQuery, useMutation } from "convex/react"
-import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"

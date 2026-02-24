@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import { useQuery } from "convex/react"
-import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
 import { OrgContext, type OrgInfo } from "@/hooks/use-org"
 import { LandingPage } from "@/components/landing-page"

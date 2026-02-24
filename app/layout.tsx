@@ -57,12 +57,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const { accessToken } = await withAuth()
+  const devBypass = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true"
+  const accessToken = devBypass ? null : (await withAuth()).accessToken
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${plusJakartaSans.className} font-sans antialiased`}>
-        <ConvexClientProvider expectAuth={!!accessToken}>
+        <ConvexClientProvider expectAuth={devBypass ? false : !!accessToken}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
             {children}
           </ThemeProvider>

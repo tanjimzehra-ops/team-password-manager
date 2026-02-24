@@ -19,10 +19,27 @@ export type Role = "super_admin" | "channel_partner" | "admin" | "viewer"
 /**
  * Get the authenticated user's Convex record from JWT identity.
  * Returns null if not authenticated or user not found in DB.
+ *
+ * DEV BYPASS: When CONVEX_DEV_BYPASS_AUTH env var is set to "true",
+ * returns the first super_admin user without requiring JWT auth.
+ * This is for local development only — never set in production.
  */
 export async function getCurrentUser(
   ctx: QueryCtx | MutationCtx
 ): Promise<Doc<"users"> | null> {
+  // Dev bypass: skip JWT auth, return first super_admin
+  if (process.env.CONVEX_DEV_BYPASS_AUTH === "true") {
+    const allMemberships = await ctx.db.query("memberships").collect()
+    const superAdminMembership = allMemberships.find((m) => m.role === "super_admin" && !m.deletedAt)
+    if (superAdminMembership) {
+      const user = await ctx.db.get(superAdminMembership.userId)
+      if (user && !user.deletedAt) return user
+    }
+    // Fallback: return the first active user
+    const users = await ctx.db.query("users").collect()
+    return users.find((u) => !u.deletedAt) ?? null
+  }
+
   const identity = await ctx.auth.getUserIdentity()
   if (!identity) return null
 

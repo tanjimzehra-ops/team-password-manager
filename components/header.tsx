@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { LogOut } from 'lucide-react'
-import { useAuth } from "@workos-inc/authkit-nextjs/components"
+import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { ThemeToggle } from "./theme-toggle"
 import { OrgSwitcher } from "./org-switcher"
 import { cn } from "@/lib/utils"

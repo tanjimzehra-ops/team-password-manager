@@ -1,9 +1,11 @@
 "use client"
 
-import { ConvexProviderWithAuth, ConvexReactClient } from "convex/react"
+import { ConvexProviderWithAuth, ConvexReactClient, ConvexProvider } from "convex/react"
 import { AuthKitProvider, useAuth, useAccessToken } from "@workos-inc/authkit-nextjs/components"
 import { type ReactNode, useCallback, useState } from "react"
 import { useEnsureUser } from "@/hooks/use-ensure-user"
+
+const DEV_BYPASS = process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true"
 
 function UserProvisioner({ children }: { children: ReactNode }) {
   useEnsureUser()
@@ -20,9 +22,19 @@ export function ConvexClientProvider({
   const [convex] = useState(() => {
     return new ConvexReactClient(
       process.env.NEXT_PUBLIC_CONVEX_URL || "https://placeholder-not-configured.convex.cloud",
-      { expectAuth }
+      // When bypassing auth, don't expect auth tokens
+      { expectAuth: DEV_BYPASS ? false : expectAuth }
     )
   })
+
+  // Dev bypass: skip WorkOS entirely, use plain ConvexProvider (no auth)
+  if (DEV_BYPASS) {
+    return (
+      <ConvexProvider client={convex}>
+        {children}
+      </ConvexProvider>
+    )
+  }
 
   return (
     <AuthKitProvider>
