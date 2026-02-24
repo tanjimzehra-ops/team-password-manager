@@ -27,7 +27,7 @@ interface NavSidebarProps {
   onCanvasClick?: () => void
 }
 
-// Default static systems for fallback
+// Default static systems for JSON-mode fallback
 const defaultSystems: SystemInfo[] = [
   { id: "mera", name: "MERA", sector: "Clean Energy" },
   { id: "kiraa", name: "Kiraa", sector: "AI Tech" },
@@ -62,17 +62,14 @@ export function NavSidebar({
     return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
   }, [searchInput])
 
-  // Use provided systems or fallback to defaults
-  const displaySystems = systems?.length ? systems : defaultSystems
+  // When systems are provided (Convex mode), always render exactly that list.
+  const displaySystems = systems ?? defaultSystems
 
-  const DEMO_SYSTEMS = ["MERA", "Central Highlands", "Blank"]
-  const filteredSystems = displaySystems
-    .filter(s => DEMO_SYSTEMS.some(name => s.name.includes(name)))
-    .filter(s => {
-      if (!searchQuery) return true
-      const q = searchQuery.toLowerCase()
-      return s.name.toLowerCase().includes(q) || (s.sector?.toLowerCase().includes(q) ?? false)
-    })
+  const filteredSystems = displaySystems.filter((s) => {
+    if (!searchQuery) return true
+    const q = searchQuery.toLowerCase()
+    return s.name.toLowerCase().includes(q) || (s.sector?.toLowerCase().includes(q) ?? false)
+  })
 
   // Find if selected system matches by ID or name
   const isSystemSelected = (system: SystemInfo) => {
@@ -196,8 +193,10 @@ export function NavSidebar({
                   </div>
                 ) : (
                   <>
-                    {searchQuery && filteredSystems.length === 0 && (
-                      <p className="text-[10px] text-muted-foreground text-center py-2">No systems found</p>
+                    {filteredSystems.length === 0 && (
+                      <p className="text-[10px] text-muted-foreground text-center py-2">
+                        {searchQuery ? "No systems found" : "No systems available"}
+                      </p>
                     )}
                     {filteredSystems.map((system) => (
                       <Button

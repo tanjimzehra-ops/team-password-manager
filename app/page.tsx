@@ -19,7 +19,7 @@ import { NodeDetailSidebar } from "@/components/node-detail-sidebar"
 import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
-import { LayoutGrid, PlusCircle } from "lucide-react"
+import { AlertTriangle, LayoutGrid, PlusCircle } from "lucide-react"
 
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
@@ -118,11 +118,8 @@ export default function Page() {
   // Convex data
   const { data: allConvexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
 
-  // Filter systems by selected org (show legacy systems + selected org's systems)
-  const convexSystems = useMemo(() => {
-    if (!selectedOrgId) return allConvexSystems
-    return allConvexSystems.filter((s) => !s.orgId || s.orgId === selectedOrgId)
-  }, [allConvexSystems, selectedOrgId])
+  // systems.list already enforces access control; use full accessible list as-is.
+  const convexSystems = allConvexSystems
   const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
     isConvexConfigured ? selectedSystemId : null
   )
@@ -169,13 +166,46 @@ export default function Page() {
     return getSystemAdapter(selectedJsonSystem)
   }, [selectedJsonSystem])
 
-  // Data: Convex pre-transformed > JSON fallback
-  const effectiveLogicGridData = convexSystemData?.initialData ?? jsonAdapter.initialData
-  const effectiveCultureBanner = convexSystemData?.cultureBanner ?? jsonAdapter.cultureBanner
-  const effectiveBottomBanner = convexSystemData?.bottomBanner ?? jsonAdapter.bottomBanner
-  const effectiveContributionMapData = convexSystemData?.contributionMapData ?? jsonAdapter.getContributionMapData()
-  const effectiveDevelopmentPathwaysData = convexSystemData?.developmentPathwaysData ?? jsonAdapter.getDevelopmentPathwaysData()
-  const effectiveConvergenceMapData = convexSystemData?.convergenceMapData ?? jsonAdapter.getConvergenceMapData()
+  // Never fall back to JSON demo content when Convex mode is active.
+  const effectiveLogicGridData = dataSource === "convex"
+    ? (convexSystemData?.initialData ?? [])
+    : jsonAdapter.initialData
+  const effectiveCultureBanner = dataSource === "convex"
+    ? (convexSystemData?.cultureBanner ?? { id: "culture-banner", title: "", kpiValue: 100, kpiStatus: "healthy" as const })
+    : jsonAdapter.cultureBanner
+  const effectiveBottomBanner = dataSource === "convex"
+    ? (convexSystemData?.bottomBanner ?? { id: "bottom-banner", title: "", kpiValue: 100, kpiStatus: "healthy" as const })
+    : jsonAdapter.bottomBanner
+  const effectiveContributionMapData = dataSource === "convex"
+    ? (convexSystemData?.contributionMapData ?? {
+        outcomes: [],
+        valueChain: [],
+        valueChainKpis: [],
+        outcomeKpis: [],
+        cells: [],
+      })
+    : jsonAdapter.getContributionMapData()
+  const effectiveDevelopmentPathwaysData = dataSource === "convex"
+    ? (convexSystemData?.developmentPathwaysData ?? {
+        resources: [],
+        valueChain: [],
+        currentCapabilitiesPerResource: [],
+        currentCapabilitiesPerVC: [],
+        necessaryCapabilities: [],
+        cells: [],
+        kpis: [],
+        dimension: "",
+      })
+    : jsonAdapter.getDevelopmentPathwaysData()
+  const effectiveConvergenceMapData = dataSource === "convex"
+    ? (convexSystemData?.convergenceMapData ?? {
+        externalFactors: [],
+        valueChain: [],
+        cells: [],
+        kpis: [],
+        factorsPerVC: [],
+      })
+    : jsonAdapter.getConvergenceMapData()
 
   // Library hook (depends on effectiveLogicGridData)
   const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
@@ -194,12 +224,14 @@ export default function Page() {
 
   // Get current system name for display
   const systemName = useMemo(() => {
-    if (dataSource === "convex" && convexSystemData) {
-      return convexSystemData.system.name
+    if (dataSource === "convex") {
+      if (!selectedSystemId) return null
+      if (convexSystemData) return convexSystemData.system.name
+      return convexSystems.find((s) => s.id === selectedSystemId)?.name ?? null
     }
     // JSON mode: use adapter name
-    return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.['System'] || selectedJsonSystem.toUpperCase()
-  }, [dataSource, convexSystemData, jsonAdapter, selectedJsonSystem])
+    return jsonAdapter.initialData[0]?.nodes[0]?.metadata?.["System"] || selectedJsonSystem.toUpperCase()
+  }, [dataSource, convexSystemData, convexSystems, jsonAdapter, selectedJsonSystem, selectedSystemId])
 
   // Handler functions
   const handleNodeClick = (node: NodeData) => {
@@ -285,7 +317,7 @@ export default function Page() {
 
   // Export handler
   const handleExport = async (format: "csv" | "excel" | "pdf") => {
-    const baseName = `${systemName}-${activeTab}`
+    const baseName = `${systemName ?? "jigsaw"}-${activeTab}`
 
     try {
       if (format === "pdf") {
@@ -613,6 +645,31 @@ export default function Page() {
     )
   }
 
+  const renderSystemUnavailableState = () => (
+    <div className="flex-1 flex items-center justify-center">
+      <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
+        <AlertTriangle className="w-12 h-12 text-amber-500/70" />
+        <h2 className="text-xl font-semibold text-foreground">System unavailable</h2>
+        <p className="text-muted-foreground">
+          The selected system could not be loaded. It may have been deleted, moved, or is no longer accessible.
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setSelectedSystemId(null)
+            try {
+              localStorage.removeItem("jigsaw-selected-system")
+            } catch {
+              // localStorage unavailable
+            }
+          }}
+        >
+          Back to system list
+        </Button>
+      </div>
+    </div>
+  )
+
   // Render main content based on active tab
   const renderMainContent = () => {
     // Show loading while fetching data
@@ -623,6 +680,11 @@ export default function Page() {
     // Show empty state when no system is selected
     if (dataSource === "convex" && !selectedSystemId) {
       return renderEmptyState()
+    }
+
+    // Selected system exists but did not resolve to data
+    if (dataSource === "convex" && selectedSystemId && !convexSystemData) {
+      return renderSystemUnavailableState()
     }
 
     switch (activeTab) {
@@ -732,7 +794,7 @@ export default function Page() {
             onSystemSelect={handleSystemSelect}
             systems={
               dataSource === "convex"
-                ? convexSystems.map(s => ({ id: s.id, name: s.name, sector: s.sector }))
+                ? convexSystems.map((s) => ({ id: s.id, name: s.name, sector: s.sector, orgName: s.orgName }))
                 : undefined
             }
             isLoading={dataSource === "convex" ? convexSystemsLoading : false}
@@ -798,7 +860,7 @@ export default function Page() {
         onClose={closeLibrary}
         category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
         currentSystemId={selectedSystemId ?? ""}
-        currentSystemName={systemName}
+        currentSystemName={systemName ?? "Jigsaw"}
         onConnect={handleLibraryConnect}
         onCopy={handleLibraryCopy}
         items={libraryItems}

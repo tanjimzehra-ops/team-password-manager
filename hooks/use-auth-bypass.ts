@@ -38,6 +38,7 @@ export function useAuthBypass() {
     return {
       user: FAKE_DEV_USER,
       loading: false,
+      signOut: async () => {},
     }
   }
 
