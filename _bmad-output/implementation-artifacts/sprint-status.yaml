@@ -18,35 +18,35 @@ branch: "sprint/full-pipeline"
 development_status:
   # Epic 8: Post-Sprint Remediation
   epic-8:
-    status: backlog
+    status: done
     title: "Post-Sprint Remediation (Security + UX)"
 
   8-1-query-access-control:
-    status: backlog
+    status: done
     priority: P0
     title: "Implement withReadAccess for all queries"
 
   8-2-hash-invitation-tokens:
-    status: backlog
+    status: done
     priority: P0
     title: "Hash invitation tokens + restrict exposure"
 
   8-3-isolate-dev-bypass:
-    status: backlog
+    status: done
     priority: P0
     title: "Isolate dev auth bypass from production"
 
   8-4-enable-add-system:
-    status: backlog
+    status: done
     priority: P1
     title: "Enable Add System button with creation dialog"
 
   8-5-empty-state-on-load:
-    status: backlog
+    status: done
     priority: P1
     title: "Empty state on app load"
 
   8-6-minor-fixes:
-    status: backlog
+    status: done
     priority: P1
     title: "Hide Convex indicator + migrate legacy systems"
