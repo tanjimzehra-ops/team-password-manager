@@ -6,6 +6,7 @@ import {
   getOrgMembership,
 } from "./lib/permissions"
 import { logAudit } from "./auditLogs"
+import { sha256 } from "./lib/crypto"
 
 // Role validator for invitations: only admin and viewer
 const invitationRoleValidator = v.union(
@@ -69,7 +70,6 @@ export const listByOrg = query({
           orgId: inv.orgId,
           role: inv.role,
           status: inv.status,
-          token: inv.token,
           invitedBy: inv.invitedBy,
           inviterEmail: inviter?.email ?? "unknown",
           expiresAt: inv.expiresAt,
@@ -99,18 +99,19 @@ export const create = mutation({
     // Require admin or super_admin role in the org
     await requireRole(ctx, user._id, args.orgId, ["admin", "super_admin"])
 
-    // Generate secure token
-    const token = generateToken()
+    // Generate secure token and hash before storage
+    const rawToken = generateToken()
+    const hashedToken = sha256(rawToken)
 
     // Set expiration to 7 days from now
     const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000
 
-    // Create the invitation
+    // Create the invitation (store HASHED token only)
     const invitationId = await ctx.db.insert("invitations", {
       email: args.email,
       orgId: args.orgId,
       role: args.role,
-      token,
+      token: hashedToken,
       status: "pending",
       invitedBy: user._id,
       expiresAt,
@@ -131,7 +132,8 @@ export const create = mutation({
       orgId: args.orgId,
     })
 
-    return { token }
+    // Return raw token (only time it's visible — not stored)
+    return { token: rawToken }
   },
 })
 
@@ -199,10 +201,13 @@ export const accept = mutation({
     // Get the current user (must be logged in)
     const user = await requireAuth(ctx)
 
-    // Look up invitation by token
+    // Hash the incoming token to match stored hash
+    const hashedToken = sha256(args.token)
+
+    // Look up invitation by hashed token
     const invitation = await ctx.db
       .query("invitations")
-      .withIndex("by_token", (q) => q.eq("token", args.token))
+      .withIndex("by_token", (q) => q.eq("token", hashedToken))
       .first()
 
     if (!invitation) {
@@ -281,10 +286,13 @@ export const getByToken = query({
     token: v.string(),
   },
   handler: async (ctx, args) => {
-    // Look up invitation by token
+    // Hash the incoming token to match stored hash
+    const hashedToken = sha256(args.token)
+
+    // Look up invitation by hashed token
     const invitation = await ctx.db
       .query("invitations")
-      .withIndex("by_token", (q) => q.eq("token", args.token))
+      .withIndex("by_token", (q) => q.eq("token", hashedToken))
       .first()
 
     if (!invitation) {
