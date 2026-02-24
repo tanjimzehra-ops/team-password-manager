@@ -261,7 +261,6 @@ export const restore = mutation({
 
     // Check org access if system has orgId
     if (system.orgId) {
-      const { requireRole } = await import("./lib/permissions")
       await requireRole(ctx, user._id, system.orgId, ["admin", "super_admin"])
     }
 
