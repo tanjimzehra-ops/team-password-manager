@@ -118,8 +118,11 @@ export default function Page() {
   // Convex data
   const { data: allConvexSystems, isLoading: convexSystemsLoading } = useConvexSystems()
 
-  // systems.list already enforces access control; use full accessible list as-is.
-  const convexSystems = allConvexSystems
+  // Scope systems to the selected client/org. If no org is selected, show all accessible systems.
+  const convexSystems = useMemo(() => {
+    if (!selectedOrgId) return allConvexSystems
+    return allConvexSystems.filter((s) => !s.orgId || s.orgId === selectedOrgId)
+  }, [allConvexSystems, selectedOrgId])
   const { data: convexSystemData, isLoading: convexSystemLoading } = useConvexSystem(
     isConvexConfigured ? selectedSystemId : null
   )
