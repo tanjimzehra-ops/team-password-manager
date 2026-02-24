@@ -11,7 +11,6 @@
 import type * as auditLogs from "../auditLogs.js";
 import type * as capabilities from "../capabilities.js";
 import type * as channels from "../channels.js";
-import type * as debug from "../debug.js";
 import type * as elements from "../elements.js";
 import type * as externalValues from "../externalValues.js";
 import type * as factors from "../factors.js";
@@ -40,7 +39,6 @@ declare const fullApi: ApiFromModules<{
   auditLogs: typeof auditLogs;
   capabilities: typeof capabilities;
   channels: typeof channels;
-  debug: typeof debug;
   elements: typeof elements;
   externalValues: typeof externalValues;
   factors: typeof factors;
