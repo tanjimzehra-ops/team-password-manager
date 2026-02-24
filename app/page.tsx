@@ -80,7 +80,7 @@ export default function Page() {
   const { toast } = useToast()
 
   // UI State
-  const [showKpi, setShowKpi] = useState(true)
+  const [showKpi, setShowKpi] = useState(false)
   const [activeTab, setActiveTab] = useState<ViewTab>("logic-model")
   const [navSidebarCollapsed, setNavSidebarCollapsed] = useState(false)
   const [activeRow, setActiveRow] = useState<string | null>(null)

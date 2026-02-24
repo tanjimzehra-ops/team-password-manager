@@ -27,15 +27,23 @@ export type Role = "super_admin" | "channel_partner" | "admin" | "viewer"
 export async function getCurrentUser(
   ctx: QueryCtx | MutationCtx
 ): Promise<Doc<"users"> | null> {
-  // Dev bypass: skip JWT auth, return first super_admin
+  // Dev bypass: skip JWT auth, return the primary super_admin user (Nicolas)
   if (process.env.CONVEX_DEV_BYPASS_AUTH === "true") {
+    // Try to find Nicolas's user by email
+    const devUser = await ctx.db
+      .query("users")
+      .withIndex("by_email", (q) => q.eq("email", "nicopt.au@gmail.com"))
+      .first()
+    if (devUser && !devUser.deletedAt) return devUser
+
+    // Fallback: find first user with super_admin membership
     const allMemberships = await ctx.db.query("memberships").collect()
     const superAdminMembership = allMemberships.find((m) => m.role === "super_admin" && !m.deletedAt)
     if (superAdminMembership) {
       const user = await ctx.db.get(superAdminMembership.userId)
       if (user && !user.deletedAt) return user
     }
-    // Fallback: return the first active user
+    // Last fallback: first active user
     const users = await ctx.db.query("users").collect()
     return users.find((u) => !u.deletedAt) ?? null
   }
