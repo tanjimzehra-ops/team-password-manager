@@ -715,15 +715,10 @@ export default function Page() {
         onExport={activeTab !== "canvas" ? handleExport : undefined}
       />
 
-      {/* Data Source Indicator */}
+      {/* Data Source Indicator — JSON fallback only */}
       {dataSource === "json" && (
         <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
           Using static demo data. Configure Convex to enable real-time data.
-        </div>
-      )}
-      {dataSource === "convex" && process.env.NODE_ENV === "development" && (
-        <div className="bg-emerald-500/10 border-b border-emerald-500/20 px-4 py-2 text-sm text-emerald-600 dark:text-emerald-400 text-center">
-          Connected to Convex (real-time)
         </div>
       )}
 
