@@ -1,6 +1,7 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { withWriteAccess } from "./lib/mutations"
+import { withReadAccess } from "./lib/queries"
 
 export const bySystemAndType = query({
   args: {
@@ -12,6 +13,7 @@ export const bySystemAndType = query({
     ),
   },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("matrixCells")
       .withIndex("by_system_type", (q) =>

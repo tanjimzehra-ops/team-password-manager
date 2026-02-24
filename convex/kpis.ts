@@ -1,10 +1,12 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { withWriteAccess } from "./lib/mutations"
+import { withReadAccess } from "./lib/queries"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("kpis")
       .withIndex("by_system", (q) => q.eq("systemId", args.systemId))
@@ -15,6 +17,10 @@ export const bySystem = query({
 export const byParent = query({
   args: { parentId: v.id("elements") },
   handler: async (ctx, args) => {
+    // Resolve the parent element's systemId for access control
+    const parent = await ctx.db.get(args.parentId)
+    if (!parent) throw new Error("Parent element not found")
+    await withReadAccess(ctx, parent.systemId)
     return await ctx.db
       .query("kpis")
       .withIndex("by_parent", (q) => q.eq("parentId", args.parentId))

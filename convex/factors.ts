@@ -1,10 +1,12 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { withWriteAccess } from "./lib/mutations"
+import { withReadAccess } from "./lib/queries"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("factors")
       .withIndex("by_system", (q) => q.eq("systemId", args.systemId))

@@ -1,10 +1,12 @@
 import { query, mutation } from "./_generated/server"
 import { v } from "convex/values"
 import { withWriteAccess } from "./lib/mutations"
+import { withReadAccess } from "./lib/queries"
 
 export const bySystem = query({
   args: { systemId: v.id("systems") },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("capabilities")
       .withIndex("by_system_type", (q) => q.eq("systemId", args.systemId))
@@ -18,6 +20,7 @@ export const bySystemAndType = query({
     capabilityType: v.union(v.literal("current"), v.literal("necessary")),
   },
   handler: async (ctx, args) => {
+    await withReadAccess(ctx, args.systemId)
     return await ctx.db
       .query("capabilities")
       .withIndex("by_system_type", (q) =>
