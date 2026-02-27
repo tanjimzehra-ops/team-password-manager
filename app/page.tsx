@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect, useCallback } from "react"
 import { useQuery } from "convex/react"
 import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
+import type { Id } from "@/convex/_generated/dataModel"
 import { OrgContext, type OrgInfo } from "@/hooks/use-org"
 import { LandingPage } from "@/components/landing-page"
 import { Header } from "@/components/header"
@@ -19,10 +20,12 @@ import { NodeDetailSidebar } from "@/components/node-detail-sidebar"
 import { AgentsCanvas } from "@/components/agents-canvas"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
-import { AlertTriangle, LayoutGrid, PlusCircle } from "lucide-react"
+import { AlertTriangle, LayoutGrid, PlusCircle, CheckSquare } from "lucide-react"
 
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
+import { DashboardOverview } from "@/components/dashboard/dashboard-overview"
+import { TooltipProvider } from "@/components/ui/tooltip"
 // PerformanceModal removed in Story 1.8 (Stage/Performance consolidation)
 import { LibraryPopup } from "@/components/library-popup"
 import { OnboardingTour } from "@/components/onboarding-tour"
@@ -40,6 +43,12 @@ import {
   useConvexUpdatePortfolio,
   useConvexDeletePortfolio,
   useConvexCreateElement,
+  useConvexDeleteElement,
+  useConvexDeleteSystem,
+  useConvexUpsertCapability,
+  useConvexReplaceKpis,
+  useConvexUpdateFactor,
+  useConvexUpdateExternalValue,
 } from "@/hooks/convex/use-convex-mutations"
 
 // Custom hooks
@@ -92,6 +101,7 @@ export default function Page() {
   const [activeRow, setActiveRow] = useState<string | null>(null)
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null)
   const [detailSidebarOpen, setDetailSidebarOpen] = useState(false)
+  const [showLogicSidebar, setShowLogicSidebar] = useState(true)
 
   // Custom hooks
   const {
@@ -174,6 +184,12 @@ export default function Page() {
   const convexUpdatePortfolio = useConvexUpdatePortfolio()
   const convexDeletePortfolio = useConvexDeletePortfolio()
   const convexCreateElement = useConvexCreateElement()
+  const convexDeleteElement = useConvexDeleteElement()
+  const convexDeleteSystem = useConvexDeleteSystem()
+  const convexUpsertCapability = useConvexUpsertCapability()
+  const convexReplaceKpis = useConvexReplaceKpis()
+  const convexUpdateFactor = useConvexUpdateFactor()
+  const convexUpdateExternalValue = useConvexUpdateExternalValue()
 
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
@@ -238,33 +254,33 @@ export default function Page() {
     : jsonAdapter.bottomBanner
   const effectiveContributionMapData = dataSource === "convex"
     ? (convexSystemData?.contributionMapData ?? {
-        outcomes: [],
-        valueChain: [],
-        valueChainKpis: [],
-        outcomeKpis: [],
-        cells: [],
-      })
+      outcomes: [],
+      valueChain: [],
+      valueChainKpis: [],
+      outcomeKpis: [],
+      cells: [],
+    })
     : jsonAdapter.getContributionMapData()
   const effectiveDevelopmentPathwaysData = dataSource === "convex"
     ? (convexSystemData?.developmentPathwaysData ?? {
-        resources: [],
-        valueChain: [],
-        currentCapabilitiesPerResource: [],
-        currentCapabilitiesPerVC: [],
-        necessaryCapabilities: [],
-        cells: [],
-        kpis: [],
-        dimension: "",
-      })
+      resources: [],
+      valueChain: [],
+      currentCapabilitiesPerResource: [],
+      currentCapabilitiesPerVC: [],
+      necessaryCapabilities: [],
+      cells: [],
+      kpis: [],
+      dimension: "",
+    })
     : jsonAdapter.getDevelopmentPathwaysData()
   const effectiveConvergenceMapData = dataSource === "convex"
     ? (convexSystemData?.convergenceMapData ?? {
-        externalFactors: [],
-        valueChain: [],
-        cells: [],
-        kpis: [],
-        factorsPerVC: [],
-      })
+      externalFactors: [],
+      valueChain: [],
+      cells: [],
+      kpis: [],
+      factorsPerVC: [],
+    })
     : jsonAdapter.getConvergenceMapData()
 
   // Library hook (depends on effectiveLogicGridData)
@@ -329,6 +345,13 @@ export default function Page() {
     }
   }
 
+  const handleDashboardClick = useCallback(() => {
+    setSelectedSystemId(null)
+    try {
+      localStorage.removeItem("jigsaw-selected-system")
+    } catch { }
+  }, [])
+
   // Save handler for NodeDetailSidebar (Convex only)
   const handleNodeSave = async (updatedNode: NodeData) => {
     if (!canMutate || dataSource !== "convex" || !convexSystemData) return
@@ -358,11 +381,52 @@ export default function Page() {
         colElementId,
         content: updatedNode.description,
       })
-    } else if (updatedNode.category === "purpose") {
-      // Purpose maps to system-level fields
-      await convexUpdateSystem.updateSystem({
-        id: convexSystemData.system.id,
-        impact: updatedNode.title,
+    } else if (updatedNode.id.startsWith("outcome-kpi-") || updatedNode.id.startsWith("vc-kpi-")) {
+      // KPI list: split description by newlines to get individual KPI strings
+      const parentId = updatedNode.id.replace("outcome-kpi-", "").replace("vc-kpi-", "") as Id<"elements">
+      const kpis = updatedNode.description
+        .split("\n")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+
+      await convexReplaceKpis.replaceKpis({
+        systemId: convexSystemData.system.id,
+        parentId,
+        kpis,
+      })
+    } else if (updatedNode.id.startsWith("curr-cap-res-") || updatedNode.id.startsWith("nec-cap-") || updatedNode.id.startsWith("curr-cap-vc-")) {
+      // Capabilities
+      const resourceId = updatedNode.id
+        .replace("curr-cap-res-", "")
+        .replace("nec-cap-", "")
+        .replace("curr-cap-vc-", "") as Id<"elements">
+
+      const capabilityType = updatedNode.id.startsWith("nec-cap-") ? "necessary" : "current"
+
+      await convexUpsertCapability.upsertCapability({
+        systemId: convexSystemData.system.id,
+        resourceId,
+        capabilityType,
+        content: updatedNode.description,
+      })
+    } else if (updatedNode.id.startsWith("vc-factor-")) {
+      // VC Factors
+      const valueChainId = updatedNode.id.replace("vc-factor-", "") as Id<"elements">
+      await convexUpdateFactor.updateFactor({
+        systemId: convexSystemData.system.id,
+        valueChainId,
+        content: updatedNode.description,
+      })
+    } else if (updatedNode.id.startsWith("factor-desc-") || updatedNode.metadata?.["Type"] === "External Factor") {
+      // External Factor description or title (External Values)
+      const id = (updatedNode.id.startsWith("factor-desc-")
+        ? updatedNode.id.replace("factor-desc-", "")
+        : updatedNode.id) as Id<"externalValues">
+
+      await convexUpdateExternalValue.updateExternalValue({
+        id,
+        content: updatedNode.title,
+        description: updatedNode.description,
       })
     } else {
       // outcomes, value-chain, resources map to elements
@@ -533,6 +597,37 @@ export default function Page() {
     })
   }
 
+  // KPI change handler (Convex only)
+  const handleKpiChange = async (nodeId: string, value: number) => {
+    if (!canMutate || dataSource !== "convex") return
+
+    if (nodeId === "purpose-1") {
+      if (!selectedSystemId) return
+      await convexUpdateSystem.updateSystem({
+        id: selectedSystemId as Id<"systems">,
+        impactHealth: value,
+      })
+    } else if (nodeId === "culture-banner") {
+      if (!selectedSystemId) return
+      await convexUpdateSystem.updateSystem({
+        id: selectedSystemId as Id<"systems">,
+        dimensionHealth: value,
+      })
+    } else if (nodeId === "bottom-banner") {
+      if (!selectedSystemId) return
+      await convexUpdateSystem.updateSystem({
+        id: selectedSystemId as Id<"systems">,
+        challengeHealth: value,
+      })
+    } else {
+      await convexUpdateElement.updateElement({
+        id: nodeId as Id<"elements">,
+        gradientValue: value,
+      })
+    }
+  }
+
+
   // Reorder handler (Convex only)
   const handleReorder = async (category: string, fromIndex: number, toIndex: number) => {
     if (!canMutate || dataSource !== "convex" || !convexSystemData) return
@@ -595,10 +690,30 @@ export default function Page() {
   }
 
   // Delete node handler
-  const handleDeleteNode = (nodeId: string) => {
-    if (!canMutate) return
+  const handleDeleteNode = async (nodeId: string) => {
+    if (!canMutate || dataSource !== "convex") return
     const node = effectiveLogicGridData.flatMap(r => r.nodes).find(n => n.id === nodeId)
-    if (node) startDelete(node)
+    if (node) {
+      try {
+        await convexDeleteElement.deleteElement({ id: node.id })
+      } catch (err) {
+        toast({ title: "Error", description: "Failed to delete node.", variant: "destructive" })
+      }
+    }
+  }
+
+  // Delete system handler
+  const handleDeleteSystem = async (systemId: string) => {
+    if (!canMutate || dataSource !== "convex") return
+    try {
+      await convexDeleteSystem.deleteSystem({ id: systemId })
+      if (selectedSystemId === systemId) {
+        setSelectedSystemId(null)
+        localStorage.removeItem("jigsaw-selected-system")
+      }
+    } catch (err) {
+      // toast is handled in the hook
+    }
   }
 
   // Edit node handler
@@ -680,30 +795,11 @@ export default function Page() {
 
   // Render empty state when no system is selected
   const renderEmptyState = () => {
-    const hasSystems = dataSource === "convex" ? convexSystems.length > 0 : true
-
     return (
-      <div className="flex-1 flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4 text-center max-w-md px-6">
-          {hasSystems ? (
-            <>
-              <LayoutGrid className="w-12 h-12 text-muted-foreground/50" />
-              <h2 className="text-xl font-semibold text-foreground">Welcome to Jigsaw</h2>
-              <p className="text-muted-foreground">
-                Select a system from the sidebar to begin viewing and editing your strategic plan.
-              </p>
-            </>
-          ) : (
-            <>
-              <PlusCircle className="w-12 h-12 text-muted-foreground/50" />
-              <h2 className="text-xl font-semibold text-foreground">No systems available</h2>
-              <p className="text-muted-foreground">
-                Create your first system to get started with strategic planning.
-              </p>
-            </>
-          )}
-        </div>
-      </div>
+      <DashboardOverview
+        systemCount={convexSystems.length}
+        orgName={orgs.find(o => o.id === selectedOrgId)?.name}
+      />
     )
   }
 
@@ -764,6 +860,7 @@ export default function Page() {
             onAddNode={handleAddNode}
             onDeleteNode={handleDeleteNode}
             onEditNode={handleEditNode}
+            onKpiChange={handleKpiChange}
           />
         )
       case "contribution-map":
@@ -828,117 +925,138 @@ export default function Page() {
 
   return (
     <OrgContext.Provider value={orgContextValue}>
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
-      <ViewControls
-        showKpi={showKpi}
-        onToggleKpi={setShowKpi}
-        editMode={editMode}
-        onEditModeChange={handleEditModeChange}
-        activeTab={activeTab}
-        onExport={activeTab !== "canvas" ? handleExport : undefined}
-        userRole={effectiveRole ?? undefined}
-      />
-
-      {/* Data Source Indicator — JSON fallback only */}
-      {dataSource === "json" && (
-        <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
-          Using static demo data. Configure Convex to enable real-time data.
-        </div>
-      )}
-
-      <main className="w-full flex-1 flex flex-col min-h-0">
-        <div className="flex gap-0 flex-1 min-h-0">
-          {/* Navigation Sidebar */}
-          <NavSidebar
-            isCollapsed={navSidebarCollapsed}
-            onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
-            selectedSystem={dataSource === "convex" ? (selectedSystemId ?? "") : selectedJsonSystem}
-            onSystemSelect={handleSystemSelect}
-            onSystemCreated={handleSystemSelect}
-            systems={
-              dataSource === "convex"
-                ? convexSystems.map((s) => ({ id: s.id, name: s.name, sector: s.sector, orgName: s.orgName }))
-                : undefined
-            }
-            isLoading={dataSource === "convex" ? convexSystemsLoading : false}
-            showCanvas={activeTab === "canvas"}
-            onCanvasClick={() => setActiveTab("canvas")}
-            canAddSystem={dataSource === "convex" && canAddSystem}
+      <TooltipProvider>
+        <div className="min-h-screen bg-background flex flex-col">
+          <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
+          <ViewControls
+            showKpi={showKpi}
+            onToggleKpi={setShowKpi}
+            editMode={editMode}
+            onEditModeChange={handleEditModeChange}
+            activeTab={activeTab}
+            onExport={activeTab !== "canvas" ? handleExport : undefined}
+            userRole={effectiveRole ?? undefined}
           />
 
-          {/* Row Labels Sidebar - Only show for Logic Model */}
-          {activeTab === "logic-model" && (
-            <RowSidebar
-              rows={effectiveLogicGridData}
-              activeRow={activeRow}
-              onRowClick={handleRowClick}
-            />
+          {/* Data Source Indicator — JSON fallback only */}
+          {dataSource === "json" && (
+            <div className="bg-yellow-500/10 border-b border-yellow-500/20 px-4 py-2 text-sm text-yellow-600 dark:text-yellow-400 text-center">
+              Using static demo data. Configure Convex to enable real-time data.
+            </div>
           )}
 
-          {/* Main Content Area */}
-          <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto overflow-y-auto">
-            {renderMainContent()}
-            {/* Edit mode controls - Convex auto-saves */}
-            {editMode === "edit" && (
-              <div className="mt-8 flex justify-center">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => handleEditModeChange("view")}
-                >
-                  Done Editing
-                </Button>
+          <main className="w-full flex-1 flex flex-col min-h-0">
+            <div className="flex gap-0 flex-1 min-h-0">
+              {/* Navigation Sidebar */}
+              <NavSidebar
+                isCollapsed={navSidebarCollapsed}
+                onToggle={() => setNavSidebarCollapsed(!navSidebarCollapsed)}
+                selectedSystem={dataSource === "convex" ? (selectedSystemId ?? "") : selectedJsonSystem}
+                onSystemSelect={handleSystemSelect}
+                onSystemCreated={handleSystemSelect}
+                onDashboardClick={handleDashboardClick}
+                systems={
+                  dataSource === "convex"
+                    ? convexSystems.map((s) => ({ id: s.id, name: s.name, sector: s.sector, orgName: s.orgName }))
+                    : undefined
+                }
+                isLoading={dataSource === "convex" ? convexSystemsLoading : false}
+                showCanvas={activeTab === "canvas"}
+                onCanvasClick={() => setActiveTab("canvas")}
+                canAddSystem={dataSource === "convex" && canAddSystem}
+                onSystemDelete={handleDeleteSystem}
+                canDeleteSystem={dataSource === "convex" && canMutate}
+              />
+
+              {/* Row Labels Sidebar - Only show for Logic Model */}
+              {activeTab === "logic-model" && showLogicSidebar && (
+                <RowSidebar
+                  rows={effectiveLogicGridData}
+                  activeRow={activeRow}
+                  onRowClick={handleRowClick}
+                />
+              )}
+
+              {/* Main Content Area */}
+              <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto overflow-y-auto">
+                {activeTab === "logic-model" && (
+                  <div className="flex items-center gap-4 mb-6 px-2 w-fit">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="display-logic"
+                        checked={showLogicSidebar}
+                        onChange={(e) => setShowLogicSidebar(e.target.checked)}
+                        className="h-4 w-4 rounded border-slate-300 bg-background text-teal-600 focus:ring-teal-500 cursor-pointer"
+                      />
+                      <label htmlFor="display-logic" className="text-[10px] font-black uppercase tracking-widest text-slate-500 cursor-pointer select-none">
+                        Display Logic
+                      </label>
+                    </div>
+                  </div>
+                )}
+                {renderMainContent()}
+                {/* Edit mode controls - Convex auto-saves */}
+                {editMode === "edit" && (
+                  <div className="mt-8 flex justify-center">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      onClick={() => handleEditModeChange("view")}
+                    >
+                      Done Editing
+                    </Button>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          </main>
+
+          <Footer onRestartTour={restartTour} />
+
+          {/* Node Detail Sidebar */}
+          <NodeDetailSidebar
+            node={selectedNode}
+            isOpen={detailSidebarOpen}
+            onClose={handleCloseDetail}
+            onSave={dataSource === "convex" && canMutate ? handleNodeSave : undefined}
+            portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
+            onPortfolioCreate={dataSource === "convex" && canMutate ? handlePortfolioCreate : undefined}
+            onPortfolioUpdate={dataSource === "convex" && canMutate ? handlePortfolioUpdate : undefined}
+            onPortfolioDelete={dataSource === "convex" && canMutate ? handlePortfolioDelete : undefined}
+          />
+
+          {/* Edit Popup */}
+          <NodeEditPopup
+            isOpen={editPopupOpen}
+            onClose={closeEdit}
+            title={nodeForEdit ? `Edit ${nodeForEdit.title}` : "Edit Node"}
+            initialTitle={nodeForEdit?.title ?? ""}
+            initialDescription={nodeForEdit?.description ?? ""}
+            onSave={handleEditPopupSave}
+          />
+
+          {/* Library Popup */}
+          <LibraryPopup
+            isOpen={libraryOpen}
+            onClose={closeLibrary}
+            category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
+            currentSystemId={selectedSystemId ?? ""}
+            currentSystemName={systemName ?? "Jigsaw"}
+            onConnect={handleLibraryConnect}
+            onCopy={handleLibraryCopy}
+            items={libraryItems}
+          />
+
+          {/* Onboarding Tour */}
+          <OnboardingTour
+            run={tourRun}
+            stepIndex={tourStepIndex}
+            steps={tourSteps}
+            onCallback={tourCallback}
+          />
         </div>
-      </main>
-
-      <Footer onRestartTour={restartTour} />
-
-      {/* Node Detail Sidebar */}
-      <NodeDetailSidebar
-        node={selectedNode}
-        isOpen={detailSidebarOpen}
-        onClose={handleCloseDetail}
-        onSave={dataSource === "convex" && canMutate ? handleNodeSave : undefined}
-        portfolios={selectedNode && dataSource === "convex" ? [] : undefined}
-        onPortfolioCreate={dataSource === "convex" && canMutate ? handlePortfolioCreate : undefined}
-        onPortfolioUpdate={dataSource === "convex" && canMutate ? handlePortfolioUpdate : undefined}
-        onPortfolioDelete={dataSource === "convex" && canMutate ? handlePortfolioDelete : undefined}
-      />
-
-      {/* Edit Popup */}
-      <NodeEditPopup
-        isOpen={editPopupOpen}
-        onClose={closeEdit}
-        title={nodeForEdit ? `Edit ${nodeForEdit.title}` : "Edit Node"}
-        initialTitle={nodeForEdit?.title ?? ""}
-        initialDescription={nodeForEdit?.description ?? ""}
-        onSave={handleEditPopupSave}
-      />
-
-      {/* Library Popup */}
-      <LibraryPopup
-        isOpen={libraryOpen}
-        onClose={closeLibrary}
-        category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
-        currentSystemId={selectedSystemId ?? ""}
-        currentSystemName={systemName ?? "Jigsaw"}
-        onConnect={handleLibraryConnect}
-        onCopy={handleLibraryCopy}
-        items={libraryItems}
-      />
-
-      {/* Onboarding Tour */}
-      <OnboardingTour
-        run={tourRun}
-        stepIndex={tourStepIndex}
-        steps={tourSteps}
-        onCallback={tourCallback}
-      />
-    </div>
+      </TooltipProvider>
     </OrgContext.Provider>
   )
 }

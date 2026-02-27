@@ -1,4 +1,5 @@
 "use client"
+
 import { useState } from "react"
 import type { RowData, NodeData } from "@/lib/types"
 import { NodeCard } from "./node-card"
@@ -7,6 +8,8 @@ import { Plus, ChevronLeft, ChevronRight, ArrowRight, Book, LayoutGrid } from "l
 import { EmptyState } from "@/components/empty-state"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
+import { HealthRing } from "./ui/health-ring"
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
 
 export type EditMode = "view" | "edit" | "colour" | "order" | "delete"
 
@@ -22,6 +25,7 @@ interface LogicGridProps {
   onAddNode?: (category: string) => void
   onDeleteNode?: (nodeId: string) => void
   onEditNode?: (node: NodeData) => void
+  onKpiChange?: (nodeId: string, value: number) => void
 }
 
 export function LogicGrid({
@@ -36,6 +40,7 @@ export function LogicGrid({
   onAddNode,
   onDeleteNode,
   onEditNode,
+  onKpiChange,
 }: LogicGridProps) {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [dragCategory, setDragCategory] = useState<string | null>(null)
@@ -122,34 +127,29 @@ export function LogicGrid({
         <div key={row.id} id={row.id}>
           {/* Purpose Banner - Full width colored banner */}
           {row.category === "purpose" && (
-            <div className="mt-2">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            <div className="mt-2 group">
+              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                 IMPACT / PURPOSE
               </h2>
-              <div className="flex items-stretch gap-0 min-h-[56px]">
+              <div className="flex items-stretch gap-0 min-h-[64px]">
                 <div
-                  className={cn("flex-1 rounded-lg p-3 flex items-center justify-center cursor-pointer hover:bg-teal-900 transition-colors", "bg-teal-800")}
+                  className={cn(
+                    "flex-1 rounded-xl p-4 flex items-center justify-center cursor-pointer",
+                    "bg-teal-800 text-white premium-hover shadow-lg",
+                    "relative overflow-hidden group-hover:bg-teal-700 transition-colors"
+                  )}
                   onClick={() => row.nodes[0] && handleNodeClick(row.nodes[0])}
                 >
-                  <p className="text-white font-bold text-center text-[22px] leading-tight">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+                  {showKpi && row.nodes[0] && (
+                    <div className="absolute top-3 right-4">
+                      <HealthRing value={row.nodes[0].kpiValue} size={36} strokeWidth={4} className="text-white fill-white/10" />
+                    </div>
+                  )}
+                  <p className="text-white font-black text-center text-2xl tracking-tight z-10 drop-shadow-sm">
                     {row.nodes[0]?.title}
                   </p>
-                  {showKpi && editMode === "edit" && (
-                    <Input
-                      type="number"
-                      defaultValue={row.nodes[0]?.kpiValue}
-                      className="w-16 h-5 text-center text-xs bg-background text-foreground ml-3"
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                  )}
                 </div>
-                {editMode === "edit" && (
-                  <div className="flex flex-col justify-center gap-1 pl-2">
-                    <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
-                      <ArrowRight className="h-3 w-3" />
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           )}
@@ -157,16 +157,16 @@ export function LogicGrid({
           {/* Outcome Cards - 4 equal columns with descriptions */}
           {row.category === "outcomes" && (
             <div className="mt-4" id="outcomes">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                 STRATEGIC OBJECTIVES
               </h2>
               <div className="flex items-stretch gap-0 min-h-[180px]">
-                <div className="flex-1 flex flex-nowrap gap-2">
+                <div className="flex-1 flex overflow-x-auto gap-3 pb-3 -mb-3 scrollbar-thin">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
                       className={cn(
-                        "flex-1 min-w-0",
+                        "flex-1 min-w-[280px]",
                         editMode === "order" && dragOverIndex === index && dragCategory === row.category
                           ? "border-l-2 border-primary"
                           : "border-l-2 border-transparent",
@@ -186,6 +186,7 @@ export function LogicGrid({
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                        onKpiChange={onKpiChange ? (value) => onKpiChange(node.id, value) : undefined}
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
@@ -194,32 +195,29 @@ export function LogicGrid({
                         onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
                         disableMoveUp={index === 0}
                         disableMoveDown={index === row.nodes.length - 1}
-                        chipLabel={`Objective ${index + 1}`}
+                        chipLabel={`OBJECTIVE ${index + 1}`}
                       />
                     </div>
                   ))}
                 </div>
                 {editMode === "edit" && (
-                  <div className="flex flex-col justify-center gap-1 pl-2">
+                  <div className="flex flex-col justify-center gap-1.5 pl-3">
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-5 w-5 bg-transparent"
+                      className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Add outcome"
                       onClick={() => onAddNode?.(row.category)}
                     >
-                      <Plus className="h-3 w-3" />
+                      <Plus className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-5 w-5 bg-transparent"
+                      className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Open library"
                     >
-                      <Book className="h-3 w-3" />
-                    </Button>
-                    <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
-                      <ArrowRight className="h-3 w-3" />
+                      <Book className="h-4 w-4" />
                     </Button>
                   </div>
                 )}
@@ -229,17 +227,17 @@ export function LogicGrid({
 
           {/* Value Chain - Compact row of text-only cards */}
           {row.category === "value-chain" && (
-            <div className="mt-4" id="value-chain">
-              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            <div className="mt-6" id="value-chain">
+              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                 VALUE CHAIN ELEMENTS
               </h2>
               <div className="flex items-stretch gap-0 min-h-[140px]">
-                <div className="flex-1 flex flex-nowrap gap-1">
+                <div className="flex-1 flex overflow-x-auto gap-2 pb-3 -mb-3 scrollbar-thin">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
                       className={cn(
-                        "flex-1 min-w-0",
+                        "flex-1 min-w-[200px]",
                         editMode === "order" && dragOverIndex === index && dragCategory === row.category
                           ? "border-l-2 border-primary"
                           : "border-l-2 border-transparent",
@@ -260,6 +258,7 @@ export function LogicGrid({
                         onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                         onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                         onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                        onKpiChange={onKpiChange ? (value) => onKpiChange(node.id, value) : undefined}
                         draggable={editMode === "order"}
                         onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                         onDragEnd={handleDragEnd}
@@ -268,32 +267,29 @@ export function LogicGrid({
                         onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
                         disableMoveUp={index === 0}
                         disableMoveDown={index === row.nodes.length - 1}
-                        chipLabel={`VC ${index + 1}`}
+                        chipLabel={`VC ELEMENT ${index + 1}`}
                       />
                     </div>
                   ))}
                 </div>
                 {editMode === "edit" && (
-                  <div className="flex flex-col justify-center gap-1 pl-2">
+                  <div className="flex flex-col justify-center gap-1.5 pl-3">
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-5 w-5 bg-transparent"
+                      className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Add value chain item"
                       onClick={() => onAddNode?.(row.category)}
                     >
-                      <Plus className="h-3 w-3" />
+                      <Plus className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-5 w-5 bg-transparent"
+                      className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Open library"
                     >
-                      <Book className="h-3 w-3" />
-                    </Button>
-                    <Button variant="outline" size="icon" className="h-5 w-5 bg-transparent" title="Add external link">
-                      <ArrowRight className="h-3 w-3" />
+                      <Book className="h-4 w-4" />
                     </Button>
                   </div>
                 )}
@@ -305,13 +301,13 @@ export function LogicGrid({
           {row.category === "resources" && (
             <>
               {/* Culture Banner between Value Chain and Resources */}
-              <div className="mt-4" id="culture">
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="mt-8" id="culture">
+                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                   DELIVERY CULTURE / DIMENSION
                 </h2>
-                <div className="flex items-stretch gap-0 min-h-[56px]">
+                <div className="flex items-stretch gap-0 min-h-[64px]">
                   <div
-                    className="flex-1 relative bg-teal-700 rounded-lg p-2 flex items-center cursor-pointer hover:bg-teal-800 transition-colors"
+                    className="flex-1 relative bg-teal-800 rounded-xl p-3 flex items-center cursor-pointer premium-hover shadow-lg group-hover:bg-teal-700 transition-colors"
                     onClick={() => onNodeClick({
                       id: cultureBanner.id,
                       title: cultureBanner.title,
@@ -327,43 +323,32 @@ export function LogicGrid({
                       },
                     })}
                   >
-                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6 hover:bg-white/10" onClick={(e) => e.stopPropagation()}>
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <p className="text-white font-medium text-center flex-1 text-lg px-2 leading-tight">
+                    <p className="text-white font-bold text-center flex-1 text-xl px-2 leading-tight tracking-tight z-10">
                       {cultureBanner.title}
                     </p>
-                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6" onClick={(e) => e.stopPropagation()}>
+                    <Button variant="ghost" size="icon" className="text-white shrink-0 h-6 w-6 hover:bg-white/10" onClick={(e) => e.stopPropagation()}>
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
-                  {editMode === "edit" && (
-                    <div className="flex flex-col justify-center gap-1 pl-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-5 w-5 bg-transparent"
-                        title="Add external link"
-                      >
-                        <ArrowRight className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </div>
 
               {/* Resources Cards */}
-              <div className="mt-4" id="resources">
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="mt-6" id="resources">
+                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                   RESOURCES, CAPABILITIES / LEVERS
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[140px]">
-                  <div className="flex-1 flex flex-nowrap gap-1">
+                  <div className="flex-1 flex overflow-x-auto gap-2 pb-3 -mb-3 scrollbar-thin">
                     {row.nodes.map((node, index) => (
                       <div
                         key={node.id}
                         className={cn(
-                          "flex-1 min-w-0",
+                          "flex-1 min-w-[200px]",
                           editMode === "order" && dragOverIndex === index && dragCategory === row.category
                             ? "border-l-2 border-primary"
                             : "border-l-2 border-transparent",
@@ -380,10 +365,11 @@ export function LogicGrid({
                           compact
                           isEditMode={isEditActive}
                           editMode={editMode}
-  
+
                           onColorChange={onColorChange ? (color) => onColorChange(node.id, color) : undefined}
                           onDeleteClick={onDeleteNode ? () => onDeleteNode(node.id) : undefined}
                           onEditClick={onEditNode ? () => onEditNode(node) : undefined}
+                          onKpiChange={onKpiChange ? (value) => onKpiChange(node.id, value) : undefined}
                           draggable={editMode === "order"}
                           onDragStart={(e) => handleDragStart(e, node, index, row.category)}
                           onDragEnd={handleDragEnd}
@@ -392,37 +378,29 @@ export function LogicGrid({
                           onMoveDown={() => handleMoveNode(row.category, index, 1, row.nodes.length)}
                           disableMoveUp={index === 0}
                           disableMoveDown={index === row.nodes.length - 1}
-                          chipLabel={`Resource ${index + 1}`}
+                          chipLabel={`RESOURCE ${index + 1}`}
                         />
                       </div>
                     ))}
                   </div>
                   {editMode === "edit" && (
-                    <div className="flex flex-col justify-center gap-1 pl-2">
+                    <div className="flex flex-col justify-center gap-1.5 pl-3">
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-5 w-5 bg-transparent"
+                        className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                         title="Add resource"
                         onClick={() => onAddNode?.(row.category)}
                       >
-                        <Plus className="h-3 w-3" />
+                        <Plus className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="outline"
                         size="icon"
-                        className="h-5 w-5 bg-transparent"
+                        className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                         title="Open library"
                       >
-                        <Book className="h-3 w-3" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-5 w-5 bg-transparent"
-                        title="Add external link"
-                      >
-                        <ArrowRight className="h-3 w-3" />
+                        <Book className="h-4 w-4" />
                       </Button>
                     </div>
                   )}
@@ -430,13 +408,13 @@ export function LogicGrid({
               </div>
 
               {/* Bottom Banner - Context statement */}
-              <div className="mt-4" id="context">
-                <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="mt-8 mb-12" id="context">
+                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
                   SYSTEM CONTEXT / CHALLENGE
                 </h2>
-                <div className="flex items-stretch gap-0 min-h-[56px]">
+                <div className="flex items-stretch gap-0 min-h-[64px]">
                   <div
-                    className="flex-1 bg-teal-600 rounded-lg p-2 flex items-center justify-center cursor-pointer hover:bg-teal-700 transition-colors"
+                    className="flex-1 bg-teal-800 rounded-xl p-4 flex items-center justify-center cursor-pointer hover:bg-teal-700/90 transition-colors relative overflow-hidden"
                     onClick={() => onNodeClick({
                       id: bottomBanner.id,
                       title: bottomBanner.title,
@@ -452,20 +430,9 @@ export function LogicGrid({
                       },
                     })}
                   >
-                    <p className="text-white font-medium text-center text-lg leading-tight">{bottomBanner.title}</p>
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                    <p className="text-white font-bold text-center text-xl leading-tight tracking-tight z-10">{bottomBanner.title}</p>
                   </div>
-                  {editMode === "edit" && (
-                    <div className="flex flex-col justify-center gap-1 pl-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        className="h-5 w-5 bg-transparent"
-                        title="Add external link"
-                      >
-                        <ArrowRight className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  )}
                 </div>
               </div>
             </>

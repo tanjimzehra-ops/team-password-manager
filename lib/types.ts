@@ -5,7 +5,7 @@ export interface NodeData {
   kpiValue: number
   kpiStatus: "healthy" | "warning" | "critical"
   category: "purpose" | "outcomes" | "value-chain" | "resources"
-  color: "primary" | "secondary" | "accent" | "muted"
+  color: "primary" | "secondary" | "accent" | "muted" | "none"
   relatedNodes?: string[]
   notes?: string
   metadata?: Record<string, string>

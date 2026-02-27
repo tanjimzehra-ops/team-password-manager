@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { motion } from "motion/react"
 import type { NodeData } from "@/lib/types"
 import type { EditMode } from "@/hooks/use-edit-mode"
 import { cn } from "@/lib/utils"
@@ -9,6 +10,25 @@ import { Badge } from "@/components/ui/badge"
 import { ChevronDown, ChevronUp, GripVertical, Palette, Trash2 } from "lucide-react"
 import { InlineColorPicker } from "@/components/inline-color-picker"
 import { getHealthBorderColor, formatKpiValue, getHealthStatus } from "@/lib/kpi-utils"
+import { HealthRing } from "@/components/ui/health-ring"
+import { NodeKpiChart } from "@/components/node-kpi-chart"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+
 
 interface NodeCardProps {
   node: NodeData
@@ -21,6 +41,7 @@ interface NodeCardProps {
   onColorChange?: (color: NodeData["color"]) => void
   onEditClick?: (node: NodeData) => void
   onDeleteClick?: (node: NodeData) => void
+  onKpiChange?: (value: number) => void
   draggable?: boolean
   onDragStart?: (e: React.DragEvent, node: NodeData) => void
   onDragEnd?: () => void
@@ -37,13 +58,15 @@ const editModeColorMap = {
   secondary: "bg-sky-600 border-sky-700 text-white",
   accent: "bg-amber-500 border-amber-600 text-white",
   muted: "bg-emerald-500 border-emerald-600 text-white",
+  none: "bg-card border-border text-card-foreground",
 }
 
 const viewModeColorMap = {
-  primary: "bg-card border-border text-card-foreground",
-  secondary: "bg-card border-border text-card-foreground",
-  accent: "bg-card border-border text-card-foreground",
-  muted: "bg-card border-border text-card-foreground",
+  primary: "bg-red-700/10 border-red-800 text-card-foreground",
+  secondary: "bg-sky-600/10 border-sky-700 text-card-foreground",
+  accent: "bg-amber-500/10 border-amber-600 text-card-foreground",
+  muted: "bg-emerald-500/10 border-emerald-600 text-card-foreground",
+  none: "bg-card border-border text-card-foreground",
 }
 
 const healthBadgeColorMap: Record<"healthy" | "warning" | "critical", string> = {
@@ -63,6 +86,7 @@ export function NodeCard({
   onColorChange,
   onEditClick,
   onDeleteClick,
+  onKpiChange,
   draggable = false,
   onDragStart,
   onDragEnd,
@@ -74,6 +98,7 @@ export function NodeCard({
   disableMoveDown = false,
 }: NodeCardProps) {
   const [showColorPicker, setShowColorPicker] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   // Detect empty nodes
   const isEmpty = !node.title || node.title.trim() === ""
@@ -93,7 +118,7 @@ export function NodeCard({
       return
     }
     if (editMode === "delete" && onDeleteClick) {
-      onDeleteClick(node)
+      setShowDeleteConfirm(true)
       return
     }
     onClick()
@@ -116,8 +141,7 @@ export function NodeCard({
     e.preventDefault()
     onDrop?.(e, node)
   }
-
-  return (
+  const cardBody = (
     <div
       onClick={handleClick}
       draggable={draggable || editMode === "order"}
@@ -126,90 +150,61 @@ export function NodeCard({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       className={cn(
-        "relative cursor-pointer rounded-lg border-2 transition-all duration-200 flex flex-col h-full",
-        "hover:shadow-lg hover:scale-[1.01] active:scale-[0.99]",
-        "shadow-md",
+        "relative rounded-lg border flex flex-col h-full",
+        "glass-card premium-hover",
         colors[node.color],
-        // Apply health-based border color when showKpi is true
-        healthBorderColor,
         "p-3 min-h-[110px]",
-        editMode === "delete" && "hover:border-red-500 hover:bg-red-50 dark:hover:bg-red-950/30",
+        editMode === "delete" && "hover:border-red-500 hover:bg-red-50/50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
-        // Empty node styling - muted appearance in view mode
         isEmpty && editMode !== "colour" && "opacity-60 border-dashed",
       )}
     >
-      {/* Edit mode overlays */}
+      <GlowingEffect
+        spread={40}
+        glow={true}
+        disabled={isEditMode}
+        proximity={64}
+        inactiveZone={0.01}
+        borderWidth={2}
+      />
 
-      {/* Colour mode: Palette icon indicator */}
-      {editMode === "colour" && (
-        <div className="absolute top-1 right-1 z-10">
-          <Palette className="h-4 w-4 text-white/80" />
-        </div>
-      )}
+      {/* Floating Glow Orb - Moving unique object to fill space */}
+      <motion.div
+        className={cn(
+          "absolute -z-10 w-32 h-32 rounded-full blur-[80px] opacity-30 pointer-events-none",
+          node.color === "primary" ? "bg-red-500/40" :
+            node.color === "secondary" ? "bg-sky-500/40" :
+              node.color === "accent" ? "bg-amber-500/40" :
+                "bg-teal-500/40"
+        )}
+        animate={{
+          x: [Math.round(Math.random() * 20), Math.round(Math.random() * -20), Math.round(Math.random() * 20)],
+          y: [Math.round(Math.random() * -20), Math.round(Math.random() * 20), Math.round(Math.random() * -20)],
+          scale: [1, 1.2, 0.9, 1],
+        }}
+        transition={{
+          duration: 8 + Math.random() * 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          left: "15%",
+          top: "15%",
+        }}
+      />
 
-      {/* Order mode: Drag grip icon */}
-      {editMode === "order" && (
-        <div className="absolute top-1 left-1 z-10">
-          <GripVertical className="h-4 w-4 text-muted-foreground/80" />
-        </div>
-      )}
-
-      {/* Order mode: Up/down arrow controls */}
-      {editMode === "order" && showReorderArrows && (
-        <div className="absolute top-1 right-1 z-10 flex flex-col">
-          <button
-            type="button"
-            className={cn(
-              "h-4 w-4 inline-flex items-center justify-center rounded-sm",
-              "text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground",
-              disableMoveUp && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground/80",
-            )}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (!disableMoveUp) onMoveUp?.()
-            }}
-            aria-label="Move up"
-            disabled={disableMoveUp}
-          >
-            <ChevronUp className="h-3 w-3" />
-          </button>
-          <button
-            type="button"
-            className={cn(
-              "h-4 w-4 inline-flex items-center justify-center rounded-sm",
-              "text-muted-foreground/80 hover:bg-muted/60 hover:text-foreground",
-              disableMoveDown && "opacity-40 cursor-not-allowed hover:bg-transparent hover:text-muted-foreground/80",
-            )}
-            onClick={(e) => {
-              e.stopPropagation()
-              if (!disableMoveDown) onMoveDown?.()
-            }}
-            aria-label="Move down"
-            disabled={disableMoveDown}
-          >
-            <ChevronDown className="h-3 w-3" />
-          </button>
-        </div>
-      )}
-
-      {/* Delete mode: Trash icon overlay */}
-      {editMode === "delete" && (
-        <div className="absolute top-1 right-1 z-10">
-          <Trash2 className="h-4 w-4 text-red-400" />
-        </div>
-      )}
-
-      {/* KPI badge in top-right corner - shown when showKpi is true and not in edit mode */}
+      {/* Health Ring in top-right corner */}
       {showKpi && !isEditMode && (
-        <Badge
-          className={cn(
-            "absolute top-1 right-1 z-10 text-sm px-1.5 py-0 border-none",
-            healthBadgeColorMap[healthStatus],
-          )}
-        >
-          {formatKpiValue(node.kpiValue)}
-        </Badge>
+        <div className="absolute top-2 right-2 z-10">
+          <HealthRing value={node.kpiValue} size={28} strokeWidth={3} showValue />
+        </div>
+      )}
+
+      {/* Delete Icon in top-right corner */}
+      {editMode === "delete" && (
+        <div className="absolute top-2 right-2 z-10 text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-950/50 rounded-full p-1.5 shadow-sm border border-red-200 dark:border-red-900/50 animate-in fade-in zoom-in-50 duration-200">
+          <Trash2 className="w-4 h-4" />
+        </div>
       )}
 
       {/* Inline color picker overlay */}
@@ -251,6 +246,7 @@ export function NodeCard({
         </p>
       )}
 
+
       {/* KPI input - only in edit mode */}
       {showKpi && editMode === "edit" && (
         <div className="mt-auto pt-2">
@@ -258,10 +254,61 @@ export function NodeCard({
             type="number"
             defaultValue={node.kpiValue}
             onClick={(e) => e.stopPropagation()}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.currentTarget.blur()
+              }
+            }}
+            onBlur={(e) => {
+              const val = parseInt(e.target.value, 10)
+              if (!isNaN(val)) {
+                onKpiChange?.(val)
+              }
+            }}
             className="h-6 text-center text-xs bg-background text-foreground border-border"
           />
         </div>
       )}
     </div>
+  )
+
+  return (
+    <>
+      {showKpi ? (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            {cardBody}
+          </TooltipTrigger>
+          <TooltipContent className="w-[320px] p-3 bg-card/95 backdrop-blur-md border-border/50 text-foreground shadow-xl">
+            <NodeKpiChart kpiValue={node.kpiValue} title={node.title} />
+          </TooltipContent>
+        </Tooltip>
+      ) : (
+        cardBody
+      )}
+
+      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the card "{node.title || 'Untitled'}" and remove its data from the server.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                onDeleteClick?.(node)
+                setShowDeleteConfirm(false)
+              }}
+              className="bg-red-600 hover:bg-red-700 text-white dark:hover:bg-red-600"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

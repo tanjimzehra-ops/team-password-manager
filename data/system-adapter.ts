@@ -114,6 +114,16 @@ export class SystemDataAdapter {
     this.json = json
   }
 
+  private getDeterministicKpi(id: string): number {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = ((hash << 5) - hash) + id.charCodeAt(i);
+      hash |= 0;
+    }
+    const pseudoRandom = Math.abs(hash) / 2147483648;
+    return Math.floor(pseudoRandom * 51) + 50; // 50 to 100
+  }
+
   // Helper function
   private toNodeData(
     item: LogicModelElement,
@@ -122,13 +132,17 @@ export class SystemDataAdapter {
   ): NodeData {
     // Use item.description if available, fallback to static descriptions
     const description = item.description || staticDescriptions[item.content] || ''
+    const kpiValue = this.getDeterministicKpi(item.id);
+    let kpiStatus: 'healthy' | 'warning' | 'critical' = 'healthy';
+    if (kpiValue < 70) kpiStatus = 'critical';
+    else if (kpiValue < 85) kpiStatus = 'warning';
 
     return {
       id: item.id,
       title: item.content,
       description,
-      kpiValue: 100,
-      kpiStatus: 'healthy',
+      kpiValue,
+      kpiStatus,
       category,
       color,
     }
@@ -151,8 +165,8 @@ export class SystemDataAdapter {
             id: 'purpose-1',
             title: this.json.logic_model.impact || `${this.json.name} Purpose`,
             description: `The core purpose statement for ${this.json.name}.`,
-            kpiValue: 100,
-            kpiStatus: 'healthy',
+            kpiValue: this.getDeterministicKpi('purpose-1'),
+            kpiStatus: (this.getDeterministicKpi('purpose-1') < 70 ? 'critical' : this.getDeterministicKpi('purpose-1') < 85 ? 'warning' : 'healthy') as "healthy" | "warning" | "critical",
             category: 'purpose',
             color: 'primary',
             metadata: {
@@ -196,20 +210,24 @@ export class SystemDataAdapter {
   // ==========================================================================
 
   get cultureBanner() {
+    const kpiValue = this.getDeterministicKpi('culture-banner');
+    const kpiStatus: "healthy" | "warning" | "critical" = kpiValue < 70 ? "critical" : kpiValue < 85 ? "warning" : "healthy";
     return {
       id: 'culture-banner',
       title: this.json.logic_model.dimension || `${this.json.name} Culture`,
-      kpiValue: 100,
-      kpiStatus: 'healthy' as const,
+      kpiValue,
+      kpiStatus,
     }
   }
 
   get bottomBanner() {
+    const kpiValue = this.getDeterministicKpi('bottom-banner');
+    const kpiStatus: "healthy" | "warning" | "critical" = kpiValue < 70 ? "critical" : kpiValue < 85 ? "warning" : "healthy";
     return {
       id: 'bottom-banner',
       title: this.json.logic_model.challenge || `${this.json.name} Challenge`,
-      kpiValue: 100,
-      kpiStatus: 'healthy' as const,
+      kpiValue,
+      kpiStatus,
     }
   }
 

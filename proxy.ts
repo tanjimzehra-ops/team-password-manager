@@ -21,7 +21,7 @@ const workosAuth = authkitMiddleware({
       ? `https://${process.env.VERCEL_BRANCH_URL}/callback`
       : process.env.VERCEL_ENV === "production"
         ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/callback`
-        : undefined,
+        : process.env.NEXT_PUBLIC_WORKOS_REDIRECT_URI || "http://localhost:3000/callback",
 })
 
 // Paths that don't require authentication (must match unauthenticatedPaths above)
@@ -33,6 +33,11 @@ function isPublicPath(pathname: string): boolean {
 }
 
 export default async function proxy(request: NextRequest, event: NextFetchEvent) {
+  // Respect development bypass flag
+  if (process.env.NEXT_PUBLIC_DEV_BYPASS_AUTH === "true") {
+    return NextResponse.next()
+  }
+
   // Next.js 16 strips the RSC header before it reaches the proxy, so we use
   // Sec-Fetch-Dest to detect programmatic fetch() requests (client-side navigation).
   // Browser navigations send Sec-Fetch-Dest: document and can follow cross-origin

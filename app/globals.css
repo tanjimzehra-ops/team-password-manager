@@ -175,30 +175,59 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
 }
 
-.scrollbar-thin::-webkit-scrollbar {
+.scrollbar-thin::-webkit-scrollbar,
+.map-scroll-wrapper::-webkit-scrollbar {
   height: 6px;
+  width: 6px;
 }
 
-.scrollbar-thin::-webkit-scrollbar-track {
+.scrollbar-thin::-webkit-scrollbar-track,
+.map-scroll-wrapper::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb {
+.scrollbar-thin::-webkit-scrollbar-thumb,
+.map-scroll-wrapper::-webkit-scrollbar-thumb {
   background: rgb(203 213 225);
   border-radius: 1.4rem;
 }
 
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+.scrollbar-thin::-webkit-scrollbar-thumb:hover,
+.map-scroll-wrapper::-webkit-scrollbar-thumb:hover {
   background: rgb(148 163 184);
 }
 
 .bg-grid-white\/\[0\.05\] {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+@layer utilities {
+  .premium-hover {
+    @apply transition-all duration-300 ease-out hover:shadow-lg hover:brightness-[1.03] active:scale-[0.985] hover:-translate-y-0.5;
+  }
+
+  .glass-card {
+    @apply bg-card/40 backdrop-blur-md border-border/40 shadow-sm transition-all duration-300;
+  }
+
+  .glass-card-hover {
+    @apply hover:bg-card/60 hover:border-border/60 hover:shadow-md;
+  }
+
+  .sticky-col-1 {
+    @apply sticky left-0 z-20 bg-background/95 backdrop-blur-sm border-r border-border;
+  }
+
+  /* Responsive table wrapper */
+  .map-scroll-wrapper {
+    @apply w-full overflow-x-auto scroll-smooth py-2 -my-2;
+  }
 }

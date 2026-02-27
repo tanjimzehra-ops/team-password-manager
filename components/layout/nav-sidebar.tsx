@@ -4,10 +4,41 @@ import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ChevronLeft, ChevronRight, LayoutDashboard, FileText, Settings, User, Wrench, Plus, Loader2, Network, Shield, Search, X } from "lucide-react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  LayoutDashboard,
+  FileText,
+  Settings,
+  User,
+  Wrench,
+  Plus,
+  Loader2,
+  Network,
+  Shield,
+  Search,
+  X,
+  Trash2
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Separator } from "@/components/ui/separator"
 import { AddSystemDialog } from "@/components/add-system-dialog"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 interface SystemInfo {
   id: string
@@ -22,11 +53,14 @@ interface NavSidebarProps {
   selectedSystem?: string
   onSystemSelect?: (systemId: string) => void
   onSystemCreated?: (systemId: string) => void
+  onSystemDelete?: (systemId: string) => void
   systems?: SystemInfo[]
   isLoading?: boolean
   showCanvas?: boolean
   onCanvasClick?: () => void
+  onDashboardClick?: () => void
   canAddSystem?: boolean
+  canDeleteSystem?: boolean
 }
 
 // Default static systems for JSON-mode fallback
@@ -47,16 +81,20 @@ export function NavSidebar({
   selectedSystem = "",
   onSystemSelect,
   onSystemCreated,
+  onSystemDelete,
   systems,
   isLoading = false,
   showCanvas = false,
   onCanvasClick,
+  onDashboardClick,
   canAddSystem = true,
+  canDeleteSystem = false,
 }: NavSidebarProps) {
   const [systemsExpanded, setSystemsExpanded] = useState(true)
   const [searchInput, setSearchInput] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
   const [addSystemOpen, setAddSystemOpen] = useState(false)
+  const [systemToDelete, setSystemToDelete] = useState<SystemInfo | null>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   // Debounce search input by 300ms
@@ -81,226 +119,280 @@ export function NavSidebar({
   }
 
   return (
-    <div
-      data-tour="nav-sidebar"
-      className={cn(
-        "flex flex-col transition-all duration-300 shrink-0 border-r border-border bg-background z-10",
-        isCollapsed ? "w-16" : "w-60"
-      )}
-    >
-      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col">
-        {/* Toggle Button */}
-        <Button
-          variant="ghost"
-          size="sm"
-          className="w-full h-10 rounded-none border-b border-border flex items-center justify-center"
-          onClick={onToggle}
-        >
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </Button>
-
-        {/* Navigation Items */}
-        <div className="flex flex-col py-2 flex-1 overflow-y-auto">
-          {/* Dashboard */}
+    <>
+      <div
+        data-tour="nav-sidebar"
+        className={cn(
+          "flex flex-col transition-all duration-300 shrink-0 border-r border-border bg-background z-10",
+          isCollapsed ? "w-16" : "w-60"
+        )}
+      >
+        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col">
+          {/* Toggle Button */}
           <Button
             variant="ghost"
-            className={cn(
-              "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
-              "hover:bg-muted/50 cursor-not-allowed opacity-50"
-            )}
-            disabled
+            size="sm"
+            className="w-full h-10 rounded-none border-b border-border flex items-center justify-center"
+            onClick={onToggle}
           >
-            <LayoutDashboard className="h-4 w-4 shrink-0" />
-            {!isCollapsed && <span className="text-sm">Dashboard</span>}
+            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
 
-          {/* Reports */}
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
-              "hover:bg-muted/50 cursor-not-allowed opacity-50"
-            )}
-            disabled
-          >
-            <FileText className="h-4 w-4 shrink-0" />
-            {!isCollapsed && <span className="text-sm">Reports</span>}
-          </Button>
-
-          {/* Agents Canvas */}
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-start gap-3 h-10 px-3 rounded-none",
-              showCanvas
-                ? "bg-primary/10 text-primary font-medium"
-                : "text-muted-foreground hover:bg-muted/50"
-            )}
-            onClick={onCanvasClick}
-          >
-            <Network className="h-4 w-4 shrink-0" />
-            {!isCollapsed && <span className="text-sm">Canvas</span>}
-          </Button>
-
-          <Separator className="my-2" />
-
-          {/* Systems Section */}
-          <div>
+          {/* Navigation Items */}
+          <div className="flex flex-col py-2 flex-1 overflow-y-auto">
+            {/* Dashboard */}
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-10 px-3 rounded-none",
-                "hover:bg-muted/50"
+                "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground transition-colors",
+                "hover:bg-accent/10 hover:text-foreground hover:font-medium"
               )}
-              onClick={() => !isCollapsed && setSystemsExpanded(!systemsExpanded)}
+              onClick={() => {
+                onDashboardClick?.()
+                if (window.location.pathname !== "/") {
+                  window.location.href = "/"
+                }
+              }}
             >
-              <Wrench className="h-4 w-4 shrink-0" />
-              {!isCollapsed && (
-                <>
-                  <span className="text-sm font-medium flex-1 text-left">Systems</span>
-                  {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : systemsExpanded ? (
-                    <ChevronRight className="h-4 w-4 rotate-90 transition-transform" />
-                  ) : (
-                    <ChevronRight className="h-4 w-4 transition-transform" />
-                  )}
-                </>
-              )}
+              <LayoutDashboard className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Dashboard</span>}
             </Button>
 
-            {/* Search + Systems List */}
-            {!isCollapsed && systemsExpanded && (
-              <div className="pl-3 pr-3 pb-2 space-y-1">
-                {/* Search Input */}
-                <div className="relative mb-1">
-                  <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
-                  <Input
-                    placeholder="Search systems..."
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    className="h-7 pl-7 pr-7 text-xs"
-                  />
-                  {searchInput && (
-                    <button
-                      onClick={() => { setSearchInput(""); setSearchQuery("") }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  )}
-                </div>
-
-                {isLoading ? (
-                  <div className="flex items-center justify-center py-4">
-                    <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-                  </div>
-                ) : (
-                  <>
-                    {filteredSystems.length === 0 && (
-                      <p className="text-[10px] text-muted-foreground text-center py-2">
-                        {searchQuery ? "No systems found" : "No systems available"}
-                      </p>
-                    )}
-                    {filteredSystems.map((system) => (
-                      <Button
-                        key={system.id}
-                        variant="ghost"
-                        size="sm"
-                        className={cn(
-                          "w-full justify-start gap-2 h-auto min-h-8 px-2 text-xs py-1",
-                          isSystemSelected(system)
-                            ? "bg-primary/10 text-primary font-medium"
-                            : "text-muted-foreground hover:bg-muted/50"
-                        )}
-                        onClick={() => onSystemSelect?.(system.id)}
-                        title={system.orgName ? `${system.name} (${system.orgName})` : system.name}
-                      >
-                        <span className={cn(
-                          "w-2 h-2 rounded-full shrink-0", 
-                          isSystemSelected(system) ? "bg-primary" : "bg-muted-foreground/30"
-                        )} />
-                        <div className="flex flex-col items-start overflow-hidden">
-                          <span className="truncate w-full">{system.name}</span>
-                          {system.orgName ? (
-                            <span className="text-[10px] text-muted-foreground/70 truncate w-full">
-                              {system.orgName}
-                            </span>
-                          ) : system.sector ? (
-                            <span className="text-[10px] text-muted-foreground/70 truncate w-full">
-                              {system.sector}
-                            </span>
-                          ) : null}
-                        </div>
-                      </Button>
-                    ))}
-                    {canAddSystem && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
-                        onClick={() => setAddSystemOpen(true)}
-                        title="Add System"
-                      >
-                        <Plus className="h-3 w-3" />
-                        Add System
-                      </Button>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-
-          <Separator className="my-2" />
-
-          {/* Admin Console */}
-          <Link href="/admin">
+            {/* Reports */}
             <Button
               variant="ghost"
               className={cn(
                 "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
-                "hover:bg-muted/50"
+                "hover:bg-muted/50 cursor-not-allowed opacity-50"
               )}
+              disabled
             >
-              <Shield className="h-4 w-4 shrink-0" />
-              {!isCollapsed && <span className="text-sm">Admin</span>}
+              <FileText className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Reports</span>}
             </Button>
-          </Link>
 
-          {/* Settings */}
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
-              "hover:bg-muted/50 cursor-not-allowed opacity-50"
-            )}
-            disabled
-          >
-            <Settings className="h-4 w-4 shrink-0" />
-            {!isCollapsed && <span className="text-sm">Settings</span>}
-          </Button>
+            {/* Agents Canvas */}
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 h-10 px-3 rounded-none",
+                showCanvas
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-muted-foreground hover:bg-muted/50"
+              )}
+              onClick={onCanvasClick}
+            >
+              <Network className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Canvas</span>}
+            </Button>
 
-          {/* Profile */}
-          <Button
-            variant="ghost"
-            className={cn(
-              "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
-              "hover:bg-muted/50 cursor-not-allowed opacity-50"
-            )}
-            disabled
-          >
-            <User className="h-4 w-4 shrink-0" />
-            {!isCollapsed && <span className="text-sm">Profile</span>}
-          </Button>
+            <Separator className="my-2" />
+
+            {/* Systems Section */}
+            <div>
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground transition-colors",
+                  "hover:bg-accent/10 hover:text-foreground hover:font-medium"
+                )}
+                onClick={() => !isCollapsed && setSystemsExpanded(!systemsExpanded)}
+              >
+                <Wrench className="h-4 w-4 shrink-0" />
+                {!isCollapsed && (
+                  <>
+                    <span className="text-sm font-medium flex-1 text-left">Systems</span>
+                    {isLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : systemsExpanded ? (
+                      <ChevronRight className="h-4 w-4 rotate-90 transition-transform" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 transition-transform" />
+                    )}
+                  </>
+                )}
+              </Button>
+
+              {/* Search + Systems List */}
+              {!isCollapsed && systemsExpanded && (
+                <div className="pl-3 pr-3 pb-2 space-y-1">
+                  {/* Search Input */}
+                  <div className="relative mb-1">
+                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                    <Input
+                      placeholder="Search systems..."
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="h-7 pl-7 pr-7 text-xs"
+                    />
+                    {searchInput && (
+                      <button
+                        onClick={() => { setSearchInput(""); setSearchQuery("") }}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    )}
+                  </div>
+
+                  {isLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : (
+                    <>
+                      {filteredSystems.length === 0 && (
+                        <p className="text-[10px] text-muted-foreground text-center py-2">
+                          {searchQuery ? "No systems found" : "No systems available"}
+                        </p>
+                      )}
+                      {filteredSystems.map((system) => (
+                        <ContextMenu key={system.id}>
+                          <ContextMenuTrigger>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={cn(
+                                "w-full justify-start gap-2 h-auto min-h-8 px-2 text-xs py-1",
+                                isSystemSelected(system)
+                                  ? "bg-primary/10 text-primary font-medium"
+                                  : "text-muted-foreground hover:bg-accent/10 hover:text-foreground hover:font-medium transition-colors"
+                              )}
+                              onClick={() => onSystemSelect?.(system.id)}
+                              title={system.orgName ? `${system.name} (${system.orgName})` : system.name}
+                            >
+                              <span className={cn(
+                                "w-2 h-2 rounded-full shrink-0",
+                                isSystemSelected(system) ? "bg-primary" : "bg-muted-foreground/30"
+                              )} />
+                              <div className="flex flex-col items-start overflow-hidden text-left">
+                                <span className="truncate w-full">{system.name}</span>
+                                {system.orgName ? (
+                                  <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                                    {system.orgName}
+                                  </span>
+                                ) : system.sector ? (
+                                  <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                                    {system.sector}
+                                  </span>
+                                ) : null}
+                              </div>
+                            </Button>
+                          </ContextMenuTrigger>
+                          <ContextMenuContent className="w-48">
+                            <ContextMenuItem
+                              onClick={() => onSystemSelect?.(system.id)}
+                              className="text-xs"
+                            >
+                              Open System
+                            </ContextMenuItem>
+                            {canDeleteSystem && (
+                              <ContextMenuItem
+                                onClick={() => setSystemToDelete(system)}
+                                className="text-xs text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="h-3 w-3 mr-2" />
+                                Delete System
+                              </ContextMenuItem>
+                            )}
+                          </ContextMenuContent>
+                        </ContextMenu>
+                      ))}
+                      {canAddSystem && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
+                          onClick={() => setAddSystemOpen(true)}
+                          title="Add System"
+                        >
+                          <Plus className="h-3 w-3" />
+                          Add System
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <Separator className="my-2" />
+
+            {/* Admin Console */}
+            <Link href="/admin">
+              <Button
+                variant="ghost"
+                className={cn(
+                  "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground transition-colors",
+                  "hover:bg-accent/10 hover:text-foreground hover:font-medium"
+                )}
+              >
+                <Shield className="h-4 w-4 shrink-0" />
+                {!isCollapsed && <span className="text-sm">Admin</span>}
+              </Button>
+            </Link>
+
+            {/* Settings */}
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
+                "hover:bg-muted/50 cursor-not-allowed opacity-50"
+              )}
+              disabled
+            >
+              <Settings className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Settings</span>}
+            </Button>
+
+            {/* Profile */}
+            <Button
+              variant="ghost"
+              className={cn(
+                "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground",
+                "hover:bg-muted/50 cursor-not-allowed opacity-50"
+              )}
+              disabled
+            >
+              <User className="h-4 w-4 shrink-0" />
+              {!isCollapsed && <span className="text-sm">Profile</span>}
+            </Button>
+          </div>
         </div>
+
+        <AddSystemDialog
+          open={addSystemOpen}
+          onOpenChange={setAddSystemOpen}
+          onSystemCreated={onSystemCreated}
+        />
       </div>
 
-      <AddSystemDialog
-        open={addSystemOpen}
-        onOpenChange={setAddSystemOpen}
-        onSystemCreated={onSystemCreated}
-      />
-    </div>
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!systemToDelete} onOpenChange={(open) => !open && setSystemToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will remove <span className="font-bold text-foreground">"{systemToDelete?.name}"</span> from the database.
+              This action can be undone by an administrator in the Admin Console.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                if (systemToDelete) {
+                  onSystemDelete?.(systemToDelete.id)
+                  setSystemToDelete(null)
+                }
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }

@@ -38,6 +38,7 @@ interface ConvexElement {
   description?: string
   orderIndex: number
   gradientValue?: number
+  color?: "primary" | "secondary" | "accent" | "muted"
 }
 
 interface ConvexMatrixCell {
@@ -117,7 +118,7 @@ interface FullSystemPayload {
 function toNodeData(
   el: ConvexElement,
   category: NodeData["category"],
-  color: NodeData["color"] = "secondary"
+  defaultColor: NodeData["color"] = "none"
 ): NodeData {
   return {
     id: el._id,
@@ -126,7 +127,7 @@ function toNodeData(
     kpiValue: el.gradientValue ?? 100,
     kpiStatus: gradientToStatus(el.gradientValue ?? 100),
     category,
-    color,
+    color: el.color || defaultColor,
   }
 }
 
@@ -168,8 +169,8 @@ function buildInitialData(payload: FullSystemPayload): RowData[] {
           id: "purpose-1",
           title: system.impact || `${system.name} Purpose`,
           description: `The core purpose statement for ${system.name}.`,
-          kpiValue: 100,
-          kpiStatus: "healthy",
+          kpiValue: system.impactHealth ?? 100,
+          kpiStatus: gradientToStatus(system.impactHealth ?? 100),
           category: "purpose",
           color: "primary",
           metadata: {
@@ -185,7 +186,7 @@ function buildInitialData(payload: FullSystemPayload): RowData[] {
       category: "outcomes",
       color: "bg-red-600 dark:bg-red-700",
       nodes: outcomes.map((o, idx) =>
-        toNodeData(o, "outcomes", idx % 2 === 0 ? "secondary" : "accent")
+        toNodeData(o, "outcomes", "none")
       ),
     },
     {
@@ -193,14 +194,14 @@ function buildInitialData(payload: FullSystemPayload): RowData[] {
       label: "Value Chain",
       category: "value-chain",
       color: "bg-red-500 dark:bg-red-600",
-      nodes: valueChain.map((v) => toNodeData(v, "value-chain", "secondary")),
+      nodes: valueChain.map((v) => toNodeData(v, "value-chain", "none")),
     },
     {
       id: "resources",
       label: "Resources, Capabilities / Levers",
       category: "resources",
       color: "bg-red-400 dark:bg-red-500",
-      nodes: resources.map((r) => toNodeData(r, "resources", "secondary")),
+      nodes: resources.map((r) => toNodeData(r, "resources", "none")),
     },
   ]
 }
@@ -212,10 +213,10 @@ function buildContributionMapData(
   const valueChain = elementsByType(payload.elements, "value_chain")
 
   const outcomeNodes = outcomes.map((o, idx) =>
-    toNodeData(o, "outcomes", idx % 2 === 0 ? "secondary" : "accent")
+    toNodeData(o, "outcomes", "none")
   )
   const vcNodes = valueChain.map((v) =>
-    toNodeData(v, "value-chain", "secondary")
+    toNodeData(v, "value-chain", "none")
   )
 
   // KPIs per value chain element
@@ -271,10 +272,10 @@ function buildDevelopmentPathwaysData(
   const resources = elementsByType(payload.elements, "resource")
 
   const vcNodes = valueChain.map((v) =>
-    toNodeData(v, "value-chain", "secondary")
+    toNodeData(v, "value-chain", "none")
   )
   const resourceNodes = resources.map((r) =>
-    toNodeData(r, "resources", "secondary")
+    toNodeData(r, "resources", "none")
   )
 
   // Current capabilities per resource
@@ -347,7 +348,7 @@ function buildConvergenceMapData(
   const valueChain = elementsByType(payload.elements, "value_chain")
 
   const vcNodes = valueChain.map((v) =>
-    toNodeData(v, "value-chain", "secondary")
+    toNodeData(v, "value-chain", "none")
   )
 
   // External factors
@@ -419,8 +420,8 @@ export interface ConvexSystemData {
     challenge: string
   }
   initialData: RowData[]
-  cultureBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" }
-  bottomBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" }
+  cultureBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
+  bottomBanner: { id: string; title: string; kpiValue: number; kpiStatus: "healthy" | "warning" | "critical" }
   contributionMapData: ContributionMapData
   developmentPathwaysData: DevelopmentPathwaysData
   convergenceMapData: ConvergenceMapData
@@ -479,14 +480,14 @@ export function useConvexSystem(systemId: string | null) {
     cultureBanner: {
       id: "culture-banner",
       title: payload.system.dimension || `${payload.system.name} Culture`,
-      kpiValue: 100,
-      kpiStatus: "healthy",
+      kpiValue: payload.system.dimensionHealth ?? 100,
+      kpiStatus: gradientToStatus(payload.system.dimensionHealth ?? 100),
     },
     bottomBanner: {
       id: "bottom-banner",
       title: payload.system.challenge || `${payload.system.name} Challenge`,
-      kpiValue: 100,
-      kpiStatus: "healthy",
+      kpiValue: payload.system.challengeHealth ?? 100,
+      kpiStatus: gradientToStatus(payload.system.challengeHealth ?? 100),
     },
     contributionMapData: buildContributionMapData(payload),
     developmentPathwaysData: buildDevelopmentPathwaysData(payload),

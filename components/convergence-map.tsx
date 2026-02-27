@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import type { ConvergenceMapData, NodeData } from "@/lib/types"
-import { Plus, Target } from "lucide-react"
+import { Plus, Target, Trash2, Palette } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EmptyState } from "@/components/empty-state"
 
@@ -52,89 +52,46 @@ export function ConvergenceMap({
   }
 
   return (
-    <div id="view-convergence-map" className="w-full overflow-x-auto">
-      <table className="w-full border-collapse text-sm">
+    <div id="view-convergence-map" className="map-scroll-wrapper">
+      <table className="min-w-[1000px] w-full border-collapse text-sm border border-border table-fixed">
         <thead>
-          {/* Row 1: External Value Chain header */}
+          {/* Row 1: Section Headers */}
           <tr>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-16"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-48"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-40"></th>
+            <th className="border border-border bg-slate-100 dark:bg-slate-900/80 p-4 text-left font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest text-xs w-[50%] sticky left-0 z-30 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+              Value Chain
+            </th>
             <th
-              colSpan={externalFactors.length}
-              className="border border-border bg-purple-200 dark:bg-purple-900/50 p-3 text-center font-semibold text-purple-900 dark:text-purple-200"
+              colSpan={2}
+              className="border border-border bg-emerald-700 p-3 text-center"
             >
-              INFLUENCES
-            </th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3 w-48"></th>
-          </tr>
-
-          {/* Row 2: Individual external factor headers */}
-          <tr>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
-            <th className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></th>
-            {externalFactors.map((factor, idx) => (
-              <th
-                key={factor.id}
-                className="border border-border bg-purple-100 dark:bg-purple-900/30 p-3 text-center min-w-[120px] cursor-pointer hover:bg-purple-200 dark:hover:bg-purple-800/30 transition-colors"
-                onClick={() => onElementClick?.({
-                  id: factor.id,
-                  title: factor.title,
-                  description: factor.description || "No description.",
-                  kpiValue: 0,
-                  kpiStatus: "healthy",
-                  category: "outcomes",
-                  color: "muted",
-                  notes: "External factor from Convergence Map",
-                  metadata: {
-                    "View": "Convergence Map",
-                    "Type": "External Factor",
-                  },
-                })}
-              >
-                <span className="text-sm text-purple-700 dark:text-purple-400 block mb-1">
-                  Factor {idx + 1}
-                </span>
-                <span className="text-sm font-medium text-foreground">{factor.title}</span>
-              </th>
-            ))}
-            <th className="border border-border bg-emerald-200 dark:bg-emerald-900/50 p-3 text-center font-semibold text-emerald-900 dark:text-emerald-200">
-              Key Results
+              <span className="font-black text-xs text-emerald-100 uppercase tracking-[0.2em]">
+                External Factors & Targets
+              </span>
             </th>
           </tr>
 
-          {/* Row 3: Factors description row */}
+          {/* Row 2: Titles */}
           <tr>
-            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></td>
-            <td className="border border-border bg-muted/50 dark:bg-muted/30 p-3"></td>
-            <td className="border border-border bg-violet-200 dark:bg-violet-900/50 p-3 text-center font-semibold text-violet-900 dark:text-violet-200">
-              Factors
+            <th className="border border-border bg-slate-50 dark:bg-slate-900/30 p-2 text-left sticky left-0 z-30 bg-slate-50 dark:bg-slate-900 shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Elements</span>
+            </th>
+            <th className="border border-border bg-slate-100 dark:bg-slate-800 p-3 text-center w-[15%]">
+              <span className="font-bold text-xs uppercase tracking-tight text-slate-700 dark:text-slate-300">Factors</span>
+            </th>
+            <th className="border border-border bg-emerald-200 dark:bg-emerald-900/50 p-3 text-center w-[35%]">
+              <span className="font-bold text-xs uppercase tracking-tight text-emerald-900 dark:text-emerald-200">KPIs</span>
+            </th>
+          </tr>
+
+          {/* Row 3: Sub-labels */}
+          <tr>
+            <td className="border border-border bg-slate-50/5 p-2 sticky left-0 z-30 bg-background/50 backdrop-blur-sm shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]"></td>
+            <td className="border border-border bg-slate-50/50 dark:bg-slate-900/20 p-2 text-center text-slate-400 italic text-[9px] font-bold uppercase tracking-widest">
+              Influences
             </td>
-            {externalFactors.map((factor) => (
-              <td
-                key={`desc-${factor.id}`}
-                className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-sm text-violet-900 dark:text-violet-200 cursor-pointer hover:bg-violet-200 dark:hover:bg-violet-800/30 transition-colors"
-                onClick={() => onElementClick?.({
-                  id: `factor-desc-${factor.id}`,
-                  title: `Factors: ${factor.title}`,
-                  description: factor.description || "No factors defined.",
-                  kpiValue: 0,
-                  kpiStatus: "healthy",
-                  category: "outcomes",
-                  color: "muted",
-                  notes: "Factor description from Convergence Map",
-                  metadata: {
-                    "View": "Convergence Map",
-                    "External Factor": factor.title,
-                    "Type": "Factor Description",
-                  },
-                })}
-              >
-                {factor.description || "—"}
-              </td>
-            ))}
-            <td className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2"></td>
+            <td className="border border-border bg-emerald-50/30 dark:bg-emerald-900/10 p-2 text-center text-emerald-500/80 italic text-[9px] font-bold uppercase tracking-widest">
+              Targets
+            </td>
           </tr>
         </thead>
 
@@ -145,40 +102,36 @@ export function ConvergenceMap({
             const vcKpiText = vcKpiList.length > 0 ? vcKpiList.join(". ") : ""
 
             return (
-              <tr key={vc.id}>
-                {/* Column A: Value Chain vertical label (only on first row) */}
-                {vcIdx === 0 && (
-                  <td
-                    rowSpan={valueChain.length + 1}
-                    className="border border-border bg-muted/50 dark:bg-muted/30 p-2 w-16 align-middle"
-                  >
-                    <div
-                      className="font-semibold text-xs text-muted-foreground tracking-wider whitespace-nowrap"
-                      style={{
-                        writingMode: "vertical-rl",
-                        transform: "rotate(180deg)",
-                        textAlign: "center",
-                      }}
-                    >
-                      VALUE CHAIN
-                    </div>
-                  </td>
-                )}
-
-                {/* Column B: VC Element name */}
+              <tr key={vc.id} className="h-24">
+                {/* Column A: VC Element name */}
                 <td
-                  className="border border-border bg-card dark:bg-card/80 p-2 min-w-[180px] cursor-pointer hover:bg-muted/50 dark:hover:bg-muted/20 transition-colors align-top"
+                  className={cn(
+                    "border border-border p-4 cursor-pointer align-top sticky left-0 z-20 bg-background",
+                    "premium-hover glass-card-hover shadow-[2px_0_5px_-2px_rgba(0,0,0,0.1)]",
+                    editMode === "delete" ? "hover:bg-red-50/50 dark:hover:bg-red-950/20" :
+                      editMode === "colour" ? "hover:bg-amber-50/50 dark:hover:bg-amber-950/20" : ""
+                  )}
                   onClick={() => onElementClick?.(vc)}
                 >
-                  <span className="text-sm text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2">
-                    VC-{vcIdx + 1}
-                  </span>
-                  <span className="text-sm text-foreground">{vc.title}</span>
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-3">
+                      <span className="text-[10px] font-black text-muted-foreground bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded uppercase self-start mt-0.5 border border-border/50 tracking-tighter shadow-sm">
+                        VC-{vcIdx + 1}
+                      </span>
+                      <span className="text-sm text-foreground font-semibold leading-relaxed line-clamp-2">{vc.title}</span>
+                    </div>
+                    {editMode === "delete" && (
+                      <Trash2 className="h-4 w-4 text-red-500 mt-0.5 shrink-0 animate-in fade-in zoom-in duration-200" />
+                    )}
+                    {editMode === "colour" && (
+                      <Palette className="h-4 w-4 text-amber-500 mt-0.5 shrink-0 animate-in fade-in zoom-in duration-200" />
+                    )}
+                  </div>
                 </td>
 
-                {/* Column C: Factors for this VC */}
+                {/* Column B: Factors for this VC (Grey) */}
                 <td
-                  className="border border-border bg-violet-100 dark:bg-violet-900/30 p-2 text-sm text-violet-900 dark:text-violet-200 min-w-[140px] cursor-pointer hover:bg-violet-200 dark:hover:bg-violet-800/30 transition-colors align-top"
+                  className="border border-border bg-slate-50/50 dark:bg-slate-900/30 p-3 text-xs text-slate-600 dark:text-slate-300 cursor-pointer premium-hover hover:bg-slate-100/50 align-top leading-tight"
                   onClick={() => {
                     const factorContent = getVcFactor(vc.id)
                     onElementClick?.({
@@ -198,69 +151,42 @@ export function ConvergenceMap({
                     })
                   }}
                 >
-                  {getVcFactor(vc.id) || "—"}
+                  <p className="italic leading-relaxed">{getVcFactor(vc.id) || "—"}</p>
                 </td>
 
-                {/* Columns D-L: Matrix cells (VC × External Factor intersections) */}
-                {externalFactors.map((factor) => {
-                  const content = getCellContent(vc.id, factor.id)
-
-                  return (
-                    <td
-                      key={`${vc.id}-${factor.id}`}
-                      className={cn(
-                        "border border-border bg-card dark:bg-card/60 p-2 text-sm text-foreground transition-colors cursor-pointer align-top",
-                        "hover:bg-muted/50 dark:hover:bg-muted/20"
-                      )}
-                      onClick={() => onCellClick?.(vc.id, factor.id)}
-                    >
-                      {content ? (
-                        <span>{content}</span>
-                      ) : editMode === "edit" ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="w-full h-full min-h-[40px] border border-dashed border-gray-400 text-gray-500"
-                        >
-                          <Plus className="h-3 w-3 mr-1" />
-                          <span className="text-xs">Add</span>
-                        </Button>
-                      ) : (
-                        <span>—</span>
-                      )}
-                    </td>
-                  )
-                })}
-
-                {/* Column M: Key Results */}
+                {/* Column C: KPIs (Emerald) */}
                 <td
-                  className="border border-border bg-emerald-100 dark:bg-emerald-900/30 p-2 text-sm text-emerald-800 dark:text-emerald-300 cursor-pointer hover:bg-emerald-200 dark:hover:bg-emerald-800/30 transition-colors align-top"
+                  className="border border-border bg-emerald-50/40 dark:bg-emerald-900/20 p-3 text-xs text-emerald-800 dark:text-emerald-300 cursor-pointer premium-hover hover:bg-emerald-100/50 align-top leading-relaxed"
                   onClick={() => onElementClick?.({
                     id: `vc-kpi-${vc.id}`,
-                    title: `Key Results: ${vc.title}`,
-                    description: vcKpiText || "No Key Results defined.",
+                    title: `KPIs: ${vc.title}`,
+                    description: vcKpiText || "No KPIs defined.",
                     kpiValue: vc.kpiValue,
                     kpiStatus: vc.kpiStatus,
                     category: "value-chain",
                     color: "secondary",
-                    notes: "Value Chain Key Results from Convergence Map",
+                    notes: "Value Chain KPIs from Convergence Map",
                     metadata: {
                       "View": "Convergence Map",
                       "Value Chain Element": vc.title,
-                      "Key Results Count": String(vcKpiList.length),
+                      "KPIs Count": String(vcKpiList.length),
                     },
                   })}
                 >
-                  {vcKpiText || (editMode === "edit" ? (
+                  {vcKpiText ? (
+                    <p className="font-medium text-emerald-950 dark:text-emerald-50 leading-tight">{vcKpiText}</p>
+                  ) : editMode === "edit" ? (
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="w-full h-full min-h-[40px] border border-dashed border-gray-400 text-gray-500"
+                      className="w-full h-full min-h-[32px] border border-dashed border-emerald-300/50 text-emerald-600 hover:bg-emerald-100/40"
                     >
                       <Plus className="h-3 w-3 mr-1" />
-                      <span className="text-xs">Add Key Result</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Add</span>
                     </Button>
-                  ) : "—")}
+                  ) : (
+                    <span className="text-sm opacity-50">—</span>
+                  )}
                 </td>
               </tr>
             )
@@ -270,17 +196,15 @@ export function ConvergenceMap({
           <tr>
             <td
               colSpan={3}
-              className="border border-border bg-teal-700 text-white p-3 text-sm text-center"
+              className="border border-border bg-primary/95 text-primary-foreground p-6 text-sm text-center shadow-inner backdrop-blur-md"
             >
-              Delivered through partnerships in a transparent, respectful culture of local collaboration with a focus on sustainable operational outcomes, performance & societal benefits
+              <span className="text-[11px] text-white/60 uppercase tracking-[0.3em] block mb-2 font-black">
+                VALUES & CULTURE
+              </span>
+              <p className="font-medium text-md leading-relaxed max-w-5xl mx-auto italic">
+                Delivered through partnerships in a transparent, respectful culture of local collaboration with a focus on sustainable operational outcomes, performance & societal benefits
+              </p>
             </td>
-            {externalFactors.map((factor) => (
-              <td
-                key={`culture-${factor.id}`}
-                className="border border-border bg-teal-600/50 p-2"
-              ></td>
-            ))}
-            <td className="border border-border bg-teal-600/50 p-2"></td>
           </tr>
         </tbody>
       </table>

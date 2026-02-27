@@ -36,7 +36,7 @@ export function useConvexUpdateElement() {
     content?: string
     gradientValue?: number
     description?: string
-    color?: "primary" | "secondary" | "accent" | "muted"
+    color?: "primary" | "secondary" | "accent" | "muted" | "none"
     orderIndex?: number
   }) => {
     try {
@@ -144,7 +144,7 @@ export function useConvexUpdateElementColor() {
     color,
   }: {
     id: string
-    color: "primary" | "secondary" | "accent" | "muted"
+    color: "primary" | "secondary" | "accent" | "muted" | "none"
   }) => {
     try {
       await mutate({ id: id as Id<"elements">, color })
@@ -285,11 +285,17 @@ export function useConvexUpdateSystem() {
     impact,
     dimension,
     challenge,
+    impactHealth,
+    dimensionHealth,
+    challengeHealth,
   }: {
     id: string
     impact?: string
     dimension?: string
     challenge?: string
+    impactHealth?: number
+    dimensionHealth?: number
+    challengeHealth?: number
   }) => {
     try {
       await mutate({
@@ -297,6 +303,9 @@ export function useConvexUpdateSystem() {
         impact,
         dimension,
         challenge,
+        impactHealth,
+        dimensionHealth,
+        challengeHealth,
       })
       toast({ title: "System updated", description: "Changes saved successfully" })
     } catch (err) {
@@ -310,6 +319,30 @@ export function useConvexUpdateSystem() {
   }
 
   return { mutate: updateSystem, updateSystem }
+}
+
+/**
+ * Delete a system (soft delete)
+ */
+export function useConvexDeleteSystem() {
+  const mutate = useMutation(api.systems.remove)
+  const { toast } = useToast()
+
+  const deleteSystem = async ({ id }: { id: string }) => {
+    try {
+      await mutate({ id: id as Id<"systems"> })
+      toast({ title: "System deleted", description: "System removed successfully" })
+    } catch (err) {
+      toast({
+        title: "Error deleting system",
+        description: err instanceof Error ? err.message : "Unknown error occurred",
+        variant: "destructive",
+      })
+      throw err
+    }
+  }
+
+  return { mutate: deleteSystem, deleteSystem }
 }
 
 // ---------------------------------------------------------------------------

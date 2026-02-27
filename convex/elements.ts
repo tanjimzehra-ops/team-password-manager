@@ -67,7 +67,7 @@ export const update = mutation({
     content: v.optional(v.string()),
     description: v.optional(v.string()),
     gradientValue: v.optional(v.number()),
-    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"))),
+    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"), v.literal("none"))),
     orderIndex: v.optional(v.number()),
   },
   handler: async (ctx, args) => {

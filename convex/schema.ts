@@ -94,6 +94,9 @@ export default defineSchema({
     impact: v.string(),      // Purpose/Vision statement
     dimension: v.string(),   // Delivery culture statement
     challenge: v.string(),   // System context statement
+    impactHealth: v.optional(v.number()),    // 0-100 health for Purpose/Impact
+    dimensionHealth: v.optional(v.number()), // 0-100 health for Culture/Dimension
+    challengeHealth: v.optional(v.number()), // 0-100 health for Challenge
     orgId: v.optional(v.id("organisations")),  // Tenancy boundary (optional during migration)
     deletedAt: v.optional(v.number()),          // Soft delete timestamp (ms)
   }).index("by_org", ["orgId"]),
@@ -110,7 +113,7 @@ export default defineSchema({
     description: v.optional(v.string()),
     orderIndex: v.number(),
     gradientValue: v.optional(v.number()), // 0-100 KPI health
-    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"))),
+    color: v.optional(v.union(v.literal("primary"), v.literal("secondary"), v.literal("accent"), v.literal("muted"), v.literal("none"))),
   }).index("by_system", ["systemId"])
     .index("by_system_type", ["systemId", "elementType"]),
 

@@ -197,6 +197,9 @@ export const update = mutation({
     impact: v.optional(v.string()),
     dimension: v.optional(v.string()),
     challenge: v.optional(v.string()),
+    impactHealth: v.optional(v.number()),
+    dimensionHealth: v.optional(v.number()),
+    challengeHealth: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const user = await requireAuth(ctx)
@@ -204,7 +207,7 @@ export const update = mutation({
 
     const system = await ctx.db.get(args.id)
     const { id, ...fields } = args
-    const updates: Record<string, string> = {}
+    const updates: Record<string, any> = {}
     for (const [key, value] of Object.entries(fields)) {
       if (value !== undefined) {
         updates[key] = value

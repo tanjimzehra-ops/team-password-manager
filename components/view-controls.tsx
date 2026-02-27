@@ -42,7 +42,7 @@ export function ViewControls({
   const availableModes = getAvailableModesForRole(activeTab, userRole ?? null)
 
   return (
-    <div className="border-b border-border bg-background">
+    <div className="border-b border-border/50 bg-background/60 backdrop-blur-md sticky top-14 z-40">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center gap-4 py-4">
           <div data-tour="toolbar-modes" className="flex items-center gap-2">
