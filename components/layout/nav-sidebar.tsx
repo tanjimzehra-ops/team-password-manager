@@ -124,10 +124,10 @@ export function NavSidebar({
         data-tour="nav-sidebar"
         className={cn(
           "flex flex-col transition-all duration-300 shrink-0 border-r border-border bg-background z-10",
-          isCollapsed ? "w-16" : "w-60"
+          isCollapsed ? "w-20" : "w-72"
         )}
       >
-        <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm flex-1 flex flex-col">
+        <div className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm flex-1 flex flex-col m-1">
           {/* Toggle Button */}
           <Button
             variant="ghost"
@@ -144,8 +144,10 @@ export function NavSidebar({
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground transition-colors",
-                "hover:bg-accent/10 hover:text-foreground hover:font-medium"
+                "w-full justify-start gap-4 h-12 px-4 rounded-none",
+                !selectedSystem && !showCanvas
+                  ? "bg-primary/10 text-primary font-bold"
+                  : "text-muted-foreground hover:bg-muted/50"
               )}
               onClick={() => {
                 onDashboardClick?.()
@@ -154,8 +156,8 @@ export function NavSidebar({
                 }
               }}
             >
-              <LayoutDashboard className="h-4 w-4 shrink-0" />
-              {!isCollapsed && <span className="text-sm">Dashboard</span>}
+              <LayoutDashboard className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-base font-semibold">Dashboard</span>}
             </Button>
 
             {/* Reports */}
@@ -175,15 +177,15 @@ export function NavSidebar({
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start gap-3 h-10 px-3 rounded-none",
+                "w-full justify-start gap-4 h-12 px-4 rounded-none",
                 showCanvas
-                  ? "bg-primary/10 text-primary font-medium"
+                  ? "bg-primary/10 text-primary font-bold"
                   : "text-muted-foreground hover:bg-muted/50"
               )}
               onClick={onCanvasClick}
             >
-              <Network className="h-4 w-4 shrink-0" />
-              {!isCollapsed && <span className="text-sm">Canvas</span>}
+              <Network className="h-5 w-5 shrink-0" />
+              {!isCollapsed && <span className="text-base font-semibold">Canvas</span>}
             </Button>
 
             <Separator className="my-2" />
@@ -193,21 +195,21 @@ export function NavSidebar({
               <Button
                 variant="ghost"
                 className={cn(
-                  "w-full justify-start gap-3 h-10 px-3 rounded-none text-muted-foreground transition-colors",
-                  "hover:bg-accent/10 hover:text-foreground hover:font-medium"
+                  "w-full justify-start gap-4 h-12 px-4 rounded-none text-muted-foreground transition-colors",
+                  "hover:bg-accent/10 hover:text-foreground hover:font-bold"
                 )}
                 onClick={() => !isCollapsed && setSystemsExpanded(!systemsExpanded)}
               >
-                <Wrench className="h-4 w-4 shrink-0" />
+                <Wrench className="h-5 w-5 shrink-0" />
                 {!isCollapsed && (
                   <>
-                    <span className="text-sm font-medium flex-1 text-left">Systems</span>
+                    <span className="text-base font-bold flex-1 text-left">Systems</span>
                     {isLoading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-5 w-5 animate-spin" />
                     ) : systemsExpanded ? (
-                      <ChevronRight className="h-4 w-4 rotate-90 transition-transform" />
+                      <ChevronRight className="h-5 w-5 rotate-90 transition-transform" />
                     ) : (
-                      <ChevronRight className="h-4 w-4 transition-transform" />
+                      <ChevronRight className="h-5 w-5 transition-transform" />
                     )}
                   </>
                 )}
@@ -217,20 +219,20 @@ export function NavSidebar({
               {!isCollapsed && systemsExpanded && (
                 <div className="pl-3 pr-3 pb-2 space-y-1">
                   {/* Search Input */}
-                  <div className="relative mb-1">
-                    <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
+                  <div className="relative mb-2">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search systems..."
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
-                      className="h-7 pl-7 pr-7 text-xs"
+                      className="h-10 pl-10 pr-10 text-sm font-medium"
                     />
                     {searchInput && (
                       <button
                         onClick={() => { setSearchInput(""); setSearchQuery("") }}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
-                        <X className="h-3 w-3" />
+                        <X className="h-4 w-4" />
                       </button>
                     )}
                   </div>
@@ -242,7 +244,7 @@ export function NavSidebar({
                   ) : (
                     <>
                       {filteredSystems.length === 0 && (
-                        <p className="text-[10px] text-muted-foreground text-center py-2">
+                        <p className="text-xs text-muted-foreground text-center py-4 font-medium uppercase tracking-wider opacity-60">
                           {searchQuery ? "No systems found" : "No systems available"}
                         </p>
                       )}
@@ -253,26 +255,26 @@ export function NavSidebar({
                               variant="ghost"
                               size="sm"
                               className={cn(
-                                "w-full justify-start gap-2 h-auto min-h-8 px-2 text-xs py-1",
+                                "w-full justify-start gap-3 h-auto min-h-10 px-3 text-sm py-2",
                                 isSystemSelected(system)
-                                  ? "bg-primary/10 text-primary font-medium"
-                                  : "text-muted-foreground hover:bg-accent/10 hover:text-foreground hover:font-medium transition-colors"
+                                  ? "bg-primary/10 text-primary font-bold"
+                                  : "text-muted-foreground hover:bg-accent/10 hover:text-foreground hover:font-bold transition-all"
                               )}
                               onClick={() => onSystemSelect?.(system.id)}
                               title={system.orgName ? `${system.name} (${system.orgName})` : system.name}
                             >
                               <span className={cn(
-                                "w-2 h-2 rounded-full shrink-0",
-                                isSystemSelected(system) ? "bg-primary" : "bg-muted-foreground/30"
+                                "w-2.5 h-2.5 rounded-full shrink-0 shadow-sm",
+                                isSystemSelected(system) ? "bg-primary animate-pulse" : "bg-muted-foreground/30"
                               )} />
-                              <div className="flex flex-col items-start overflow-hidden text-left">
-                                <span className="truncate w-full">{system.name}</span>
+                              <div className="flex flex-col items-start overflow-hidden text-left gap-0.5">
+                                <span className="truncate w-full font-semibold">{system.name}</span>
                                 {system.orgName ? (
-                                  <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                                  <span className="text-xs text-muted-foreground/70 truncate w-full font-medium">
                                     {system.orgName}
                                   </span>
                                 ) : system.sector ? (
-                                  <span className="text-[10px] text-muted-foreground/70 truncate w-full">
+                                  <span className="text-xs text-muted-foreground/70 truncate w-full font-medium">
                                     {system.sector}
                                   </span>
                                 ) : null}

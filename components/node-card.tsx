@@ -62,11 +62,11 @@ const editModeColorMap = {
 }
 
 const viewModeColorMap = {
-  primary: "bg-red-700/10 border-red-800 text-card-foreground",
-  secondary: "bg-sky-600/10 border-sky-700 text-card-foreground",
-  accent: "bg-amber-500/10 border-amber-600 text-card-foreground",
-  muted: "bg-emerald-500/10 border-emerald-600 text-card-foreground",
-  none: "bg-card border-border text-card-foreground",
+  primary: "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-800 text-red-900 dark:text-red-100",
+  secondary: "bg-sky-50 dark:bg-sky-950/40 border-sky-200 dark:border-sky-800 text-sky-900 dark:text-sky-100",
+  accent: "bg-amber-50 dark:bg-amber-950/40 border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-100",
+  muted: "bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-100",
+  none: "bg-white dark:bg-card border-border text-foreground",
 }
 
 const healthBadgeColorMap: Record<"healthy" | "warning" | "critical", string> = {
@@ -150,122 +150,107 @@ export function NodeCard({
       onDragOver={handleDragOver}
       onDrop={handleDrop}
       className={cn(
-        "relative rounded-lg border flex flex-col h-full",
-        "glass-card premium-hover",
+        "relative rounded-xl border flex flex-col h-full transition-all duration-500 premium-hover overflow-hidden shadow-sm",
         colors[node.color],
-        "p-3 min-h-[110px]",
+        compact ? "p-3 min-h-[140px]" : "p-5 min-h-[180px]",
+        showKpi ? [healthBorderColor, "border-2 opacity-100"] : "border-border/30",
         editMode === "delete" && "hover:border-red-500 hover:bg-red-50/50 dark:hover:bg-red-950/30",
         editMode === "order" && "cursor-grab active:cursor-grabbing",
         isEmpty && editMode !== "colour" && "opacity-60 border-dashed",
       )}
     >
-      <GlowingEffect
-        spread={40}
-        glow={true}
-        disabled={isEditMode}
-        proximity={64}
-        inactiveZone={0.01}
-        borderWidth={2}
-      />
-
-      {/* Floating Glow Orb - Moving unique object to fill space */}
+      {/* Floating Glow Orb */}
       <motion.div
         className={cn(
-          "absolute -z-10 w-32 h-32 rounded-full blur-[80px] opacity-30 pointer-events-none",
-          node.color === "primary" ? "bg-red-500/40" :
-            node.color === "secondary" ? "bg-sky-500/40" :
-              node.color === "accent" ? "bg-amber-500/40" :
-                "bg-teal-500/40"
+          "absolute -z-10 w-40 h-40 rounded-full blur-[80px] opacity-20 pointer-events-none",
+          node.color === "primary" ? "bg-red-500/30" :
+            node.color === "secondary" ? "bg-sky-500/30" :
+              node.color === "accent" ? "bg-amber-500/30" :
+                "bg-teal-500/20"
         )}
         animate={{
-          x: [Math.round(Math.random() * 20), Math.round(Math.random() * -20), Math.round(Math.random() * 20)],
-          y: [Math.round(Math.random() * -20), Math.round(Math.random() * 20), Math.round(Math.random() * -20)],
+          x: [Math.round(Math.random() * 30), Math.round(Math.random() * -30), Math.round(Math.random() * 30)],
+          y: [Math.round(Math.random() * -30), Math.round(Math.random() * 30), Math.round(Math.random() * -30)],
           scale: [1, 1.2, 0.9, 1],
         }}
         transition={{
-          duration: 8 + Math.random() * 4,
+          duration: 10 + Math.random() * 5,
           repeat: Infinity,
           ease: "easeInOut",
         }}
         style={{
-          left: "15%",
-          top: "15%",
+          left: "10%",
+          top: "10%",
         }}
       />
 
-      {/* Health Ring in top-right corner */}
-      {showKpi && !isEditMode && (
-        <div className="absolute top-2 right-2 z-10">
-          <HealthRing value={node.kpiValue} size={28} strokeWidth={3} showValue />
+      <div className="flex flex-col h-full gap-3 relative z-10">
+        <div className="flex items-center justify-between">
+          {chipLabel && (
+            <Badge variant="outline" className="text-[11px] px-2.5 py-0.5 font-black uppercase tracking-[0.1em] bg-white/40 dark:bg-black/20 border-black/10 dark:border-white/10">
+              {chipLabel}
+            </Badge>
+          )}
+          {showKpi && !isEditMode && (
+            <div className="ml-auto">
+              <HealthRing value={node.kpiValue} size={32} strokeWidth={3.5} showValue />
+            </div>
+          )}
+          {editMode === "delete" && (
+            <div className="ml-auto text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-950/50 rounded-full p-2 shadow-sm border border-red-200 dark:border-red-900/50 animate-in fade-in zoom-in-50 duration-200">
+              <Trash2 className="w-4 h-4" />
+            </div>
+          )}
         </div>
-      )}
 
-      {/* Delete Icon in top-right corner */}
-      {editMode === "delete" && (
-        <div className="absolute top-2 right-2 z-10 text-red-600 bg-red-100 dark:text-red-400 dark:bg-red-950/50 rounded-full p-1.5 shadow-sm border border-red-200 dark:border-red-900/50 animate-in fade-in zoom-in-50 duration-200">
-          <Trash2 className="w-4 h-4" />
+        <div className="flex-1 flex flex-col gap-2">
+          <h3 className={cn(
+            "font-black tracking-tight leading-[1.1] text-foreground",
+            compact ? "text-lg" : "text-3xl"
+          )}>
+            {isEmpty ? (
+              <span className="italic opacity-50">Empty — click to edit</span>
+            ) : (
+              node.title
+            )}
+          </h3>
+          {!compact && node.description && (
+            <p className="text-base font-medium text-muted-foreground/85 line-clamp-4 leading-relaxed">
+              {node.description}
+            </p>
+          )}
         </div>
-      )}
+
+        {/* KPI input - only in edit mode */}
+        {showKpi && editMode === "edit" && (
+          <div className="mt-auto pt-2">
+            <Input
+              type="number"
+              defaultValue={node.kpiValue}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.currentTarget.blur()
+                }
+              }}
+              onBlur={(e) => {
+                const val = parseInt(e.target.value, 10)
+                if (!isNaN(val)) {
+                  onKpiChange?.(val)
+                }
+              }}
+              className="h-8 text-center text-sm font-bold bg-background text-foreground border-border"
+            />
+          </div>
+        )}
+      </div>
 
       {/* Inline color picker overlay */}
       {editMode === "colour" && showColorPicker && (
-        <InlineColorPicker
-          currentColor={node.color}
-          onColorSelect={handleColorSelect}
-        />
-      )}
-
-      {chipLabel && (
-        <span
-          className={cn(
-            "text-xs font-medium mb-1 self-start",
-            isEditMode ? "text-white/70" : "text-muted-foreground",
-          )}
-        >
-          {chipLabel}
-        </span>
-      )}
-
-      <h3 className={cn("font-bold leading-tight text-center text-sm mb-2")}>
-        {isEmpty ? (
-          <span className="text-muted-foreground italic">Empty — click to edit</span>
-        ) : (
-          node.title
-        )}
-      </h3>
-
-      {/* Description only for non-compact (Outcomes) cards */}
-      {!compact && node.description && (
-        <p
-          className={cn(
-            "text-sm leading-snug text-center flex-1 mt-1",
-            isEditMode ? "opacity-90" : "text-muted-foreground",
-          )}
-        >
-          {node.description}
-        </p>
-      )}
-
-
-      {/* KPI input - only in edit mode */}
-      {showKpi && editMode === "edit" && (
-        <div className="mt-auto pt-2">
-          <Input
-            type="number"
-            defaultValue={node.kpiValue}
-            onClick={(e) => e.stopPropagation()}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                e.currentTarget.blur()
-              }
-            }}
-            onBlur={(e) => {
-              const val = parseInt(e.target.value, 10)
-              if (!isNaN(val)) {
-                onKpiChange?.(val)
-              }
-            }}
-            className="h-6 text-center text-xs bg-background text-foreground border-border"
+        <div className="absolute inset-0 z-50 bg-background/95 backdrop-blur-sm p-4 rounded-xl shadow-2xl animate-in fade-in duration-200">
+          <InlineColorPicker
+            currentColor={node.color}
+            onColorSelect={handleColorSelect}
           />
         </div>
       )}

@@ -127,11 +127,11 @@ export function LogicGrid({
         <div key={row.id} id={row.id}>
           {/* Purpose Banner - Full width colored banner */}
           {row.category === "purpose" && (
-            <div className="mt-2 group">
-              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
+            <div className="mt-8 group">
+              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
                 IMPACT / PURPOSE
               </h2>
-              <div className="flex items-stretch gap-0 min-h-[64px]">
+              <div className="flex items-stretch gap-0 min-h-[72px]">
                 <div
                   className={cn(
                     "flex-1 rounded-xl p-4 flex items-center justify-center cursor-pointer",
@@ -156,17 +156,17 @@ export function LogicGrid({
 
           {/* Outcome Cards - 4 equal columns with descriptions */}
           {row.category === "outcomes" && (
-            <div className="mt-4" id="outcomes">
-              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
+            <div className="mt-8" id="outcomes">
+              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
                 STRATEGIC OBJECTIVES
               </h2>
-              <div className="flex items-stretch gap-0 min-h-[180px]">
+              <div className="flex items-stretch gap-0 min-h-[240px]">
                 <div className="flex-1 flex overflow-x-auto gap-3 pb-3 -mb-3 scrollbar-thin">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
                       className={cn(
-                        "flex-1 min-w-[280px]",
+                        "flex-1 min-w-[320px]",
                         editMode === "order" && dragOverIndex === index && dragCategory === row.category
                           ? "border-l-2 border-primary"
                           : "border-l-2 border-transparent",
@@ -227,8 +227,8 @@ export function LogicGrid({
 
           {/* Value Chain - Compact row of text-only cards */}
           {row.category === "value-chain" && (
-            <div className="mt-6" id="value-chain">
-              <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
+            <div className="mt-8" id="value-chain">
+              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
                 VALUE CHAIN ELEMENTS
               </h2>
               <div className="flex items-stretch gap-0 min-h-[140px]">
@@ -302,10 +302,10 @@ export function LogicGrid({
             <>
               {/* Culture Banner between Value Chain and Resources */}
               <div className="mt-8" id="culture">
-                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
+                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
                   DELIVERY CULTURE / DIMENSION
                 </h2>
-                <div className="flex items-stretch gap-0 min-h-[64px]">
+                <div className="flex items-stretch gap-0 min-h-[72px]">
                   <div
                     className="flex-1 relative bg-teal-800 rounded-xl p-3 flex items-center cursor-pointer premium-hover shadow-lg group-hover:bg-teal-700 transition-colors"
                     onClick={() => onNodeClick({
@@ -338,8 +338,8 @@ export function LogicGrid({
               </div>
 
               {/* Resources Cards */}
-              <div className="mt-6" id="resources">
-                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
+              <div className="mt-8" id="resources">
+                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
                   RESOURCES, CAPABILITIES / LEVERS
                 </h2>
                 <div className="flex items-stretch gap-0 min-h-[140px]">
@@ -408,11 +408,11 @@ export function LogicGrid({
               </div>
 
               {/* Bottom Banner - Context statement */}
-              <div className="mt-8 mb-12" id="context">
-                <h2 className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1">
-                  SYSTEM CONTEXT / CHALLENGE
+              <div className="mt-8 mb-24" id="context">
+                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
+                  SYSTEM STEWARDSHIP / GOVERNANCE
                 </h2>
-                <div className="flex items-stretch gap-0 min-h-[64px]">
+                <div className="flex items-stretch gap-0 min-h-[72px]">
                   <div
                     className="flex-1 bg-teal-800 rounded-xl p-4 flex items-center justify-center cursor-pointer hover:bg-teal-700/90 transition-colors relative overflow-hidden"
                     onClick={() => onNodeClick({

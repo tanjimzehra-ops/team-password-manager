@@ -67,8 +67,8 @@ export function ContributionMap({
               colSpan={outcomes.length}
               className="p-3 text-center border border-border bg-teal-100 dark:bg-teal-900/40"
             >
-              <span className="font-bold text-xs text-teal-800 dark:text-teal-200 uppercase tracking-widest">
-                Objectives
+              <span className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] pl-2 whitespace-nowrap">
+                Elements
               </span>
             </th>
           </tr>
@@ -84,8 +84,8 @@ export function ContributionMap({
                 className="p-3 text-center border border-border bg-teal-50 dark:bg-teal-900/20 cursor-pointer hover:bg-teal-100 dark:hover:bg-teal-800/30 transition-colors"
                 onClick={() => onElementClick?.(outcome)}
               >
-                <span className="text-[10px] text-teal-600 dark:text-teal-400 mb-1 block font-bold uppercase tracking-wider">
-                  Objective {idx + 1}
+                <span className="text-xs text-amber-700 dark:text-amber-400 block mb-1.5 font-bold uppercase tracking-wider">
+                  Development Context
                 </span>
                 <span className="font-semibold text-sm text-foreground line-clamp-2">{outcome.title}</span>
               </th>
@@ -145,14 +145,14 @@ export function ContributionMap({
 
         <tbody>
           {/* Value Chain Rows */}
-          {valueChain.map((vc, vcIdx) => {
+          {valueChain.map((vc, index) => {
             const vcKpiList = getVcKpis(vc.id)
             const vcKpiText = vcKpiList.length > 0 ? vcKpiList.join(". ") : ""
 
             return (
               <tr key={vc.id} className="h-28">
                 {/* Column A: Value Chain vertical label - only on first row, spans all VC rows */}
-                {vcIdx === 0 && (
+                {index === 0 && (
                   <td
                     rowSpan={valueChain.length}
                     className="bg-muted/50 dark:bg-muted/30 border border-border text-center align-middle sticky left-0 z-20"
@@ -171,8 +171,8 @@ export function ContributionMap({
                   className="bg-card dark:bg-card/80 p-3 border border-border align-top cursor-pointer sticky left-[60px] z-20 premium-hover glass-card-hover"
                   onClick={() => onElementClick?.(vc)}
                 >
-                  <span className="text-[10px] font-bold text-muted-foreground bg-muted dark:bg-muted/50 px-1.5 py-0.5 rounded mr-2 uppercase tracking-tighter">
-                    VC {vcIdx + 1}
+                  <span className="text-xs font-bold text-muted-foreground bg-muted dark:bg-muted/50 px-2 py-1 rounded mr-3 uppercase tracking-tighter shadow-sm border border-border/30">
+                    {index + 1}
                   </span>
                   <span className="text-sm font-semibold text-foreground block mt-1 leading-snug">{vc.title}</span>
                 </td>

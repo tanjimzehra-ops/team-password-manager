@@ -23,8 +23,8 @@ export function HealthRing({
     const offset = circumference - (value / 100) * circumference
 
     const getStatusColor = (val: number) => {
-        if (val >= 80) return "text-emerald-500 stroke-emerald-500"
-        if (val >= 50) return "text-amber-500 stroke-amber-500"
+        if (val >= 100) return "text-emerald-500 stroke-emerald-500"
+        if (val >= 95) return "text-amber-500 stroke-amber-500"
         return "text-rose-500 stroke-rose-500"
     }
 
@@ -69,7 +69,7 @@ export function HealthRing({
                 />
             </svg>
             {showValue && (
-                <span className={cn("absolute text-[10px] font-bold", statusColor.split(' ')[0])}>
+                <span className={cn("absolute text-xs font-bold", statusColor.split(' ')[0])}>
                     {Math.round(value)}
                 </span>
             )}

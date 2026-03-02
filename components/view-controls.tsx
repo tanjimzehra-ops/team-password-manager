@@ -28,6 +28,7 @@ interface ViewControlsProps {
   activeTab?: ViewTab
   onExport?: (format: "csv" | "excel" | "pdf") => void
   userRole?: UserRole
+  isDashboard?: boolean
 }
 
 export function ViewControls({
@@ -38,6 +39,7 @@ export function ViewControls({
   activeTab = "logic-model",
   onExport,
   userRole,
+  isDashboard = false,
 }: ViewControlsProps) {
   const availableModes = getAvailableModesForRole(activeTab, userRole ?? null)
 
@@ -45,38 +47,42 @@ export function ViewControls({
     <div className="border-b border-border/50 bg-background/60 backdrop-blur-md sticky top-14 z-40">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap items-center gap-4 py-4">
-          <div data-tour="toolbar-modes" className="flex items-center gap-2">
-            <Label className="text-sm text-muted-foreground">Select Mode:</Label>
-            <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
-              {availableModes.map((mode) => (
-                <Button
-                  key={mode}
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => onEditModeChange?.(mode)}
-                  className={cn(
-                    "h-7 capitalize",
-                    editMode === mode
-                      ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
-                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                  )}
-                >
-                  {mode}
-                </Button>
-              ))}
+          {!isDashboard && (
+            <div data-tour="toolbar-modes" className="flex items-center gap-2">
+              <Label className="text-sm text-muted-foreground">Select Mode:</Label>
+              <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+                {availableModes.map((mode) => (
+                  <Button
+                    key={mode}
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => onEditModeChange?.(mode)}
+                    className={cn(
+                      "h-7 capitalize",
+                      editMode === mode
+                        ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90"
+                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                    )}
+                  >
+                    {mode}
+                  </Button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex items-center gap-4 ml-auto">
-            <div className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-              <Label htmlFor="show-kpi" className="text-sm text-muted-foreground">
-                Show Key Results
-              </Label>
-              <Switch id="show-kpi" checked={showKpi} onCheckedChange={onToggleKpi} />
-            </div>
+            {!isDashboard && (
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                <Label htmlFor="show-kpi" className="text-sm text-muted-foreground">
+                  Show Key Results
+                </Label>
+                <Switch id="show-kpi" checked={showKpi} onCheckedChange={onToggleKpi} />
+              </div>
+            )}
 
-            {onExport && (
+            {onExport && !isDashboard && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button data-tour="export-button" variant="outline" size="sm" className="h-9">

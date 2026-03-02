@@ -38,7 +38,7 @@ interface ConvexElement {
   description?: string
   orderIndex: number
   gradientValue?: number
-  color?: "primary" | "secondary" | "accent" | "muted"
+  color?: "primary" | "secondary" | "accent" | "muted" | "none"
 }
 
 interface ConvexMatrixCell {
@@ -88,6 +88,9 @@ interface ConvexSystem {
   impact: string
   dimension: string
   challenge: string
+  impactHealth?: number
+  dimensionHealth?: number
+  challengeHealth?: number
 }
 
 // The Convex getFullSystem query spreads system fields at the root level
@@ -134,8 +137,8 @@ function toNodeData(
 function gradientToStatus(
   value: number
 ): "healthy" | "warning" | "critical" {
-  if (value >= 70) return "healthy"
-  if (value >= 40) return "warning"
+  if (value >= 100) return "healthy"
+  if (value >= 95) return "warning"
   return "critical"
 }
 
@@ -458,6 +461,9 @@ export function useConvexSystem(systemId: string | null) {
       impact: flat.impact,
       dimension: flat.dimension,
       challenge: flat.challenge,
+      impactHealth: flat.impactHealth,
+      dimensionHealth: flat.dimensionHealth,
+      challengeHealth: flat.challengeHealth,
     },
     elements: flat.elements,
     matrixCells: flat.matrixCells,

@@ -1,26 +1,29 @@
 "use client"
 
 import { Moon, Sun } from 'lucide-react'
+import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<"light" | "dark">("light")
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
 
+  // Avoid hydration mismatch by only rendering after mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light")
-    setTheme(initialTheme)
-    document.documentElement.classList.toggle("dark", initialTheme === "dark")
+    setMounted(true)
   }, [])
 
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="icon" className="text-foreground/70">
+        <Moon className="h-5 w-5" />
+      </Button>
+    )
+  }
+
   const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark"
-    setTheme(newTheme)
-    localStorage.setItem("theme", newTheme)
-    document.documentElement.classList.toggle("dark", newTheme === "dark")
+    setTheme(theme === "dark" ? "light" : "dark")
   }
 
   return (

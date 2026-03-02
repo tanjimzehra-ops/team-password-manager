@@ -14,9 +14,15 @@ interface HeaderProps {
   activeTab?: ViewTab
   onTabChange?: (tab: ViewTab) => void
   systemName?: string | null
+  isDashboard?: boolean
 }
 
-export function Header({ activeTab = "logic-model", onTabChange, systemName = null }: HeaderProps) {
+export function Header({
+  activeTab = "logic-model",
+  onTabChange,
+  systemName = null,
+  isDashboard = false
+}: HeaderProps) {
   const auth = useAuth()
   const { user } = auth
   const signOut = "signOut" in auth ? auth.signOut : undefined
@@ -28,11 +34,11 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = nu
         <div className="px-4">
           <div className="flex h-14 items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="h-11 w-11 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white font-black text-lg shadow-md">
                 J
               </div>
-              <span className="font-semibold text-lg text-foreground">Jigsaw</span>
+              <span className="font-black text-2xl text-foreground tracking-tighter">Jigsaw</span>
             </div>
 
             {/* Org Switcher */}
@@ -41,16 +47,16 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = nu
             {/* Right side */}
             <div className="flex items-center gap-3">
               {user && (
-                <div className="hidden sm:flex items-center gap-2 text-sm">
-                  <Avatar className="h-7 w-7">
+                <div className="hidden sm:flex items-center gap-3 text-base">
+                  <Avatar className="h-9 w-9">
                     {user.profilePictureUrl && (
                       <AvatarImage src={user.profilePictureUrl} alt={user.firstName ?? user.email ?? ""} />
                     )}
-                    <AvatarFallback className="text-xs bg-muted">
+                    <AvatarFallback className="text-sm font-bold bg-muted">
                       {(user.firstName?.[0] ?? "").toUpperCase()}{(user.lastName?.[0] ?? "").toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="font-medium text-muted-foreground">
+                  <span className="font-semibold text-muted-foreground">
                     {user.firstName ? `Hello, ${user.firstName}` : `Hello, ${user.email}`}
                   </span>
                 </div>
@@ -75,78 +81,80 @@ export function Header({ activeTab = "logic-model", onTabChange, systemName = nu
 
       {/* Project Title Bar */}
       <div className="border-b border-border bg-muted/30">
-        <div className="px-4 py-3">
-          <h1 className="text-lg font-medium text-foreground">
+        <div className="px-5 py-4">
+          <h1 className="text-xl font-medium text-foreground tracking-tight">
             {systemName ? (
               <>
-                creating Preferred Futures: <span className="font-bold">{systemName}</span>
+                creating Preferred Futures: <span className="font-black text-primary">{systemName}</span>
               </>
             ) : (
-              <span className="font-bold">Jigsaw</span>
+              <span className="font-black">Jigsaw</span>
             )}
           </h1>
         </div>
       </div>
 
       {/* View Tabs */}
-      <div className="border-b border-border bg-background">
-        <div className="px-4">
-          <nav data-tour="view-tabs" className="flex items-center gap-1 py-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onTabChange?.("logic-model")}
-              className={cn(
-                "text-sm font-medium rounded-md px-4 py-2",
-                activeTab === "logic-model"
-                  ? "bg-teal-700 text-white"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              Logic Model
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onTabChange?.("convergence-map")}
-              className={cn(
-                "text-sm font-medium rounded-md px-4 py-2",
-                activeTab === "convergence-map"
-                  ? "bg-teal-700 text-white"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              Convergence Map
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onTabChange?.("contribution-map")}
-              className={cn(
-                "text-sm font-medium rounded-md px-4 py-2",
-                activeTab === "contribution-map"
-                  ? "bg-teal-700 text-white"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              Contribution Map
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onTabChange?.("development-pathways")}
-              className={cn(
-                "text-sm font-medium rounded-md px-4 py-2",
-                activeTab === "development-pathways"
-                  ? "bg-teal-700 text-white"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              Development Pathways
-            </Button>
-          </nav>
+      {!isDashboard && (
+        <div className="border-b border-border bg-background">
+          <div className="px-4">
+            <nav data-tour="view-tabs" className="flex items-center gap-1 py-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onTabChange?.("logic-model")}
+                className={cn(
+                  "text-sm font-medium rounded-md px-4 py-2",
+                  activeTab === "logic-model"
+                    ? "bg-teal-700 text-white"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                Logic Model
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onTabChange?.("convergence-map")}
+                className={cn(
+                  "text-sm font-medium rounded-md px-4 py-2",
+                  activeTab === "convergence-map"
+                    ? "bg-teal-700 text-white"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                Convergence Map
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onTabChange?.("contribution-map")}
+                className={cn(
+                  "text-sm font-medium rounded-md px-4 py-2",
+                  activeTab === "contribution-map"
+                    ? "bg-teal-700 text-white"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                Contribution Map
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => onTabChange?.("development-pathways")}
+                className={cn(
+                  "text-sm font-medium rounded-md px-4 py-2",
+                  activeTab === "development-pathways"
+                    ? "bg-teal-700 text-white"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                )}
+              >
+                Development Pathways
+              </Button>
+            </nav>
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

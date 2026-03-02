@@ -14,6 +14,7 @@ interface LogicModelElement {
   order: number
   content: string
   description?: string
+  color?: "primary" | "secondary" | "accent" | "muted" | "none"
 }
 
 interface MatrixCell {
@@ -106,7 +107,8 @@ const seedSystemHandler = async (
         content: el.content,
         description: el.description || undefined,
         orderIndex: el.order,
-        gradientValue: Math.floor(Math.random() * 51) + 50, // Random 50-100
+        gradientValue: Math.floor(Math.random() * 31) + 85, // Random 85-115
+        color: el.color || "none",
       })
       idMap.set(el.id, convexId)
     }

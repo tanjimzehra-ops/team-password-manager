@@ -39,7 +39,7 @@ export const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => 
       <div className="mt-2 flex items-center gap-2">
         <span
           className={cn(
-            'px-2 py-0.5 text-[10px] font-medium rounded-full',
+            'px-3 py-1 text-xs font-bold rounded-full shadow-sm',
             status.bg,
             status.text
           )}
@@ -48,9 +48,11 @@ export const AgentNode = memo(({ data, selected }: NodeProps<AgentNodeData>) => 
         </span>
         <span
           className={cn(
-            'px-1.5 py-0.5 text-[10px] font-bold rounded',
+            'px-2 py-1 rounded shadow-sm border border-black/5 dark:border-white/5',
             colors.text,
-            'bg-background/50'
+            'bg-background/50',
+            'text-xs',
+            'font-black uppercase tracking-widest',
           )}
         >
           {data.priority}

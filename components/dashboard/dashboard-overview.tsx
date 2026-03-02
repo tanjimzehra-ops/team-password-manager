@@ -1,11 +1,12 @@
 "use client"
 
 import React, { FC, useMemo, useState, useEffect } from 'react';
-import { LayoutGrid, TrendingUp, ShieldCheck, Activity, BarChart, Clock, ListChecks } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
+import { LayoutGrid, TrendingUp, Activity, BarChart, Clock, ListChecks } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { cn } from "@/lib/utils"
+import ShaderBackground from "@/components/ui/shader-background"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend
@@ -31,17 +32,17 @@ interface MetricCardProps {
 }
 
 const MetricCard: FC<MetricCardProps> = ({ title, value, icon, description, valueClassName, glowing = true }) => (
-    <Card className="flex-1 min-w-[250px] relative transition-colors group bg-card/50 backdrop-blur-md border-border/50">
+    <Card className="flex-1 min-w-[300px] relative transition-all duration-300 group bg-card border border-border shadow-sm hover:shadow-md py-4">
         {glowing && <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />}
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{title}</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 relative z-10">
+            <CardTitle className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/80">{title}</CardTitle>
             {icon}
         </CardHeader>
         <CardContent className="relative z-10">
-            <div className={cn("text-3xl font-bold", valueClassName)}>
+            <div className={cn("text-5xl font-black tracking-tight", valueClassName)}>
                 {value}
             </div>
-            {description && <p className="text-[10px] text-muted-foreground mt-1">{description}</p>}
+            {description && <p className="text-xs text-muted-foreground/60 mt-2 font-medium">{description}</p>}
         </CardContent>
     </Card>
 );
@@ -58,7 +59,6 @@ interface RealtimeChartProps {
 const RealtimeChart: FC<RealtimeChartProps> = React.memo(({ data, title, dataKey, lineColor, tooltipFormatter, legendName }) => {
     const chartKey = useMemo(() => `chart-${title}-${dataKey}`, [title, dataKey]);
 
-    // Using CSS variables to support light/dark mode transitions neatly
     const colors = {
         grid: 'var(--border)',
         axis: 'var(--muted-foreground)',
@@ -67,14 +67,14 @@ const RealtimeChart: FC<RealtimeChartProps> = React.memo(({ data, title, dataKey
     };
 
     return (
-        <Card className="flex-1 min-w-[300px] w-full lg:max-w-[calc(50%-8px)] bg-card/50 backdrop-blur-md border-border/50 relative overflow-hidden group">
+        <Card className="flex-1 min-w-[300px] w-full lg:max-w-[calc(50%-8px)] bg-card border border-border shadow-sm relative overflow-hidden group">
             <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-            <CardHeader className="relative z-10">
-                <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-widest text-muted-foreground">
-                    <BarChart className="h-5 w-5 opacity-70" style={{ color: lineColor }} />{title}
+            <CardHeader className="relative z-10 pb-6">
+                <CardTitle className="flex items-center gap-3 text-lg font-bold uppercase tracking-widest text-muted-foreground">
+                    <BarChart className="h-6 w-6 opacity-70" style={{ color: lineColor }} />{title}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="relative z-10">
+            <CardContent className="relative z-10 pt-4">
                 <div style={{ width: '100%', height: '350px' }}>
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart
@@ -129,12 +129,12 @@ const RealtimeChart: FC<RealtimeChartProps> = React.memo(({ data, title, dataKey
     );
 });
 
-// Mock updates for activity mapping
+// Mock logic
 const generateMockActivity = () => {
     const data: ActivityDataPoint[] = [];
     const now = new Date();
     for (let i = 20; i >= 0; i--) {
-        const t = new Date(now.getTime() - i * 60000 * 60); // spreading it over hours
+        const t = new Date(now.getTime() - i * 3600000);
         data.push({
             time: `${t.getHours().toString().padStart(2, '0')}:00`,
             activity: Math.floor(Math.random() * 50) + 10
@@ -148,7 +148,7 @@ const generateMockCumulative = () => {
     const now = new Date();
     let current = 100;
     for (let i = 20; i >= 0; i--) {
-        const t = new Date(now.getTime() - i * 60000 * 60);
+        const t = new Date(now.getTime() - i * 3600000);
         current += Math.floor(Math.random() * 5);
         data.push({
             time: `${t.getHours().toString().padStart(2, '0')}:00`,
@@ -176,15 +176,16 @@ export function DashboardOverview({ systemCount, orgName }: DashboardOverviewPro
     ];
 
     return (
-        <div className="flex-1 p-4 md:p-8 overflow-y-auto w-full">
-            <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="flex-1 p-8 md:p-16 overflow-y-auto w-full relative bg-background">
+            <ShaderBackground className="opacity-30" />
+            <div className="max-w-[1400px] mx-auto space-y-16 animate-in fade-in slide-in-from-bottom-8 duration-1000 relative z-10">
 
                 {/* Header */}
-                <div className="flex flex-col items-center justify-center space-y-3 mb-8">
-                    <h1 className="text-3xl md:text-5xl font-extrabold text-center tracking-tight text-primary drop-shadow-sm">
+                <div className="flex flex-col items-center justify-center space-y-6 mb-16">
+                    <h1 className="text-5xl md:text-7xl font-black text-center tracking-tighter text-primary drop-shadow-sm">
                         Active Strategy Tracker
                     </h1>
-                    <p className="text-center text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">
+                    <p className="text-center text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto font-medium leading-relaxed">
                         Real-time insights into your strategic performance{orgName ? ` for ${orgName}` : ""}.
                     </p>
                 </div>
@@ -210,21 +211,21 @@ export function DashboardOverview({ systemCount, orgName }: DashboardOverviewPro
                         icon={<LayoutGrid className="h-4 w-4 text-sky-500" />}
                         description="Across all value chains"
                     />
-                    <Card className="flex-1 min-w-[250px] relative transition-colors group bg-card/50 backdrop-blur-md border-border/50">
+                    <Card className="flex-1 min-w-[300px] relative transition-all duration-300 group bg-card border border-border shadow-sm py-4">
                         <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-                            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Activity Status</CardTitle>
-                            <Clock className="h-4 w-4 text-muted-foreground animate-pulse" />
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 relative z-10">
+                            <CardTitle className="text-sm font-bold uppercase tracking-[0.2em] text-muted-foreground/80">Activity Status</CardTitle>
+                            <Clock className="h-5 w-5 text-muted-foreground animate-pulse" />
                         </CardHeader>
                         <CardContent className="relative z-10">
-                            <div className="text-3xl font-bold flex items-center gap-3">
-                                <span className="relative flex h-4 w-4">
+                            <div className="text-5xl font-black flex items-center gap-4">
+                                <span className="relative flex h-6 w-6">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
+                                    <span className="relative inline-flex rounded-full h-6 w-6 bg-emerald-500"></span>
                                 </span>
                                 Live
                             </div>
-                            <p className="text-[10px] text-muted-foreground mt-1">Data streaming in real-time</p>
+                            <p className="text-xs text-muted-foreground/60 mt-2 font-medium uppercase tracking-widest">Data streaming in real-time</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -248,25 +249,25 @@ export function DashboardOverview({ systemCount, orgName }: DashboardOverviewPro
                 </div>
 
                 {/* Latest Activity Section */}
-                <Card className="relative overflow-hidden group bg-card/50 backdrop-blur-md border-border/50">
+                <Card className="relative overflow-hidden group bg-card border border-border shadow-md">
                     <GlowingEffect spread={40} glow={true} disabled={false} proximity={64} inactiveZone={0.01} borderWidth={2} />
-                    <CardHeader className="relative z-10">
-                        <CardTitle className="flex items-center gap-2 text-sm uppercase tracking-widest text-muted-foreground">
-                            <ListChecks className="h-5 w-5 text-primary" /> Recent System Activity
+                    <CardHeader className="relative z-10 p-8">
+                        <CardTitle className="flex items-center gap-3 text-xl font-bold uppercase tracking-[0.2em] text-muted-foreground">
+                            <ListChecks className="h-7 w-7 text-primary" /> Recent System Activity
                         </CardTitle>
-                        <CardDescription>Recently completed updates, reflecting live.</CardDescription>
+                        <CardDescription className="text-base mt-2">Recently completed updates, reflecting live.</CardDescription>
                     </CardHeader>
                     <CardContent className="p-0 relative z-10">
-                        <ScrollArea className="h-[250px]">
-                            <div className="divide-y divide-border/50">
+                        <ScrollArea className="h-[400px]">
+                            <div className="divide-y divide-border">
                                 {recentUpdates.map((update) => (
-                                    <div key={update.id} className="flex items-center justify-between p-4 hover:bg-muted/30 transition-colors">
-                                        <div className="flex flex-col">
-                                            <span className="font-semibold text-[15px]">{update.action}</span>
-                                            <span className="text-xs text-muted-foreground">{update.detail}</span>
+                                    <div key={update.id} className="flex items-center justify-between p-8 hover:bg-muted/30 transition-all duration-200">
+                                        <div className="flex flex-col gap-1">
+                                            <span className="font-bold text-2xl text-foreground tracking-tight">{update.action}</span>
+                                            <span className="text-sm text-muted-foreground font-medium">{update.detail}</span>
                                         </div>
                                         <div className="flex flex-col items-end">
-                                            <Badge variant="outline" className="text-[10px] font-medium text-muted-foreground bg-muted/20">
+                                            <Badge variant="outline" className="text-xs px-3 py-1 font-bold text-muted-foreground bg-muted/20 border-muted-foreground/20">
                                                 {update.time}
                                             </Badge>
                                         </div>

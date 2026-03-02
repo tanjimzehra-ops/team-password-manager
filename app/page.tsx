@@ -5,6 +5,7 @@ import { useQuery } from "convex/react"
 import { useAuthBypass as useAuth } from "@/hooks/use-auth-bypass"
 import { api } from "@/convex/_generated/api"
 import type { Id } from "@/convex/_generated/dataModel"
+import { cn } from "@/lib/utils"
 import { OrgContext, type OrgInfo } from "@/hooks/use-org"
 import { LandingPage } from "@/components/landing-page"
 import { Header } from "@/components/header"
@@ -25,6 +26,7 @@ import { AlertTriangle, LayoutGrid, PlusCircle, CheckSquare } from "lucide-react
 // New components
 import { NodeEditPopup } from "@/components/node-edit-popup"
 import { DashboardOverview } from "@/components/dashboard/dashboard-overview"
+import ShaderBackground from "@/components/ui/shader-background"
 import { TooltipProvider } from "@/components/ui/tooltip"
 // PerformanceModal removed in Story 1.8 (Stage/Performance consolidation)
 import { LibraryPopup } from "@/components/library-popup"
@@ -193,6 +195,23 @@ export default function Page() {
 
   // Determine active data source
   const dataSource: "convex" | "json" = isConvexConfigured ? "convex" : "json"
+
+  // Restore visual state from localStorage
+  useEffect(() => {
+    try {
+      const savedKpi = localStorage.getItem("jigsaw-show-kpi")
+      if (savedKpi !== null) {
+        setShowKpi(savedKpi === "true")
+      }
+    } catch { }
+  }, [])
+
+  // Save visual state to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem("jigsaw-show-kpi", String(showKpi))
+    } catch { }
+  }, [showKpi])
 
   // Restore selected system from localStorage, or clear if current selection is invalid
   useEffect(() => {
@@ -927,7 +946,7 @@ export default function Page() {
     <OrgContext.Provider value={orgContextValue}>
       <TooltipProvider>
         <div className="min-h-screen bg-background flex flex-col">
-          <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} />
+          <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} isDashboard={!selectedSystemId} />
           <ViewControls
             showKpi={showKpi}
             onToggleKpi={setShowKpi}
@@ -936,6 +955,7 @@ export default function Page() {
             activeTab={activeTab}
             onExport={activeTab !== "canvas" ? handleExport : undefined}
             userRole={effectiveRole ?? undefined}
+            isDashboard={!selectedSystemId}
           />
 
           {/* Data Source Indicator — JSON fallback only */}
@@ -968,51 +988,53 @@ export default function Page() {
                 canDeleteSystem={dataSource === "convex" && canMutate}
               />
 
-              {/* Row Labels Sidebar - Only show for Logic Model */}
-              {activeTab === "logic-model" && showLogicSidebar && (
-                <RowSidebar
-                  rows={effectiveLogicGridData}
-                  activeRow={activeRow}
-                  onRowClick={handleRowClick}
-                />
-              )}
+              {/* Row Labels Sidebar - Only show for Logic Model and when a system is selected */}
 
               {/* Main Content Area */}
-              <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto overflow-y-auto">
-                {activeTab === "logic-model" && (
-                  <div className="flex items-center gap-4 mb-6 px-2 w-fit">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="display-logic"
-                        checked={showLogicSidebar}
-                        onChange={(e) => setShowLogicSidebar(e.target.checked)}
-                        className="h-4 w-4 rounded border-slate-300 bg-background text-teal-600 focus:ring-teal-500 cursor-pointer"
-                      />
-                      <label htmlFor="display-logic" className="text-[10px] font-black uppercase tracking-widest text-slate-500 cursor-pointer select-none">
-                        Display Logic
-                      </label>
+              <div className="flex-1 min-w-0 flex overflow-y-auto">
+                {activeTab === "logic-model" && showLogicSidebar && selectedSystemId && (
+                  <RowSidebar
+                    rows={effectiveLogicGridData}
+                    activeRow={activeRow}
+                    onRowClick={handleRowClick}
+                  />
+                )}
+                <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto">
+                  {activeTab === "logic-model" && selectedSystemId && (
+                    <div className="flex items-center gap-4 mb-6 px-2 w-fit">
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          id="display-logic"
+                          checked={showLogicSidebar}
+                          onChange={(e) => setShowLogicSidebar(e.target.checked)}
+                          className="h-4 w-4 rounded border-slate-300 bg-background text-teal-600 focus:ring-teal-500 cursor-pointer"
+                        />
+                        <label htmlFor="display-logic" className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                          Display Logic
+                        </label>
+                      </div>
                     </div>
-                  </div>
-                )}
-                {renderMainContent()}
-                {/* Edit mode controls - Convex auto-saves */}
-                {editMode === "edit" && (
-                  <div className="mt-8 flex justify-center">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      onClick={() => handleEditModeChange("view")}
-                    >
-                      Done Editing
-                    </Button>
-                  </div>
-                )}
+                  )}
+                  {renderMainContent()}
+                  {/* Edit mode controls - Convex auto-saves */}
+                  {editMode === "edit" && (
+                    <div className="mt-8 flex justify-center">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        onClick={() => handleEditModeChange("view")}
+                      >
+                        Done Editing
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </main>
 
-          <Footer onRestartTour={restartTour} />
+          <Footer onRestartTour={restartTour} isDashboard={!selectedSystemId} />
 
           {/* Node Detail Sidebar */}
           <NodeDetailSidebar

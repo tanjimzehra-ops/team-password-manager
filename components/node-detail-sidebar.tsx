@@ -21,9 +21,9 @@ interface NodeDetailSidebarProps {
   onClose: () => void
   onSave?: (updatedNode: NodeData) => Promise<void>
   // Portfolio props
-  portfolios?: Array<{id: string; title: string; description?: string; date?: string; progress: number; status: string}>
-  onPortfolioCreate?: (data: {title: string; description: string; date: string; progress: number; status: string; elementId: string}) => void
-  onPortfolioUpdate?: (id: string, data: {title: string; description: string; date: string; progress: number; status: string}) => void
+  portfolios?: Array<{ id: string; title: string; description?: string; date?: string; progress: number; status: string }>
+  onPortfolioCreate?: (data: { title: string; description: string; date: string; progress: number; status: string; elementId: string }) => void
+  onPortfolioUpdate?: (id: string, data: { title: string; description: string; date: string; progress: number; status: string }) => void
   onPortfolioDelete?: (id: string) => void
 }
 
@@ -61,23 +61,14 @@ function isMatrixCell(node: NodeData): boolean {
 
 // ─── Category-specific Overview content ────────────────────────────────────────
 
-function renderCategoryOverview(node: NodeData, isEditing: boolean, editDescription: string, setEditDescription: (v: string) => void) {
+function renderCategoryOverview(node: NodeData) {
   const descriptionBlock = (
     <div className="space-y-2">
       <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
         <FileText className="h-4 w-4" />
         Description
       </div>
-      {isEditing ? (
-        <Textarea
-          value={editDescription}
-          onChange={(e) => setEditDescription(e.target.value)}
-          rows={4}
-          className="text-sm"
-        />
-      ) : (
-        <p className="text-foreground leading-relaxed">{node.description}</p>
-      )}
+      <p className="text-foreground leading-relaxed">{node.description}</p>
     </div>
   )
 
@@ -106,16 +97,7 @@ function renderCategoryOverview(node: NodeData, isEditing: boolean, editDescript
         <Separator />
         <div className="space-y-2">
           <div className="text-sm font-medium text-muted-foreground">Content</div>
-          {isEditing ? (
-            <Textarea
-              value={editDescription}
-              onChange={(e) => setEditDescription(e.target.value)}
-              rows={4}
-              className="text-sm"
-            />
-          ) : (
-            <p className="text-foreground leading-relaxed">{node.description}</p>
-          )}
+          <p className="text-foreground leading-relaxed">{node.description}</p>
         </div>
       </div>
     )
@@ -130,16 +112,7 @@ function renderCategoryOverview(node: NodeData, isEditing: boolean, editDescript
               <FileText className="h-4 w-4" />
               Purpose Statement
             </div>
-            {isEditing ? (
-              <Textarea
-                value={editDescription}
-                onChange={(e) => setEditDescription(e.target.value)}
-                rows={4}
-                className="text-sm"
-              />
-            ) : (
-              <p className="text-foreground leading-relaxed text-base">{node.description}</p>
-            )}
+            <p className="text-foreground leading-relaxed text-base">{node.description}</p>
           </div>
           {node.metadata?.System && (
             <>
@@ -283,53 +256,20 @@ export function NodeDetailSidebar({
   onPortfolioUpdate,
   onPortfolioDelete,
 }: NodeDetailSidebarProps) {
-  // Edit mode state
-  const [isEditing, setIsEditing] = useState(false)
-  const [editTitle, setEditTitle] = useState("")
-  const [editDescription, setEditDescription] = useState("")
-  const [editKpiValue, setEditKpiValue] = useState(0)
-  const [isSaving, setIsSaving] = useState(false)
-
   // Portfolio state
   const [portfolioCreateOpen, setPortfolioCreateOpen] = useState(false)
   const [selectedPortfolio, setSelectedPortfolio] = useState<PortfolioDetail | null>(null)
   const [portfolioDetailOpen, setPortfolioDetailOpen] = useState(false)
 
-  // Reset edit state when node changes
+  // Reset state when node changes
   useEffect(() => {
-    setIsEditing(false)
+    // Portfolios or other state resets could go here
   }, [node?.id])
 
   if (!node) return null
 
   const config = categoryConfig[node.category]
 
-  const startEdit = () => {
-    setEditTitle(node.title)
-    setEditDescription(node.description)
-    setEditKpiValue(node.kpiValue)
-    setIsEditing(true)
-  }
-
-  const handleSave = async () => {
-    if (!onSave) return
-    setIsSaving(true)
-    try {
-      await onSave({
-        ...node,
-        title: editTitle,
-        description: editDescription,
-        kpiValue: editKpiValue,
-      })
-      setIsEditing(false)
-    } finally {
-      setIsSaving(false)
-    }
-  }
-
-  const cancelEdit = () => {
-    setIsEditing(false)
-  }
 
   // Adapt portfolio data for the PortfolioCreatePopup component
   const portfoliosAsCreateFormat: Portfolio[] = (portfolios || []).map((p) => ({
@@ -404,15 +344,7 @@ export function NodeDetailSidebar({
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Title + Category Badge */}
             <div>
-              {isEditing ? (
-                <Input
-                  value={editTitle}
-                  onChange={(e) => setEditTitle(e.target.value)}
-                  className="text-xl font-bold mb-2"
-                />
-              ) : (
-                <h3 className="text-xl font-bold text-foreground leading-tight">{node.title}</h3>
-              )}
+              <h3 className="text-xl font-bold text-foreground leading-tight">{node.title}</h3>
               <Badge className={cn("mt-2 text-xs border", config.badgeClass)}>
                 {isMatrixCell(node) ? node.metadata!.View : config.label}
               </Badge>
@@ -425,18 +357,7 @@ export function NodeDetailSidebar({
                 Key Results Status
               </div>
               <div className="flex items-center gap-4">
-                {isEditing ? (
-                  <Input
-                    type="number"
-                    min={0}
-                    max={100}
-                    value={editKpiValue}
-                    onChange={(e) => setEditKpiValue(Number(e.target.value))}
-                    className="w-24 text-2xl font-bold"
-                  />
-                ) : (
-                  <div className="text-4xl font-bold text-foreground">{node.kpiValue}</div>
-                )}
+                <div className="text-4xl font-bold text-foreground">{node.kpiValue}</div>
                 <Badge className={cn("text-sm", kpiStatusColors[node.kpiStatus])}>
                   {kpiStatusLabels[node.kpiStatus]}
                 </Badge>
@@ -444,11 +365,11 @@ export function NodeDetailSidebar({
               <div className="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div
                   className={cn("h-full rounded-full transition-all duration-500", kpiStatusBarColors[node.kpiStatus])}
-                  style={{ width: `${Math.min(Math.max(isEditing ? editKpiValue : node.kpiValue, 0), 100)}%` }}
+                  style={{ width: `${Math.min(Math.max(node.kpiValue, 0), 100)}%` }}
                 />
               </div>
               <div className="text-xs text-muted-foreground text-right">
-                {isEditing ? editKpiValue : node.kpiValue}%
+                {node.kpiValue}%
               </div>
             </div>
 
@@ -460,7 +381,7 @@ export function NodeDetailSidebar({
               </TabsList>
 
               <TabsContent value="overview" className="space-y-4 mt-4">
-                {renderCategoryOverview(node, isEditing, editDescription, setEditDescription)}
+                {renderCategoryOverview(node)}
 
                 {/* Portfolio Section */}
                 {portfolios && !isMatrixCell(node) && (
@@ -535,25 +456,6 @@ export function NodeDetailSidebar({
             </Tabs>
           </div>
 
-          {/* Footer */}
-          <div className="p-6 border-t border-border">
-            {isEditing ? (
-              <div className="flex gap-2">
-                <Button className="flex-1" onClick={handleSave} disabled={isSaving}>
-                  <Save className="h-4 w-4 mr-2" />
-                  {isSaving ? "Saving..." : "Save"}
-                </Button>
-                <Button variant="outline" onClick={cancelEdit} disabled={isSaving}>
-                  Cancel
-                </Button>
-              </div>
-            ) : (
-              <Button className="w-full bg-transparent" variant="outline" onClick={startEdit} disabled={!onSave}>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit Node
-              </Button>
-            )}
-          </div>
         </div>
       </div>
 

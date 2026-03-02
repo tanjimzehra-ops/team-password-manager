@@ -1,25 +1,36 @@
-# End of Session Handoff
+# Session Handoff: Strategic UI Overhaul
 
-## Summary of Completed Work
-- **Node Deletion**: Implemented explicit real-time node deletion with Shadcn `AlertDialog` confirmation directly calling the Convex `api.elements.remove` mutation in `app/page.tsx` and `components/node-card.tsx`. 
-- **Premium UX Tooltips**: Refined the `NodeCard` tooltips.
-  - Set tooltips to **only** appear when the global `showKpi` toggle is ON. 
-  - Redesigned tooltip content to display an animated `LineChart` (synthetic 6-month trailing trend) built with Recharts, Shadcn, and a newly created `NodeKpiChart` component.
-  - The chart gracefully styles itself (green, yellow, red) based on the KPI health thresholds.
+## 1. Summary of Completed Work
+We have successfully implemented a premium, diagnostic-grade visual update to the Jigsaw platform, focusing on the Logic Model and administrative controls.
 
-## Diagnosed but Pending Issues
-We successfully diagnosed why inline KPI edits don't save and why newly seeded systems start with 100% health, but we ran out of context space to implement the fixes. 
+### Strategic Sidebar (Logic Model)
+- **6-Row Architecture**: Overhauled `RowSidebar.tsx` to include exactly six rows (Impact, Outcome, Value Chain, Dimension, Resources, Context).
+- **Brackets & Grouping**: Visual brackets for "Strategic Intent" and "Operations" to organize the layout according to strategic principles.
+- **Pixel-Perfect Alignment**: Calibrated exact heights (92px to 216px) to match the `LogicGrid` banners and cards perfectly.
+- **Toggle Control**: Added a "Display Logic" toggle in `app/page.tsx` for clean UI management.
+- **Shadow Clean-up**: Removed all unwanted hover/active shadows for a streamlined, minimalist feel.
 
-### Problem 1: Inline KPI Edits Not Saving
-- **Location:** `components/node-card.tsx`
-- **Root Cause:** The `<Input>` element that appears in "edit mode" for the KPI is completely uncontrolled. It has a `defaultValue={node.kpiValue}` but lacks an `onChange` or `onBlur` handler. When the user types a new number, the component never fires a state update or database mutation. When "Done Editing" is clicked, it just reverts to reading the original value from the server.
-- **Solution:** Add an `onChange` handler and pass down a `onKpiChange` or similar callback from `app/page.tsx`->`LogicGrid`->`NodeCard` that calls the Convex `api.elements.update` mutation to update the `gradientValue` (health).
+### Node Card & Visuals
+- **Dynamic Backgrounds**: Integrated "Floating Glow Orbs" into `NodeCard.tsx` using `motion/framer-motion`. These are subtle, animated objects that uniquely float behind each node to fill vertical space.
+- **Design Simplification**: Removed static labels (subtitles/footers) to keep the emphasis on the dynamic background and the core diagnostic content.
+- **Adaptive Scrolling**: Ensured the grid uses `overflow-x-auto` to handle complex logic models gracefully on multiple screen sizes.
 
-### Problem 2: The "100" Hardcode in PDF Mapping / Adapters
-- **Location:** `data/system-adapter.ts`
-- **Root Cause:** When the JSON data (which doesn't contain a `gradientValue` property inherently) is mapped into our system, `toNodeData` explicitly hardcodes `kpiValue: 100`. Therefore, static JSON demo systems always start fully healthy. 
+### Project Management
+- **Management Report**: Created `project_summary_report.md` summarizing all UI and architectural changes for reporting purposes.
+- **Version Control**: Committed all changes and pushed the entire branch safely to GitHub:
+    - **Branch Name**: `tanjim/frontend-polish-02-25`
+    - **Isolation**: Pushed via `git push origin HEAD` to ensure `main` remains untouched.
 
-### Problem 3: Missing KPI values in the Database Seed Script
-- **Location:** `convex/seed.ts`
-- **Root Cause:** When pushing JSON data into the real Convex database, the `insertElements` loop saves `content`, `description`, etc., but leaves `gradientValue` blank, which forces the app to default back to 100 anyway. 
-- **Solution:** Decide whether to generate random initial KPI values (e.g., between 50-100) on seed, or explicitly initialize them to 100, and update the scripts properly so it doesn't just error or fall back unconditionally.
+## 2. Technical Context for Next Session
+- **Current Branch**: `tanjim/frontend-polish-02-25`
+- **Key Files**: 
+    - `components/row-sidebar.tsx` (Sidebar logic)
+    - `components/node-card.tsx` (Card aesthetics & animations)
+    - `components/logic-grid.tsx` (Row heights & Banner layout)
+- **Pending Tasks**:
+    - Final verification of the manager's review.
+    - Further refinements to the "Edit Mode" if requested.
+    - Implementing the KPI saving logic (as identified in previous sessions but not yet tackled in this design-focused sprint).
+
+---
+*All recent changes are live on the current branch and verified for visual alignment.*
