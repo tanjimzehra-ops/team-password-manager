@@ -74,7 +74,18 @@ What is Bill Batt's exact role at MAST? What does he do day-to-day? Why is he th
 ### B2. Data Contributor Count
 How many MAST staff currently contribute data to the ERIC system? List their names or roles if possible.
 
-**Answer** *(partial)*: Multiple "MAST-nominated managers" fill forms each cycle. Exact count and names: **⚠️ UNKNOWN.**
+**Answer** *(from Risk Domains file)*: **5+ named managers** responsible for data domains:
+
+| Manager | Domains Managed |
+|---------|-----------------|
+| **Bill Batt** | Business continuity, Business Systems, Finance, Information Management, HR (shared) |
+| **Lia Morris** | Corporate Governance, Legislative compliance, Professional conduct, Service delivery, WHS, Public Safety (shared), HR (shared) |
+| **Justin Foster** | Asset Management, Public Safety (shared) |
+| **Peter Hopkins** | Boating fleet (shared), Stakeholder Engagement (shared), Experimential craft (shared) |
+| **Toby Greenlees** | Autonomous technology & AI, Boating fleet (shared), Experimential craft (shared), Stakeholder Engagement (shared) |
+| **All Managers** (collective) | Compliance monitoring, Contract Management, Environment |
+
+Total: 5 named individuals + collective "All Managers" assignments for 3 domains. ✅
 
 ### B3. Board Member Count
 How many board members or executives would need read-only access to reports? Who are they?
@@ -98,7 +109,33 @@ When we say "Bill Batt authorises report generation" — what does that mean in 
 ### C1. Risk Count
 How many risks are currently in the MAST risk register? Can you list them (or their categories)?
 
-**Answer** *(partial)*: Organised under 5 management themes: Clients, Service Delivery, Management & Governance, People & Culture, Risk. Exact risk count per theme: **⚠️ UNKNOWN — need MAST data tree file.**
+**Answer** *(from Copy of MAST Risk Domains.xlsx)*: **19 risk domains** managed by 5+ named managers:
+
+| # | Risk Domain | Responsible Manager |
+|---|-------------|---------------------|
+| 1 | Asset Management | Justin Foster |
+| 2 | Autonomous technology & AI | Toby Greenlees |
+| 3 | Boating fleet | Peter Hopkins/Toby Greenlees |
+| 4 | Business continuity/Disaster recovery | Bill Batt |
+| 5 | Business Systems | Bill Batt |
+| 6 | Compliance monitoring | All Managers |
+| 7 | Contract Management | All Managers |
+| 8 | Corporate Governance | Lia Morris |
+| 9 | Environment | All Managers |
+| 10 | Experimential and novelty craft/vessels | Peter Hopkins/Toby Greenelees |
+| 11 | Finance | Bill Batt |
+| 12 | Human Resources | Lia Morris/Bill Batt |
+| 13 | Information Management | Bill Batt |
+| 14 | Legislative/Regulatory compliance | Lia Morris |
+| 15 | Professional conduct | Lia Morris |
+| 16 | Public Safety | Justin Foster/Lia Morris |
+| 17 | Service delivery | Lia Morris |
+| 18 | Stakeholder Engagement | Peter Hopkins/Toby Greenlees |
+| 19 | WHS | Lia Morris |
+
+**Named Managers**: Bill Batt, Lia Morris, Justin Foster, Peter Hopkins, Toby Greenlees
+
+**"All Managers" domains**: Compliance monitoring, Contract Management, Environment (3 domains) ✅
 
 ### C2. Change Frequency
 How often are risks added or removed? Is this a rare event or a regular process?
@@ -137,7 +174,16 @@ Beyond the basic baseline=100 system, are there any custom formulas or calculati
 ### D4. Management Themes
 What are the exact management themes used in the MAST reports? Are they the standard five (Clients, Service Delivery, Management & Governance, People & Culture, Risk), or are they customised for MAST's maritime context?
 
-**Answer**: **⚠️ UNKNOWN — need confirmation. Standard 5 themes assumed but may be customised for maritime.**
+**Answer** *(from BDO Mast Custom Tree analysis)*: **6 custom themes** (NOT the standard 5):
+
+1. **Stakeholders** — Stakeholder satisfaction, engagement metrics
+2. **Service Delivery** — Service performance, incident metrics
+3. **Management & Governance** — Governance, compliance, risk management
+4. **People & Culture** — HR metrics, staff demographics, culture surveys
+5. **Financial Management** — Revenue, expenditure, variance analysis
+6. **MAST Performance Framework Report** — Overall composite indices
+
+> **Note**: These are MAST-specific custom themes. The standard ERIC 5-theme structure (Clients, Service Delivery, Management & Governance, People & Culture, Risk) has been adapted for MAST's maritime safety context, with "Stakeholders" replacing "Clients" and the addition of "MAST Performance Framework Report". ✅
 
 ---
 
@@ -165,11 +211,19 @@ Should the portal be called "MAST Risk Reporting", "MAST ERIC", or something els
 | Category | Questions | Answered | Still Unknown | Priority |
 |----------|-----------|----------|---------------|----------|
 | A. Current System Workflow | 8 | 7 | A2 (form count/names) | ✅ Covered |
-| B. Users and Permissions | 5 | 1 partial | B1, B2, B3, B4, B5 | 🔴 Critical gap |
-| C. Risk Register | 4 | 1 partial | C1, C2, C3 | 🟡 Likely in Martin's files |
-| D. ERIC Specifics | 4 | 2 partial | D1 (DB separation), D3, D4 | 🟡 Need review |
+| B. Users and Permissions | 5 | 2 | B1, B3, B4, B5 | 🟡 Partial |
+| C. Risk Register | 4 | 2 | C2, C3 | 🟡 Partial |
+| D. ERIC Specifics | 4 | 3 | D1 (DB separation), D3 | 🟡 Almost complete |
 | E. Branding and Domain | 3 | 0 | All | ⚪ Can defer |
-| **Total** | **24** | **~11** | **~13** | |
+| **Total** | **24** | **~14** | **~10** | |
+
+### Answers from Excel File Analysis (4 March 2026)
+
+**C1 — Risk Count**: ✅ Answered — 19 risk domains, 5 named managers (Bill Batt, Lia Morris, Justin Foster, Peter Hopkins, Toby Greenlees) + "All Managers" for 3 domains
+
+**D4 — Management Themes**: ✅ Answered — 6 custom themes (NOT standard 5): Stakeholders, Service Delivery, Management & Governance, People & Culture, Financial Management, MAST Performance Framework Report
+
+**B2 — Data Contributors**: ✅ Answered — 5+ named managers identified from Risk Domains file
 
 ### What Martin's Emails + Meetings Answered ✅
 - A1 (workflow) — fully answered (email 3 Mar + follow-up 4 Mar)

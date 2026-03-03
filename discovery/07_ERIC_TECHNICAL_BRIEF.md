@@ -15,6 +15,19 @@ MAST (Marine and Safety Tasmania) currently uses ERIC for risk reporting. MAST s
 
 The Phase 1 goal is to eliminate CPF as intermediary and give MAST full autonomy: self-service data input, risk register management, and report generation.
 
+### MAST Data Model at a Glance
+
+| Component | Count |
+|-----------|-------|
+| **Custom Tree Rows** | 92 |
+| **Unique Entry IDs** | 287 (range: 491-3499) |
+| **Total Formulas** | 2,415 |
+| **Data Entry Fields** | 7,458 |
+| **Risk Domains** | 19 |
+| **Named Managers** | 5+ (Bill Batt, Lia Morris, Justin Foster, Peter Hopkins, Toby Greenlees) |
+| **Report Themes** | 6 (custom) |
+| **Report Frequency** | Every 6 months |
+
 ---
 
 ## 1. Technical Architecture
@@ -167,7 +180,30 @@ Formulas are defined in the separate "Data and Formulas" file with:
 
 **Calculation Order**: All formulas must have a calculation order specified. Compound formulas that reference other formulas must have higher order numbers than their inputs.
 
-### 2.5 Report Types
+### 2.5 Management Themes (MAST-Specific)
+
+> **Correction**: MAST uses **6 custom themes** (NOT the standard 5 ERIC themes).
+
+The Custom Tree analysis reveals MAST's report structure uses these 6 themes:
+
+| # | Theme | Description |
+|---|-------|-------------|
+| 1 | **Stakeholders** | Stakeholder satisfaction, engagement metrics, survey results |
+| 2 | **Service Delivery** | Service performance, incident metrics, compliance |
+| 3 | **Management & Governance** | Governance, risk management, strategic oversight |
+| 4 | **People & Culture** | HR metrics, staff demographics, culture surveys, workforce planning |
+| 5 | **Financial Management** | Revenue, expenditure, variance analysis, fiscal management |
+| 6 | **MAST Performance Framework Report** | Overall composite indices, performance dashboard |
+
+This differs from the standard ERIC 5-theme structure. The "Clients" theme has been replaced with "Stakeholders" (more appropriate for MAST's maritime safety context), and a dedicated "MAST Performance Framework Report" theme has been added for executive reporting.
+
+### 2.6 Report Frequency
+
+**Confirmed**: Reports are generated **every 6 months** (bi-annually).
+
+This was confirmed verbally by Martin during the week of 2 March 2026.
+
+### 2.7 Report Types
 
 Reports are defined in the data tree tab with specific prefixes:
 
@@ -186,7 +222,70 @@ Reports are defined in the data tree tab with specific prefixes:
 
 ---
 
-## 3. Azure Infrastructure Details
+## 3. MAST-Specific Data Model Statistics
+
+From analysis of `BDO Mast Custom Tree (1).xlsx`, `BDO Data and Formulas (2).xlsx`, and `Copy of MAST Risk Domains.xlsx`:
+
+### 3.1 Data Volume
+
+| Component | Count | Notes |
+|-----------|-------|-------|
+| Custom Tree Rows | 92 | Complete hierarchy rows |
+| Total Entry IDs in Tree | 287 | IDs referenced in tree structure |
+| Entry ID Range | 491 - 3,499 | Actual range in use |
+| Registered Entry Fields | 7,458 | All possible entry fields |
+| Total Formulas | 2,415 | Calculation formulas |
+| Formula ID Range | 1 - 2,442 | With gaps |
+| Entry Types | 11 | Data type definitions |
+| Risk Domains | 19 | MAST risk categories |
+
+### 3.2 Data Tree Categories
+
+The 92 tree rows are organised into **6 categories**:
+
+1. **Financial Performance** — Revenue, grants, fiscal management, opportunity & risk, solvency
+2. **Human Resources** — Staff numbers, capacity, people & culture, payroll costs
+3. **Stakeholders** — Stakeholder engagement, demographics
+4. **Survey Results - Staff** — Internal staff survey metrics
+5. **Survey Results – Stakeholders** — External stakeholder survey metrics
+6. **Targets** — Performance targets and benchmarks
+
+These break down into **18 groups** with **87 unique labels**.
+
+### 3.3 Departments Tracked
+
+Based on Entry ID labels in the Custom Tree:
+
+- Board
+- Senior Mngt/Executive
+- Administrative
+- Recreational Boating
+- Commercial Boating
+- Infrastructure
+- Education
+- Other
+- Corporate/Admin
+- Facilities
+- Moorings
+- Ports & Pilotage
+
+### 3.4 Risk Domains and Managers
+
+**19 Risk Domains** managed by **5+ named managers**:
+
+| Manager | Domains |
+|---------|---------|
+| **Bill Batt** | Business continuity, Business Systems, Finance, Information Management, HR (shared) |
+| **Lia Morris** | Corporate Governance, Legislative compliance, Professional conduct, Service delivery, WHS, Public Safety (shared), HR (shared) |
+| **Justin Foster** | Asset Management, Public Safety (shared) |
+| **Peter Hopkins** | Boating fleet (shared), Stakeholder Engagement (shared), Experimential craft (shared) |
+| **Toby Greenlees** | Autonomous technology & AI, Boating fleet (shared), Experimential craft (shared), Stakeholder Engagement (shared) |
+
+**Collective "All Managers"**: Compliance monitoring, Contract Management, Environment (3 domains)
+
+---
+
+## 4. Azure Infrastructure Details
 
 ### 3.1 Current Azure Components
 
@@ -236,7 +335,7 @@ Per the technical documentation: *"Migration to a different hosting platform wil
 
 ---
 
-## 4. Current Workflow
+## 5. Current Workflow
 
 ### 4.1 Current State (MAST)
 
@@ -289,7 +388,7 @@ Per the technical documentation: *"Migration to a different hosting platform wil
 
 ---
 
-## 5. Known Technical Issues and Debt
+## 6. Known Technical Issues and Debt
 
 ### 5.1 Critical: Cell References vs Labels
 
@@ -340,7 +439,7 @@ Martin's confirmation: This needs investigation.
 
 ---
 
-## 6. Martin's Recent Communications (March 2026)
+## 7. Martin's Recent Communications (March 2026)
 
 ### 6.1 Key Messages from Team Sessions (3-4 March 2026)
 
@@ -385,7 +484,7 @@ Martin's confirmation: This needs investigation.
 
 ---
 
-## 7. Phase 1 Requirements for MAST Autonomy
+## 8. Phase 1 Requirements for MAST Autonomy
 
 ### 7.1 Core Objective
 
@@ -455,7 +554,7 @@ Eliminate CPF as intermediary. MAST manages their own risk data input, risk regi
 
 ---
 
-## 8. Migration Path to Supabase
+## 9. Migration Path to Supabase
 
 ### 8.1 Rationale for Migration
 
@@ -505,7 +604,7 @@ Eliminate CPF as intermediary. MAST manages their own risk data input, risk regi
 
 ---
 
-## 9. Prior Analysis and Recommendations
+## 10. Prior Analysis and Recommendations
 
 ### 9.1 From Discovery Documents
 
@@ -549,7 +648,7 @@ Eliminate CPF as intermediary. MAST manages their own risk data input, risk regi
 
 ---
 
-## 10. Information Gaps (Requires Martin's Input)
+## 11. Information Gaps (Requires Martin's Input)
 
 Per `01_CURRENT_WORKFLOW.md` and `04_MARTIN_QUESTIONNAIRE.md`:
 
@@ -569,7 +668,7 @@ Per `01_CURRENT_WORKFLOW.md` and `04_MARTIN_QUESTIONNAIRE.md`:
 
 ---
 
-## 11. Next Steps
+## 12. Next Steps
 
 ### Immediate (This Week)
 
