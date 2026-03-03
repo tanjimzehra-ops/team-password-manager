@@ -168,3 +168,32 @@ Should the portal be called "MAST Risk Reporting", "MAST ERIC", or something els
 Questions A1–A5, B1, B5, C1, and D1 are on the **critical path** — the PRD cannot be written without answers to these.
 
 Questions E1–E3 can be answered later but should be resolved before frontend design begins.
+
+---
+
+## Martin's Workflow Email (3 March 2026)
+
+Martin sent this via email today — his understanding of the current MAST workflow:
+
+> 1. MAST identifies they want to update the report to the current period – in some cases wanting to modify a risk variable by adding or subtracting
+> 2. CPF generates & saves new report template including as necessary the adjusted variable for the current period
+> 3. This autogenerates forms for each MAST nominated manager to fill – these are autouploaded into ERIC report
+> 4. MAST advises CPF when upload complete
+> 5. CPF runs report
+> 6. MAST staff and Board have read access to the report
+
+### Key Insights from This Workflow
+
+- **CPF is the bottleneck**: Steps 2 and 5 both require CPF action. Phase 1 goal = eliminate this dependency
+- **"autogenerates forms"**: This implies a template-driven form generation system — needs investigation. What generates the forms? What format?
+- **"autouploaded into ERIC report"**: There's an upload mechanism that feeds ERIC. This is the integration point to understand
+- **Variable adjustment**: Users add/subtract from a risk variable — this is the core data input action
+- **3 user types confirmed**: MAST (nominates managers), managers (fill forms), Staff+Board (read access)
+- **Missing from workflow**: Who sets up the initial report template? Is it always CPF?
+
+### Questions This Raises for the Deep Dive Session
+1. What does "generate & save new report template" actually mean technically? (Excel macro? Separate tool?)
+2. What format are the forms? (Email? Web form? Excel?)
+3. Is the "autoupload" automated or does someone manually trigger it?
+4. How long does the current end-to-end cycle take?
+5. How many managers fill forms per cycle?
