@@ -60,7 +60,7 @@ When MAST emails CPF to request a report, what does that email typically say? Is
 ### A8. Data Validation
 What validation do you perform before running a report? What checks do you run against the data trees? What errors do you look for?
 
-**Answer** *(from ERIC Technical Brief)*: Entry IDs validated for uniqueness, data types enforced per ID (13 types: scale, percent, currency, decimal, integer, yes/no variants, etc.). Formulas validated by calculation order. Alerts trigger when results exceed range parameters. **⚠️ MAST-specific validation rules unknown — need Martin's actual checking process.**
+**Answer** *(from ERIC Technical Brief)*: Entry IDs validated for uniqueness, data types enforced per ID (11 types used by MAST: scale, percent, currency, decimal, integer, yes/no variants, etc.). Formulas validated by calculation order. Alerts trigger when results exceed range parameters. **⚠️ MAST-specific validation rules unknown — need Martin's actual checking process.**
 
 ---
 

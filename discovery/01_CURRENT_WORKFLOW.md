@@ -78,7 +78,7 @@ Based on Martin's ERIC methodology document and the ERIC 1.5 PRD:
 | Level | Content | Detail |
 |-------|---------|--------|
 | 1. Dashboard | Logic Model overview | Colour-coded composite indices for each element |
-| 2. Themes | Management theme indices | Suite of 5 critical management themes |
+| 2. Themes | Management theme indices | Suite of 6 custom management themes (MAST-specific) |
 | 3. Variables | Individual metrics | Previous period, current period, benchmark/target |
 | 4. Drill-down | Business unit breakdown | Actual results and rate of change by business unit |
 
@@ -97,13 +97,16 @@ Based on Martin's ERIC methodology document and the ERIC 1.5 PRD:
 | Yellow | Slight decline | 95–99 |
 | Red | Significant decline | < 95 |
 
-### Management Themes (Example Profile)
+### Management Themes (MAST Custom)
 
-- Clients
-- Service Delivery
-- Management & Governance
-- People & Culture
-- Risk
+MAST uses **6 custom themes** (NOT the standard 5 ERIC themes):
+
+1. **Stakeholders** — Stakeholder satisfaction, engagement metrics
+2. **Service Delivery** — Service performance, incident metrics
+3. **Management & Governance** — Governance, compliance, risk management
+4. **People & Culture** — HR metrics, staff demographics, culture surveys
+5. **Financial Management** — Revenue, expenditure, variance analysis
+6. **MAST Performance Framework Report** — Overall composite indices
 
 Each theme is a **composite variable** — previous period = 100, current period pivots around this.
 

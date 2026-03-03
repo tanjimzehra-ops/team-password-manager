@@ -143,9 +143,8 @@ Each data entry field has a unique Entry ID and an assigned data type:
 | 8 | Yes/No/Not Yet | 9/1/5 scoring |
 | 9 | Proceed | Binary proceed |
 | 10 | Agree/Disagree | 9/1/5 scoring |
-| 11 | Integer Percent | Whole percentage |
-| 12 | Intelligence Gathering → Direct Provision | Scale 9-2 |
-| 13 | Support/Audit/Decline | 9/8/1 scoring |
+
+> **Note**: The ERIC platform supports additional types (11: Integer Percent, 12: Intelligence Gathering → Direct Provision, 13: Support/Audit/Decline) but these are **not used by MAST**. MAST uses only types 0–10 (11 types).
 
 ### 2.3 Variable File
 
@@ -214,6 +213,8 @@ Reports are defined in the data tree tab with specific prefixes:
 | `DDR:` | Drill Down Report | Cascading tables (max 3 fields across) |
 | `RT:` | Report Table | Exportable data tables |
 | `Comments:` | Commentary | Text/narrative in report tables only |
+
+> **MAST Note**: The MAST Custom Tree only uses `LC:` and `DDR:` prefixes. `BC:`, `RT:`, and `Comments:` are available in the ERIC platform but are not currently used in MAST's report structure.
 
 **Report Table Display Formats:**
 - `D(x,y)` = Entry ID x, Display format y
@@ -287,7 +288,7 @@ Based on Entry ID labels in the Custom Tree:
 
 ## 4. Azure Infrastructure Details
 
-### 3.1 Current Azure Components
+### 4.1 Current Azure Components
 
 ERIC is built on five core Azure components:
 
@@ -314,7 +315,7 @@ ERIC is built on five core Azure components:
    - Azure Front Door + Web Application Firewall
    - Migration: Can be migrated to different tenant
 
-### 3.2 Ancillary Services
+### 4.2 Ancillary Services
 
 | Service | Azure Component | Migration Path |
 |---------|-----------------|----------------|
@@ -325,11 +326,11 @@ ERIC is built on five core Azure components:
 | Security | Defender ATP, Security Monitor, Key Vault | Rebuild manually |
 | DevOps | Azure DevOps Project | Migrate to different tenant |
 
-### 3.3 Hosting Costs
+### 4.3 Hosting Costs
 
 Current hosting cost: **$2,420 AUD/month** (including GST), invoiced monthly from Caedus Systems.
 
-### 3.4 Migration Complexity
+### 4.4 Migration Complexity
 
 Per the technical documentation: *"Migration to a different hosting platform will require a hybrid approach of migrating some services and rebuilding others. There will be downtime during this migration (e.g., a weekend of outage)."*
 

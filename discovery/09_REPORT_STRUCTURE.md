@@ -38,7 +38,7 @@
 
 ---
 
-## Report Structure: Line Charts (11 charts)
+## Report Structure: Line Charts (13 defined in Custom Tree, 11 visible in Dec 2021 report)
 
 Layout: 2-column grid, 6 rows (last row has 1 chart only).
 
@@ -48,7 +48,7 @@ All charts share the same X-axis: 12 time periods in 6-month increments (Current
 - **Type**: Line chart
 - **Series**: Stakeholders, Service Delivery, Mngt & Governance, People & Culture, Financial Mngt
 - **Y-axis**: 0–180
-- **Significance**: This is the "dashboard" — composite view of all 5 management themes
+- **Significance**: This is the "dashboard" — composite view of 5 management themes (the 6th theme, MAST Performance Framework Report, is a drill-down only)
 - **Data range**: Series cluster around 80–140, baseline at 100
 
 ### Chart 2: Stakeholder Numbers
@@ -103,6 +103,16 @@ All charts share the same X-axis: 12 time periods in 6-month increments (Current
 - **Series**: Planned (rostered/worked) as % of capacity, Worked as % of planned, OT & TOIL hours as % of planned
 - **Y-axis**: 0–1.2
 
+### Chart 12: Complaints management *(not visible in Dec 2021 PDF — defined in Custom Tree)*
+- **Type**: Line chart
+- **Series**: TBD — defined in Custom Tree row 130
+- **Note**: May have been added after Dec 2021, or conditionally hidden
+
+### Chart 13: People & Culture — Annual performance reviews *(not visible in Dec 2021 PDF — defined in Custom Tree)*
+- **Type**: Line chart
+- **Series**: TBD — defined in Custom Tree row 172
+- **Note**: May have been added after Dec 2021, or conditionally hidden
+
 ---
 
 ## Report Structure: Drill Down Reports (6 sections)
@@ -147,7 +157,7 @@ Each drill-down table shows (based on ERIC system design):
 
 | Metric | Count |
 |--------|-------|
-| Line Charts | 11 |
+| Line Charts | 13 (11 in Dec 2021 report, 2 additional in Custom Tree) |
 | Data series (total across all charts) | ~35 |
 | Drill Down sections | 6 |
 | Time periods per chart | 12 (5 years × 2/year) |

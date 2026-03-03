@@ -15,9 +15,9 @@
 | Entry IDs (287 unique, range 491-3499) | ✅ | Custom Tree + Data Entry Fields |
 | Formulas (2,415 with calculation chains) | ✅ | BDO Data and Formulas.xlsx |
 | Data entry fields (7,458) | ✅ | BDO Data and Formulas.xlsx |
-| Entry types (13 types) | ✅ | BDO Data and Formulas.xlsx |
+| Entry types (11 types, IDs 0–10) | ✅ | BDO Data and Formulas.xlsx |
 | Risk domains (19 with responsible managers) | ✅ | MAST Risk Domains.xlsx |
-| Named managers (9: Batt, Morris, Foster, Hopkins, Greenlees + 4 others) | ✅ | MAST Risk Domains.xlsx |
+| Named managers (5: Batt, Morris, Foster, Hopkins, Greenlees) | ✅ | MAST Risk Domains.xlsx |
 | Management themes (6 custom, NOT standard 5) | ✅ | Custom Tree + Report PDF |
 | Report structure (11 line charts + 6 drill-downs) | ✅ | Report - ERIC.pdf |
 | Report frequency | ✅ Every 6 months | Martin verbal confirmation |
@@ -43,7 +43,7 @@
 #### Gap 2: User Access Details
 - **What**: How many people total access the system? Do they have individual Azure AD accounts or a shared login? What does Bill Batt actually do day-to-day?
 - **From**: Bill Batt or Martin
-- **Why it matters**: Defines RBAC design — how many user accounts to create, what permission levels. We know 9 named managers from Risk Domains but don't know if all of them log into ERIC directly.
+- **Why it matters**: Defines RBAC design — how many user accounts to create, what permission levels. We know 5 named managers from Risk Domains but don't know if all of them log into ERIC directly.
 - **Workaround**: Design for 3 roles (Admin=Bill Batt, Contributor=managers, Viewer=board) and adjust later.
 - **Suggested approach**: Quick call with Bill Batt — 15 minutes would answer all user questions.
 

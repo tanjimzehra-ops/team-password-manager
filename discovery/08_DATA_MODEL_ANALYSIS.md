@@ -19,7 +19,7 @@
 | **Total Formulas** | 2415 |
 | **Data Entry Fields** | 7458 |
 | **Risk Domains** | 19 |
-| **Named Managers** | 9 |
+| **Named Managers** | 5 (Bill Batt, Lia Morris, Justin Foster, Peter Hopkins, Toby Greenlees) |
 | **Report Themes** | 6 (custom for MAST) |
 
 ---
@@ -491,9 +491,9 @@ This was confirmed verbally by Martin during the week of 2 March 2026.
 |------------|----------|
 | **Cell References** | Kept as-is (deferred to Phase 2) |
 | **Report Themes** | Keep 6 custom MAST themes |
-| **Entry ID Range** | Preserve 357-746+ range |
+| **Entry ID Range** | Preserve 491–3499 range |
 | **Formula Structure** | Maintain exact calculation chains |
-| **Data Types** | Support all 11 entry types |
+| **Data Types** | Support all 11 entry types (IDs 0–10) |
 
 ### Phase 2 (Future Enhancement)
 
@@ -514,7 +514,7 @@ This was confirmed verbally by Martin during the week of 2 March 2026.
 | Total Entry IDs | 287 |
 | Entry Fields Registered | 7458 |
 | Total Formulas | 2415 |
-| Entry Types | 12 |
+| Entry Types | 11 (IDs 0–10) |
 | Risk Domains | 19 |
 | Named Managers | 5 (Bill Batt, Lia Morris, Justin Foster, Peter Hopkins, Toby Greenlees) |
 | Report Themes | 6 (custom) |
