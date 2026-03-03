@@ -1,4 +1,6 @@
-# CLAUDE.md — MAST Autonomous Risk Reporting Platform
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
@@ -6,27 +8,20 @@ MAST (Marine and Safety Tasmania) is a government business entity that uses ERIC
 
 **Phase 1 scope:** Exact replication of the current report + self-service data input + three-tier permission model. No redesign.
 
-**Current phase:** Pre-BMAD — discovery documents complete, awaiting brief.
+**Current phase:** Pre-BMAD — discovery documents complete, awaiting brief. No application code exists yet.
 
 ## Build Methodology
 
 CPF uses **BMAD**: Brief → PRD → Architecture → Epics & Sprints → Production.
 
-The PRD is the heart of the process — every requirement must be explicit before architecture begins. Do not skip steps.
+The PRD is the heart of the process — every requirement must be explicit before architecture begins. Do not skip steps. Use the `/bmad-specialist` skill for BMAD workflow guidance.
 
-## Project Structure
+## Repository Structure
 
-```
-MAST/
-├── CLAUDE.md              ← This file
-├── _bmad/docs/            ← BMAD outputs
-│   ├── brief/             ← Product brief
-│   ├── prd/               ← Product Requirements Document
-│   └── architecture/      ← Technical architecture
-├── discovery/             ← Pre-brief research (6 documents)
-├── reference/             ← ERIC documentation index
-└── sessions/              ← Session documentation
-```
+- `discovery/` — Pre-brief research (6 numbered documents covering current workflow, target workflow, technical stack, Martin's questionnaire, Pradeep's tech investigation, deep-dive agenda)
+- `reference/` — ERIC documentation index (placeholder — awaiting Martin's upload)
+- `sessions/` — Session handoff notes and implementation reports
+- `_bmad/docs/` — BMAD outputs (brief, PRD, architecture) — **not yet created**
 
 ## Domain Context
 
@@ -38,19 +33,6 @@ MAST/
 - **Colour coding:** Green (>=100), Yellow (95-99), Red (<95)
 - **Cell references:** Data uses cell references NOT labels — labels only in graphs. Keep as-is for Phase 1.
 - **Management themes:** Clients, Service Delivery, Management & Governance, People & Culture, Risk
-
-### Current Workflow (What We're Replacing)
-1. MAST staff fill input forms in ERIC (Excel variable files)
-2. MAST emails CPF to request report
-3. CPF validates against data trees, runs report
-4. Report delivered to MAST
-
-### Target Workflow (What We're Building)
-1. Staff log in to MAST portal (own domain, Australian hosting)
-2. Staff fill web forms (own data only)
-3. Administrator reviews data, manages risks, authorises report generation
-4. System generates report automatically
-5. Board members access reports (read-only)
 
 ### Three-Tier Permission Model
 - **Administrator** (Bill Batt): manage risks, variables, users; authorise reports
@@ -88,7 +70,6 @@ MAST/
 
 ## Related Repos
 - **Jigsaw 2.0** (`nicopt-io/Jigsaw-2.0`): Client case files at `OBS_notes/Jigsaw20/clients/mast/`
-- **Jigsaw 1.6 RSA** (`nicopt-io/Jigsaw-1.6-RSA`): Active Jigsaw platform (separate project)
 - **ERIC 1.5 PRD**: Reference PRD at `_bmad/eric-1.5/docs/prd/PRD.md` in Jigsaw 2.0 repo
 
 ## Communication Preferences
