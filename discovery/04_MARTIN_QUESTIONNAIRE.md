@@ -50,7 +50,7 @@ Share an actual MAST report (PDF or equivalent). If not available, describe the 
 ### A6. Report Frequency
 How often does MAST request reports? Monthly? Quarterly? Ad-hoc? Is there a fixed schedule?
 
-**Answer**: **⚠️ UNKNOWN — need from Martin or Bill Batt.**
+**Answer**: **Cada 6 meses** (confirmado por Martin en reunión, semana del 2 Mar 2026). ✅
 
 ### A7. Email Templates
 When MAST emails CPF to request a report, what does that email typically say? Is there a standard format, or is it informal?
@@ -164,28 +164,45 @@ Should the portal be called "MAST Risk Reporting", "MAST ERIC", or something els
 
 | Category | Questions | Answered | Still Unknown | Priority |
 |----------|-----------|----------|---------------|----------|
-| A. Current System Workflow | 8 | 6 (partially) | A2 (form count), A6 (frequency) | ✅ Mostly covered |
+| A. Current System Workflow | 8 | 7 | A2 (form count/names) | ✅ Covered |
 | B. Users and Permissions | 5 | 1 partial | B1, B2, B3, B4, B5 | 🔴 Critical gap |
-| C. Risk Register | 4 | 1 partial | C1, C2, C3 | 🔴 Critical gap |
-| D. ERIC Specifics | 4 | 1 partial | D1 (DB separation), D2 (files), D3, D4 | 🟡 Need files |
+| C. Risk Register | 4 | 1 partial | C1, C2, C3 | 🟡 Likely in Martin's files |
+| D. ERIC Specifics | 4 | 2 partial | D1 (DB separation), D3, D4 | 🟡 Need review |
 | E. Branding and Domain | 3 | 0 | All | ⚪ Can defer |
-| **Total** | **24** | **~9** | **~15** | |
+| **Total** | **24** | **~11** | **~13** | |
 
-### What Martin's Emails Answered ✅
-- A1 (workflow) — fully answered
+### What Martin's Emails + Meetings Answered ✅
+- A1 (workflow) — fully answered (email 3 Mar + follow-up 4 Mar)
 - A3, A4, A5 (variable files, data trees, reports) — answered from ERIC Technical Brief
+- A6 (frequency) — **every 6 months** (confirmed verbally by Martin, week of 2 Mar)
 - A7 (email templates) — answered (informal, Phase 1 eliminates)
 - A8 (validation) — partially from ERIC docs
 
-### What We Still ACTUALLY Need 🔴
-These are the **real blockers** for the PRD — everything else we can work around:
+### Martin's "Mast documents" Email (2 Mar, 6:52 AM) 📎
+Martin sent 6 key files that likely answer several remaining questions. **Need to review and cross-reference:**
 
-1. **MAST-specific files**: actual data tree, variable file, sample report PDF (Martin has these)
-2. **User list**: how many managers fill forms, who is Bill Batt exactly, board member count
-3. **Report frequency**: monthly? quarterly? ad-hoc?
-4. **DB separation**: is MAST its own Azure instance or shared with other ERIC clients?
+| File | Likely Answers |
+|------|---------------|
+| `Copy of MAST Risk Domains.xlsx` | C1 (risk count/categories), D4 (management themes) |
+| `BDO Mast Custom Tree (1).xlsx` | A4 (data tree structure), A2 (form count) |
+| `MAST MAP DEC22.xlsx` | Report structure, hierarchy |
+| `MAST Dynamic Risk Management Improvement.docx` | Context, methodology |
+| `Report - ERIC.pdf` | **A5 (sample report)** ✅ |
+| `BDO Data and Formulas (2).xlsx` | A3 (variable/formula structure), D3 (custom formulas) |
+
+### What We Still Need After File Review 🔴
+
+1. **User details** (B1, B2, B3)
+   *We need this to design the permission system — who sees what, who can edit what. Without knowing the actual team structure, we risk building access controls that don't match how people work day to day. A quick list from Bill Batt would be enough.*
+
+2. **DB separation** (D1)
+   *This determines the entire migration approach. If MAST shares a database with other ERIC clients, we need to extract data without affecting them — very different from migrating a standalone instance. One question for Caedus Systems would resolve this.*
+
+3. **Management themes** (D4)
+   *The report is built around these themes. If MAST uses custom ones (adapted for maritime safety), the data model changes. Likely answered by the Risk Domains spreadsheet — needs review.*
 
 ### No Longer Critical
+- A6 (frequency) — answered: every 6 months ✅
 - A7 (email templates) — Phase 1 eliminates email step
 - E1-E3 (branding) — can defer to design phase
 
