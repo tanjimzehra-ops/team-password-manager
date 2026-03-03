@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import {
   Dialog,
   DialogContent,
@@ -11,201 +11,216 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
-import { Search, Link2, Copy, X, Library } from "lucide-react"
+import { Search, Loader2, Link2 } from "lucide-react"
 import type { NodeData } from "@/lib/types"
-
-interface LibraryItem {
-  id: string
-  sharedId?: string
-  title: string
-  description?: string
-  systemName: string
-  systemId: string
-  color?: NodeData["color"]
-  category: NodeData["category"]
-}
+import { Id } from "@/convex/_generated/dataModel"
 
 interface LibraryPopupProps {
   isOpen: boolean
   onClose: () => void
-  category: "outcomes" | "value-chain" | "resources"
-  currentSystemId: string
-  currentSystemName: string
-  onConnect: (item: LibraryItem) => void
-  onCopy: (item: LibraryItem) => void
-  items: LibraryItem[]
+  category: "outcomes" | "value-chain" | "resources" | null
+  items: any[]
+  isConnecting: boolean
+  onConnect: (ids: Id<"elements">[]) => Promise<void>
+  onCopy: (ids: Id<"elements">[]) => Promise<void>
 }
 
 const categoryLabels = {
   outcomes: "Strategic Objectives",
   "value-chain": "Value Chain",
   resources: "Resources, Capabilities / Levers",
-}
-
-const categoryColors = {
-  outcomes: "bg-blue-500",
-  "value-chain": "bg-emerald-500",
-  resources: "bg-amber-500",
+  purpose: "Purpose",
 }
 
 export function LibraryPopup({
   isOpen,
   onClose,
   category,
-  currentSystemId,
-  currentSystemName,
+  items,
+  isConnecting,
   onConnect,
   onCopy,
-  items,
 }: LibraryPopupProps) {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedItem, setSelectedItem] = useState<LibraryItem | null>(null)
+  const [selectedIds, setSelectedIds] = useState<Set<Id<"elements">>>(new Set())
 
   useEffect(() => {
     if (!isOpen) {
-      setSelectedItem(null)
+      setSelectedIds(new Set())
       setSearchQuery("")
     }
   }, [isOpen])
 
-  const filteredItems = items.filter((item) => {
-    if (item.category !== category) return false
-    const q = searchQuery.toLowerCase()
-    return (
-      item.title.toLowerCase().includes(q) ||
-      item.systemName.toLowerCase().includes(q) ||
-      (item.description?.toLowerCase().includes(q) ?? false)
-    )
-  })
+  const filteredItems = useMemo(() => {
+    if (!category) return []
+    // Map internal category name to Convex record type
+    const convexTypeMap: Record<string, string> = {
+      outcomes: "outcome",
+      "value-chain": "value_chain",
+      resources: "resource",
+    }
+    const targetType = convexTypeMap[category]
 
-  const groupedItems = filteredItems.reduce(
-    (acc, item) => {
+    return items.filter((item) => {
+      if (item.elementType !== targetType) return false
+      const q = searchQuery.toLowerCase()
+      return (
+        item.content.toLowerCase().includes(q) ||
+        (item.description?.toLowerCase().includes(q) ?? false) ||
+        item.systemName.toLowerCase().includes(q)
+      )
+    })
+  }, [items, category, searchQuery])
+
+  const groupedItems = useMemo(() => {
+    return filteredItems.reduce((acc, item) => {
       if (!acc[item.systemName]) acc[item.systemName] = []
       acc[item.systemName].push(item)
       return acc
-    },
-    {} as Record<string, LibraryItem[]>
-  )
+    }, {} as Record<string, any[]>)
+  }, [filteredItems])
 
-  const handleConnect = () => {
-    if (selectedItem) {
-      onConnect(selectedItem)
+  const toggleItem = (id: Id<"elements">) => {
+    const next = new Set(selectedIds)
+    if (next.has(id)) {
+      next.delete(id)
+    } else {
+      next.add(id)
+    }
+    setSelectedIds(next)
+  }
+
+  const handleConnect = async () => {
+    if (selectedIds.size > 0) {
+      await onConnect(Array.from(selectedIds))
       onClose()
     }
   }
 
-  const handleCopy = () => {
-    if (selectedItem) {
-      onCopy(selectedItem)
+  const handleCopy = async () => {
+    if (selectedIds.size > 0) {
+      await onCopy(Array.from(selectedIds))
       onClose()
     }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[80vh] flex flex-col overflow-hidden min-h-0">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Library className="h-5 w-5 text-primary" />
-            {categoryLabels[category]} Library
+      <DialogContent className="sm:max-w-[700px] h-[85vh] flex flex-col p-0 overflow-hidden bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+        <DialogHeader className="p-6 pb-0">
+          <DialogTitle className="text-2xl font-black tracking-tight flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-primary/10">
+              <span className="text-primary">Master Library</span>
+            </div>
+            {category && categoryLabels[category]}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search library..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
-        </div>
+        <div className="px-6 py-4 flex flex-col gap-4 flex-1 overflow-hidden">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder={`Search ${category ? categoryLabels[category].toLowerCase() : 'library'}...`}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-11 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-xl"
+            />
+          </div>
 
-        <ScrollArea className="flex-1 border rounded-lg min-h-0">
-          {Object.keys(groupedItems).length === 0 ? (
-            <div className="flex items-center justify-center h-full p-4">
-              <p className="text-muted-foreground text-sm">No items found</p>
-            </div>
-          ) : (
-            <div className="p-2 space-y-4">
-              {Object.entries(groupedItems).map(([systemName, systemItems]) => (
-                <div key={systemName}>
-                  <div className="sticky top-0 bg-background px-2 py-1 mb-2 z-10">
-                    <Badge variant="outline" className="text-xs">
+          <ScrollArea className="flex-1 min-h-0 border border-slate-200 dark:border-slate-800 rounded-2xl bg-white/50 dark:bg-slate-900/50">
+            <div className="p-4 space-y-6">
+              {Object.keys(groupedItems).length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+                  <p className="text-sm font-medium">No results found</p>
+                </div>
+              ) : (
+                (Object.entries(groupedItems) as [string, any[]][]).map(([systemName, systemItems]) => (
+                  <div key={systemName} className="space-y-2">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 px-1">
                       {systemName}
-                    </Badge>
-                  </div>
-                  <div className="space-y-1">
-                    {systemItems.map((item) => (
-                      <button
-                        key={item.id}
-                        onClick={() => setSelectedItem(item)}
-                        className={cn(
-                          "w-full text-left px-3 py-2 rounded-md transition-colors",
-                          "hover:bg-muted/50",
-                          selectedItem?.id === item.id
-                            ? "bg-primary/10 border border-primary/30"
-                            : "border border-transparent"
-                        )}
-                      >
-                        <div className="flex items-start gap-2">
-                          <div
-                            className={cn(
-                              "w-2 h-2 rounded-full mt-1.5 shrink-0",
-                              categoryColors[category]
-                            )}
+                    </h3>
+                    <div className="space-y-1">
+                      {systemItems.map((item: any) => (
+                        <div
+                          key={item._id}
+                          onClick={() => toggleItem(item._id)}
+                          className={cn(
+                            "flex items-start gap-4 p-4 rounded-xl cursor-pointer transition-all border outline-none select-none",
+                            selectedIds.has(item._id)
+                              ? "bg-primary/5 border-primary/20"
+                              : "bg-transparent border-transparent hover:bg-slate-100 dark:hover:bg-slate-800/50"
+                          )}
+                        >
+                          <Checkbox
+                            checked={selectedIds.has(item._id)}
+                            onCheckedChange={() => toggleItem(item._id)}
+                            className="mt-1 rounded-sm border-slate-300 dark:border-slate-700"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium text-sm truncate">{item.title}</p>
+                            <h4 className="font-bold text-slate-900 dark:text-slate-100 text-sm leading-tight">
+                              {item.content}
+                            </h4>
                             {item.description && (
-                              <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">
+                              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                                 {item.description}
                               </p>
                             )}
                           </div>
-                          {item.systemId === currentSystemId && (
-                            <Badge variant="secondary" className="text-[10px] shrink-0">
-                              Current
-                            </Badge>
-                          )}
                         </div>
-                      </button>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
-          )}
-        </ScrollArea>
+          </ScrollArea>
+        </div>
 
-        {selectedItem && (
-          <div className="bg-muted/30 rounded-lg p-3 border">
-            <p className="text-xs text-muted-foreground mb-1">Selected:</p>
-            <p className="font-medium text-sm">{selectedItem.title}</p>
-            <p className="text-xs text-muted-foreground">From: {selectedItem.systemName}</p>
+        <DialogFooter className="p-6 pt-2 bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 flex-row justify-between items-center sm:justify-between">
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-widest pl-2">
+            {selectedIds.size} {selectedIds.size === 1 ? 'item' : 'items'} selected
           </div>
-        )}
 
-        <DialogFooter className="flex gap-2 sm:gap-2">
-          <Button variant="outline" onClick={onClose} className="flex-1 sm:flex-none">
-            <X className="h-4 w-4 mr-2" />
-            Cancel
-          </Button>
-          <Button
-            variant="outline"
-            onClick={handleCopy}
-            disabled={!selectedItem}
-            className="flex-1 sm:flex-none"
-          >
-            <Copy className="h-4 w-4 mr-2" />
-            Copy
-          </Button>
-          <Button onClick={handleConnect} disabled={!selectedItem} className="flex-1 sm:flex-none">
-            <Link2 className="h-4 w-4 mr-2" />
-            Connect
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="rounded-xl font-bold uppercase tracking-widest text-[11px] border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900/30 dark:text-red-400 dark:hover:bg-red-900/20"
+            >
+              Cancel
+            </Button>
+
+            <Button
+              variant="default"
+              onClick={handleCopy}
+              disabled={selectedIds.size === 0 || isConnecting}
+              className={cn(
+                "rounded-xl font-bold uppercase tracking-widest text-[11px] h-10 px-6 transition-all duration-300",
+                selectedIds.size > 0
+                  ? "bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 active:scale-95"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-400 opacity-50 cursor-not-allowed"
+              )}
+            >
+              {isConnecting ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
+              Copy
+            </Button>
+
+            <Button
+              onClick={handleConnect}
+              disabled={selectedIds.size === 0 || isConnecting}
+              className={cn(
+                "rounded-xl font-bold uppercase tracking-widest text-[11px] h-10 px-6 transition-all duration-300",
+                selectedIds.size > 0
+                  ? "bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20 active:scale-95"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-400 opacity-50 cursor-not-allowed"
+              )}
+            >
+              {isConnecting ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : <Link2 className="h-3 w-3 mr-2" />}
+              Connect
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

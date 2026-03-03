@@ -1,36 +1,37 @@
-# Session Handoff: Strategic UI Overhaul
+# Session Handoff - Grid Alignment & Typography Scaling
 
-## 1. Summary of Completed Work
-We have successfully implemented a premium, diagnostic-grade visual update to the Jigsaw platform, focusing on the Logic Model and administrative controls.
+## Overview
+This session focused on achieving pixel-perfect vertical alignment between the sidebar and logic grid, as well as significantly increasing the "written text" size across the UI for better legibility.
 
-### Strategic Sidebar (Logic Model)
-- **6-Row Architecture**: Overhauled `RowSidebar.tsx` to include exactly six rows (Impact, Outcome, Value Chain, Dimension, Resources, Context).
-- **Brackets & Grouping**: Visual brackets for "Strategic Intent" and "Operations" to organize the layout according to strategic principles.
-- **Pixel-Perfect Alignment**: Calibrated exact heights (92px to 216px) to match the `LogicGrid` banners and cards perfectly.
-- **Toggle Control**: Added a "Display Logic" toggle in `app/page.tsx` for clean UI management.
-- **Shadow Clean-up**: Removed all unwanted hover/active shadows for a streamlined, minimalist feel.
+## Changes Made
 
-### Node Card & Visuals
-- **Dynamic Backgrounds**: Integrated "Floating Glow Orbs" into `NodeCard.tsx` using `motion/framer-motion`. These are subtle, animated objects that uniquely float behind each node to fill vertical space.
-- **Design Simplification**: Removed static labels (subtitles/footers) to keep the emphasis on the dynamic background and the core diagnostic content.
-- **Adaptive Scrolling**: Ensured the grid uses `overflow-x-auto` to handle complex logic models gracefully on multiple screen sizes.
+### 1. Vertical Sync & Alignment
+- **Mathematical Alignment**: Enforced synchronized fixed row heights (132px, 300px, 200px) in both `LogicGrid` and `RowSidebar`.
+- **Header Locking**: Standardized all section headers to exactly 60px. This ensures sidebar labels (PURPOSE, OBJECTIVES, etc.) are perfectly centered with their corresponding grid rows.
+- **Top Offset Fix**: Updated the sidebar's top margin to 96px to perfectly clear the "Display Logic" checkbox and line up with the grid's first row.
 
-### Project Management
-- **Management Report**: Created `project_summary_report.md` summarizing all UI and architectural changes for reporting purposes.
-- **Version Control**: Committed all changes and pushed the entire branch safely to GitHub:
-    - **Branch Name**: `tanjim/frontend-polish-02-25`
-    - **Isolation**: Pushed via `git push origin HEAD` to ensure `main` remains untouched.
+### 2. Typography & Legibility Upgrade
+- **Sidebar**: Increased system names to **`text-base`** (bold) and org/sector info to **`text-sm`**. Increased search input to **`text-base`**.
+- **Header**: Upgraded model navigation tabs (Logic Model, etc.) to **`text-base`** (bold) with improved padding (px-5 py-2.5) and shadow effects.
+- **Toolbar**: All mode buttons (View, Edit, etc.) and labels are now **`text-base`** (bold) with increased button height (h-9).
+- **Content**: Upgraded "Display Logic" label text to **`text-sm`** (black weight).
 
-## 2. Technical Context for Next Session
-- **Current Branch**: `tanjim/frontend-polish-02-25`
-- **Key Files**: 
-    - `components/row-sidebar.tsx` (Sidebar logic)
-    - `components/node-card.tsx` (Card aesthetics & animations)
-    - `components/logic-grid.tsx` (Row heights & Banner layout)
-- **Pending Tasks**:
-    - Final verification of the manager's review.
-    - Further refinements to the "Edit Mode" if requested.
-    - Implementing the KPI saving logic (as identified in previous sessions but not yet tackled in this design-focused sprint).
+## Approved Plan for Next Session
+- **"Full View" Node Cards**:
+    - Remove `line-clamp-4` from descriptions in `NodeCard.tsx` (show all text).
+    - Reduce title size from `text-3xl` to **`text-2xl`** to save space.
+    - Increase row heights to **320px** (Outcomes) and **220px** (Elements) to accommodate the extra visible text.
+    - Synchronize these new heights (320px/220px) and their side brackets in `RowSidebar.tsx`.
+
+## Status
+- **Files Modified**: `app/page.tsx`, `components/logic-grid.tsx`, `components/row-sidebar.tsx`, `components/header.tsx`, `components/view-controls.tsx`.
+- **Status**: Visual alignment is locked; legibility is upgraded. Ready for "Full View" implementation.
 
 ---
-*All recent changes are live on the current branch and verified for visual alignment.*
+
+# Prompt for Next Session
+> Use this prompt to resume work:
+> 
+> "I am continuing work on the Jigsaw platform. We just finished locking the pixel-perfect vertical alignment and upgrading the UI text sizes for better legibility.
+> 
+> Please read the `SESSION_HANDOFF.md` and `implementation_plan.md` files. We are ready to implement the **'Full View' Node Cards** as outlined in the plan. This involves removing line-clamping in `NodeCard.tsx` and increasing the synchronized row heights (320px/220px) in both `LogicGrid.tsx` and `RowSidebar.tsx` while keeping everything aligned."

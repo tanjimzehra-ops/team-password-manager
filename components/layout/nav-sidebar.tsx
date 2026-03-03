@@ -157,7 +157,7 @@ export function NavSidebar({
               }}
             >
               <LayoutDashboard className="h-5 w-5 shrink-0" />
-              {!isCollapsed && <span className="text-base font-semibold">Dashboard</span>}
+              {!isCollapsed && <span className="text-lg font-bold">Dashboard</span>}
             </Button>
 
             {/* Reports */}
@@ -185,7 +185,7 @@ export function NavSidebar({
               onClick={onCanvasClick}
             >
               <Network className="h-5 w-5 shrink-0" />
-              {!isCollapsed && <span className="text-base font-semibold">Canvas</span>}
+              {!isCollapsed && <span className="text-lg font-bold">Canvas</span>}
             </Button>
 
             <Separator className="my-2" />
@@ -203,7 +203,7 @@ export function NavSidebar({
                 <Wrench className="h-5 w-5 shrink-0" />
                 {!isCollapsed && (
                   <>
-                    <span className="text-base font-bold flex-1 text-left">Systems</span>
+                    <span className="text-lg font-bold flex-1 text-left">Systems</span>
                     {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
                     ) : systemsExpanded ? (
@@ -225,7 +225,7 @@ export function NavSidebar({
                       placeholder="Search systems..."
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
-                      className="h-10 pl-10 pr-10 text-sm font-medium"
+                      className="h-11 pl-10 pr-10 text-base font-medium"
                     />
                     {searchInput && (
                       <button
@@ -268,13 +268,13 @@ export function NavSidebar({
                                 isSystemSelected(system) ? "bg-primary animate-pulse" : "bg-muted-foreground/30"
                               )} />
                               <div className="flex flex-col items-start overflow-hidden text-left gap-0.5">
-                                <span className="truncate w-full font-semibold">{system.name}</span>
+                                <span className="truncate w-full font-bold text-base">{system.name}</span>
                                 {system.orgName ? (
-                                  <span className="text-xs text-muted-foreground/70 truncate w-full font-medium">
+                                  <span className="text-sm text-muted-foreground/80 truncate w-full font-semibold">
                                     {system.orgName}
                                   </span>
                                 ) : system.sector ? (
-                                  <span className="text-xs text-muted-foreground/70 truncate w-full font-medium">
+                                  <span className="text-sm text-muted-foreground/80 truncate w-full font-semibold">
                                     {system.sector}
                                   </span>
                                 ) : null}
@@ -304,11 +304,11 @@ export function NavSidebar({
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="w-full justify-start gap-2 h-8 px-2 text-xs text-muted-foreground hover:bg-muted/50"
+                          className="w-full justify-start gap-2 h-10 px-2 text-sm text-muted-foreground hover:bg-muted/50"
                           onClick={() => setAddSystemOpen(true)}
                           title="Add System"
                         >
-                          <Plus className="h-3 w-3" />
+                          <Plus className="h-4 w-4" />
                           Add System
                         </Button>
                       )}

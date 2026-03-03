@@ -303,13 +303,16 @@ export default function Page() {
     : jsonAdapter.getConvergenceMapData()
 
   // Library hook (depends on effectiveLogicGridData)
-  const { libraryOpen, libraryCategory, libraryItems, openLibrary, closeLibrary } = useLibrary(
-    effectiveLogicGridData,
-    dataSource === "convex"
-      ? convexSystems.map(s => ({ id: s.id, name: s.name }))
-      : undefined,
-    selectedSystemId
-  )
+  const {
+    libraryOpen,
+    libraryCategory,
+    libraryItems,
+    openLibrary,
+    closeLibrary,
+    isConnecting,
+    connect,
+    copy
+  } = useLibrary(selectedSystemId as Id<"systems">)
 
   // Portfolio optimistic state
   const { addOptimistic, removeOptimistic, getMergedPortfolios } = usePortfolioState()
@@ -880,6 +883,7 @@ export default function Page() {
             onDeleteNode={handleDeleteNode}
             onEditNode={handleEditNode}
             onKpiChange={handleKpiChange}
+            onOpenLibrary={openLibrary}
           />
         )
       case "contribution-map":
@@ -947,16 +951,6 @@ export default function Page() {
       <TooltipProvider>
         <div className="min-h-screen bg-background flex flex-col">
           <Header activeTab={activeTab} onTabChange={setActiveTab} systemName={systemName} isDashboard={!selectedSystemId} />
-          <ViewControls
-            showKpi={showKpi}
-            onToggleKpi={setShowKpi}
-            editMode={editMode}
-            onEditModeChange={handleEditModeChange}
-            activeTab={activeTab}
-            onExport={activeTab !== "canvas" ? handleExport : undefined}
-            userRole={effectiveRole ?? undefined}
-            isDashboard={!selectedSystemId}
-          />
 
           {/* Data Source Indicator — JSON fallback only */}
           {dataSource === "json" && (
@@ -988,47 +982,59 @@ export default function Page() {
                 canDeleteSystem={dataSource === "convex" && canMutate}
               />
 
-              {/* Row Labels Sidebar - Only show for Logic Model and when a system is selected */}
+              <div className="flex-1 min-w-0 flex flex-col min-h-0 bg-background">
+                {/* View Controls within the content area for alignment */}
+                <ViewControls
+                  showKpi={showKpi}
+                  onToggleKpi={setShowKpi}
+                  editMode={editMode}
+                  onEditModeChange={handleEditModeChange}
+                  activeTab={activeTab}
+                  onExport={activeTab !== "canvas" ? handleExport : undefined}
+                  userRole={effectiveRole ?? undefined}
+                  isDashboard={!selectedSystemId}
+                />
 
-              {/* Main Content Area */}
-              <div className="flex-1 min-w-0 flex overflow-y-auto">
-                {activeTab === "logic-model" && showLogicSidebar && selectedSystemId && (
-                  <RowSidebar
-                    rows={effectiveLogicGridData}
-                    activeRow={activeRow}
-                    onRowClick={handleRowClick}
-                  />
-                )}
-                <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto">
-                  {activeTab === "logic-model" && selectedSystemId && (
-                    <div className="flex items-center gap-4 mb-6 px-2 w-fit">
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          id="display-logic"
-                          checked={showLogicSidebar}
-                          onChange={(e) => setShowLogicSidebar(e.target.checked)}
-                          className="h-4 w-4 rounded border-slate-300 bg-background text-teal-600 focus:ring-teal-500 cursor-pointer"
-                        />
-                        <label htmlFor="display-logic" className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 cursor-pointer select-none">
-                          Display Logic
-                        </label>
+                {/* Main Content Scroll Area */}
+                <div className="flex-1 min-w-0 flex overflow-y-auto">
+                  {activeTab === "logic-model" && showLogicSidebar && selectedSystemId && (
+                    <RowSidebar
+                      rows={effectiveLogicGridData}
+                      activeRow={activeRow}
+                      onRowClick={handleRowClick}
+                    />
+                  )}
+                  <div className="flex-1 min-w-0 px-6 py-6 overflow-x-auto">
+                    {activeTab === "logic-model" && selectedSystemId && (
+                      <div className="flex items-center gap-4 h-12 mb-6 px-2 w-fit">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            id="display-logic"
+                            checked={showLogicSidebar}
+                            onChange={(e) => setShowLogicSidebar(e.target.checked)}
+                            className="h-4 w-4 rounded border-slate-300 bg-background text-teal-600 focus:ring-teal-500 cursor-pointer"
+                          />
+                          <label htmlFor="display-logic" className="text-sm font-black uppercase tracking-[0.25em] text-slate-600 dark:text-slate-400 cursor-pointer select-none">
+                            Display Logic
+                          </label>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                  {renderMainContent()}
-                  {/* Edit mode controls - Convex auto-saves */}
-                  {editMode === "edit" && (
-                    <div className="mt-8 flex justify-center">
-                      <Button
-                        size="lg"
-                        variant="outline"
-                        onClick={() => handleEditModeChange("view")}
-                      >
-                        Done Editing
-                      </Button>
-                    </div>
-                  )}
+                    )}
+                    {renderMainContent()}
+                    {/* Edit mode controls - Convex auto-saves */}
+                    {editMode === "edit" && (
+                      <div className="mt-8 flex justify-center">
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          onClick={() => handleEditModeChange("view")}
+                        >
+                          Done Editing
+                        </Button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1062,12 +1068,11 @@ export default function Page() {
           <LibraryPopup
             isOpen={libraryOpen}
             onClose={closeLibrary}
-            category={(libraryCategory ?? "outcomes") as "outcomes" | "value-chain" | "resources"}
-            currentSystemId={selectedSystemId ?? ""}
-            currentSystemName={systemName ?? "Jigsaw"}
-            onConnect={handleLibraryConnect}
-            onCopy={handleLibraryCopy}
+            category={libraryCategory as any}
             items={libraryItems}
+            isConnecting={isConnecting}
+            onConnect={connect}
+            onCopy={copy}
           />
 
           {/* Onboarding Tour */}

@@ -187,7 +187,7 @@ export function NodeCard({
       <div className="flex flex-col h-full gap-3 relative z-10">
         <div className="flex items-center justify-between">
           {chipLabel && (
-            <Badge variant="outline" className="text-[11px] px-2.5 py-0.5 font-black uppercase tracking-[0.1em] bg-white/40 dark:bg-black/20 border-black/10 dark:border-white/10">
+            <Badge variant="outline" className="text-[10px] px-2.5 py-0.5 font-black uppercase tracking-[0.12em] bg-white/40 dark:bg-black/20 border-black/10 dark:border-white/10">
               {chipLabel}
             </Badge>
           )}
@@ -206,7 +206,7 @@ export function NodeCard({
         <div className="flex-1 flex flex-col gap-2">
           <h3 className={cn(
             "font-black tracking-tight leading-[1.1] text-foreground",
-            compact ? "text-lg" : "text-3xl"
+            compact ? "text-base" : "text-2xl"
           )}>
             {isEmpty ? (
               <span className="italic opacity-50">Empty — click to edit</span>
@@ -215,7 +215,7 @@ export function NodeCard({
             )}
           </h3>
           {!compact && node.description && (
-            <p className="text-base font-medium text-muted-foreground/85 line-clamp-4 leading-relaxed">
+            <p className="text-base font-bold text-foreground/80 dark:text-foreground/75 overflow-y-auto leading-relaxed">
               {node.description}
             </p>
           )}

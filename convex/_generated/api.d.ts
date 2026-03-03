@@ -23,6 +23,7 @@ import type * as lib_email from "../lib/email.js";
 import type * as lib_mutations from "../lib/mutations.js";
 import type * as lib_permissions from "../lib/permissions.js";
 import type * as lib_queries from "../lib/queries.js";
+import type * as library from "../library.js";
 import type * as matrixCells from "../matrixCells.js";
 import type * as memberships from "../memberships.js";
 import type * as migrations from "../migrations.js";
@@ -55,6 +56,7 @@ declare const fullApi: ApiFromModules<{
   "lib/mutations": typeof lib_mutations;
   "lib/permissions": typeof lib_permissions;
   "lib/queries": typeof lib_queries;
+  library: typeof library;
   matrixCells: typeof matrixCells;
   memberships: typeof memberships;
   migrations: typeof migrations;

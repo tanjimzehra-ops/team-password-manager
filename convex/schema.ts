@@ -99,6 +99,8 @@ export default defineSchema({
     challengeHealth: v.optional(v.number()), // 0-100 health for Challenge
     orgId: v.optional(v.id("organisations")),  // Tenancy boundary (optional during migration)
     deletedAt: v.optional(v.number()),          // Soft delete timestamp (ms)
+    isPublicLibrary: v.optional(v.boolean()),   // Whether this system is part of the Master Library
+    libraryCategory: v.optional(v.string()),    // E.g., "Standard Templates", "Industry Standards"
   }).index("by_org", ["orgId"]),
 
   // Elements: outcomes, value_chain, resources

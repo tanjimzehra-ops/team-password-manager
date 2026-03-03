@@ -26,6 +26,7 @@ interface LogicGridProps {
   onDeleteNode?: (nodeId: string) => void
   onEditNode?: (node: NodeData) => void
   onKpiChange?: (nodeId: string, value: number) => void
+  onOpenLibrary?: (category: NodeData["category"]) => void
 }
 
 export function LogicGrid({
@@ -41,6 +42,7 @@ export function LogicGrid({
   onDeleteNode,
   onEditNode,
   onKpiChange,
+  onOpenLibrary,
 }: LogicGridProps) {
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const [dragCategory, setDragCategory] = useState<string | null>(null)
@@ -125,13 +127,15 @@ export function LogicGrid({
     <div id="view-logic-model" className="flex-1 flex flex-col gap-0">
       {rows.map((row) => (
         <div key={row.id} id={row.id}>
-          {/* Purpose Banner - Full width colored banner */}
+          {/* Purpose Banner - Fixed height 132px */}
           {row.category === "purpose" && (
-            <div className="mt-8 group">
-              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                IMPACT / PURPOSE
-              </h2>
-              <div className="flex items-stretch gap-0 min-h-[72px]">
+            <div className="h-[132px] flex flex-col justify-start">
+              <div className="h-[60px] flex flex-col justify-end pb-2">
+                <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                  IMPACT / PURPOSE
+                </h2>
+              </div>
+              <div className="flex items-stretch justify-start gap-0 min-h-[72px]">
                 <div
                   className={cn(
                     "flex-1 rounded-xl p-4 flex items-center justify-center cursor-pointer",
@@ -154,14 +158,16 @@ export function LogicGrid({
             </div>
           )}
 
-          {/* Outcome Cards - 4 equal columns with descriptions */}
+          {/* Outcome Cards - Fixed height 320px */}
           {row.category === "outcomes" && (
-            <div className="mt-8" id="outcomes">
-              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                STRATEGIC OBJECTIVES
-              </h2>
-              <div className="flex items-stretch gap-0 min-h-[240px]">
-                <div className="flex-1 flex overflow-x-auto gap-3 pb-3 -mb-3 scrollbar-thin">
+            <div className="h-[320px] flex flex-col justify-start" id="outcomes">
+              <div className="h-[60px] flex flex-col justify-end pb-2">
+                <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                  STRATEGIC OBJECTIVES
+                </h2>
+              </div>
+              <div className="flex items-stretch justify-start gap-0 min-h-[260px]">
+                <div className="flex-1 flex overflow-x-auto justify-start gap-3 pb-3 -mb-3 scrollbar-thin">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
@@ -216,6 +222,7 @@ export function LogicGrid({
                       size="icon"
                       className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Open library"
+                      onClick={() => onOpenLibrary?.(row.category as NodeData["category"])}
                     >
                       <Book className="h-4 w-4" />
                     </Button>
@@ -225,14 +232,16 @@ export function LogicGrid({
             </div>
           )}
 
-          {/* Value Chain - Compact row of text-only cards */}
+          {/* Value Chain - Fixed height 220px */}
           {row.category === "value-chain" && (
-            <div className="mt-8" id="value-chain">
-              <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                VALUE CHAIN ELEMENTS
-              </h2>
-              <div className="flex items-stretch gap-0 min-h-[140px]">
-                <div className="flex-1 flex overflow-x-auto gap-2 pb-3 -mb-3 scrollbar-thin">
+            <div className="h-[220px] flex flex-col justify-start" id="value-chain">
+              <div className="h-[60px] flex flex-col justify-end pb-2">
+                <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                  VALUE CHAIN ELEMENTS
+                </h2>
+              </div>
+              <div className="flex items-stretch justify-start gap-0 min-h-[160px]">
+                <div className="flex-1 flex overflow-x-auto justify-start gap-2 pb-3 -mb-3 scrollbar-thin">
                   {row.nodes.map((node, index) => (
                     <div
                       key={node.id}
@@ -288,6 +297,7 @@ export function LogicGrid({
                       size="icon"
                       className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                       title="Open library"
+                      onClick={() => onOpenLibrary?.(row.category as NodeData["category"])}
                     >
                       <Book className="h-4 w-4" />
                     </Button>
@@ -297,15 +307,17 @@ export function LogicGrid({
             </div>
           )}
 
-          {/* Resources & Capability - Grid of text-only compact cards */}
+          {/* Resources & Capability - Fixed height 200px */}
           {row.category === "resources" && (
             <>
-              {/* Culture Banner between Value Chain and Resources */}
-              <div className="mt-8" id="culture">
-                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                  DELIVERY CULTURE / DIMENSION
-                </h2>
-                <div className="flex items-stretch gap-0 min-h-[72px]">
+              {/* Culture Banner - Fixed height 132px */}
+              <div className="h-[132px] flex flex-col justify-start" id="culture">
+                <div className="h-[60px] flex flex-col justify-end pb-2">
+                  <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                    DELIVERY CULTURE / DIMENSION
+                  </h2>
+                </div>
+                <div className="flex items-stretch justify-start gap-0 min-h-[72px]">
                   <div
                     className="flex-1 relative bg-teal-800 rounded-xl p-3 flex items-center cursor-pointer premium-hover shadow-lg group-hover:bg-teal-700 transition-colors"
                     onClick={() => onNodeClick({
@@ -337,13 +349,15 @@ export function LogicGrid({
                 </div>
               </div>
 
-              {/* Resources Cards */}
-              <div className="mt-8" id="resources">
-                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                  RESOURCES, CAPABILITIES / LEVERS
-                </h2>
-                <div className="flex items-stretch gap-0 min-h-[140px]">
-                  <div className="flex-1 flex overflow-x-auto gap-2 pb-3 -mb-3 scrollbar-thin">
+              {/* Resources Cards - Fixed height 220px */}
+              <div className="h-[220px] flex flex-col justify-start" id="resources">
+                <div className="h-[60px] flex flex-col justify-end pb-2">
+                  <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                    RESOURCES, CAPABILITIES / LEVERS
+                  </h2>
+                </div>
+                <div className="flex items-stretch justify-start gap-0 min-h-[160px]">
+                  <div className="flex-1 flex overflow-x-auto justify-start gap-2 pb-3 -mb-3 scrollbar-thin">
                     {row.nodes.map((node, index) => (
                       <div
                         key={node.id}
@@ -399,6 +413,7 @@ export function LogicGrid({
                         size="icon"
                         className="h-7 w-7 bg-card/50 backdrop-blur-sm border-border/40 hover:bg-accent hover:text-white transition-all shadow-sm"
                         title="Open library"
+                        onClick={() => onOpenLibrary?.(row.category as any)}
                       >
                         <Book className="h-4 w-4" />
                       </Button>
@@ -407,12 +422,14 @@ export function LogicGrid({
                 </div>
               </div>
 
-              {/* Bottom Banner - Context statement */}
-              <div className="mt-8 mb-24" id="context">
-                <h2 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-2 pl-1 whitespace-nowrap">
-                  SYSTEM STEWARDSHIP / GOVERNANCE
-                </h2>
-                <div className="flex items-stretch gap-0 min-h-[72px]">
+              {/* Bottom Banner - Fixed height 132px */}
+              <div className="h-[132px] flex flex-col justify-start" id="context">
+                <div className="h-[60px] flex flex-col justify-end pb-2">
+                  <h2 className="text-xs font-black text-slate-500/90 dark:text-slate-400 uppercase tracking-[0.25em] pl-1 whitespace-nowrap">
+                    SYSTEM STEWARDSHIP / GOVERNANCE
+                  </h2>
+                </div>
+                <div className="flex items-stretch justify-start gap-0 min-h-[72px]">
                   <div
                     className="flex-1 bg-teal-800 rounded-xl p-4 flex items-center justify-center cursor-pointer hover:bg-teal-700/90 transition-colors relative overflow-hidden"
                     onClick={() => onNodeClick({

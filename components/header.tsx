@@ -104,9 +104,9 @@ export function Header({
                 size="sm"
                 onClick={() => onTabChange?.("logic-model")}
                 className={cn(
-                  "text-sm font-medium rounded-md px-4 py-2",
+                  "text-base font-bold rounded-md px-5 py-2.5",
                   activeTab === "logic-model"
-                    ? "bg-teal-700 text-white"
+                    ? "bg-teal-700 text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -117,9 +117,9 @@ export function Header({
                 size="sm"
                 onClick={() => onTabChange?.("convergence-map")}
                 className={cn(
-                  "text-sm font-medium rounded-md px-4 py-2",
+                  "text-base font-bold rounded-md px-5 py-2.5",
                   activeTab === "convergence-map"
-                    ? "bg-teal-700 text-white"
+                    ? "bg-teal-700 text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -130,9 +130,9 @@ export function Header({
                 size="sm"
                 onClick={() => onTabChange?.("contribution-map")}
                 className={cn(
-                  "text-sm font-medium rounded-md px-4 py-2",
+                  "text-base font-bold rounded-md px-5 py-2.5",
                   activeTab === "contribution-map"
-                    ? "bg-teal-700 text-white"
+                    ? "bg-teal-700 text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
@@ -143,9 +143,9 @@ export function Header({
                 size="sm"
                 onClick={() => onTabChange?.("development-pathways")}
                 className={cn(
-                  "text-sm font-medium rounded-md px-4 py-2",
+                  "text-base font-bold rounded-md px-5 py-2.5",
                   activeTab === "development-pathways"
-                    ? "bg-teal-700 text-white"
+                    ? "bg-teal-700 text-white shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
