@@ -1,0 +1,6 @@
+{
+  "node": "20",
+  "generators": {
+    "enabled": true
+  }
+}
