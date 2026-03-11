@@ -3,6 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft, Download, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
@@ -487,34 +488,20 @@ export default async function DrillDownPage({ params }: { params: Promise<{ them
           </Card>
         </div>
 
-        {/* Domains */}
-        <Tabs defaultValue={theme.domains[0]?.id} className="space-y-6">
-          <TabsList className="bg-white border-b-2 border-gray-200 w-full justify-start rounded-none h-auto p-0">
-            {theme.domains.map((domain) => (
-              <TabsTrigger 
-                key={domain.id}
-                value={domain.id}
-                className="px-6 py-3 rounded-none border-b-2 border-transparent data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-              >
-                {domain.name}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
+        {/* Domains - Accordion Style */}
+        <Accordion type="single" collapsible defaultValue={theme.domains[0]?.id} className="space-y-4">
           {theme.domains.map((domain) => (
-            <TabsContent key={domain.id} value={domain.id} className="space-y-6">
-              {/* Domain Header */}
-              <Card>
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="text-xl">{domain.name}</CardTitle>
-                    <StatusBadge status={domain.status} />
+            <AccordionItem key={domain.id} value={domain.id} className="border rounded-lg bg-white">
+              <AccordionTrigger className="px-6 py-4 hover:no-underline">
+                <div className="flex items-center gap-4 text-left">
+                  <div className="flex-1">
+                    <span className="text-lg font-semibold text-gray-800">{domain.name}</span>
                   </div>
-                </CardHeader>
-                <CardContent>
+                  <StatusBadge status={domain.status} />
                   <DomainScoreBar score={domain.score} previousScore={domain.previousScore} />
-                </CardContent>
-              </Card>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6">
 
               <div className="grid grid-cols-2 gap-6">
                 {/* Risks Section */}
@@ -586,9 +573,10 @@ export default async function DrillDownPage({ params }: { params: Promise<{ them
                   <RiskMatrix risks={domain.risks} />
                 </CardContent>
               </Card>
-            </TabsContent>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </Tabs>
+        </Accordion>
 
         {/* Footer */}
         <div className="text-center py-6 border-t mt-8">
