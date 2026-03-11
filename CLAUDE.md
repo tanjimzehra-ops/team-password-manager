@@ -2,56 +2,83 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Commands
+## Project Overview
 
-```bash
-pnpm install          # Install dependencies (must use pnpm, not npm/yarn)
-pnpm dev              # Start dev server on port 3000
-pnpm build            # Production build
-pnpm lint             # Run ESLint
-pnpm start            # Start production server
-```
+MAST (Marine and Safety Tasmania) is a government business entity that uses ERIC (EricSFM.com), a risk reporting system on Azure managed by CPF. This project builds a standalone web application that replicates the current ERIC report and gives MAST full autonomy — eliminating CPF as intermediary.
 
-No test framework is configured. TypeScript build errors are intentionally ignored in `next.config.mjs` (`ignoreBuildErrors: true`).
+**Phase 1 scope:** Exact replication of the current report + self-service data input + three-tier permission model. No redesign.
 
-## Architecture
+**Current phase:** Pre-BMAD — discovery documents complete, awaiting brief. No application code exists yet.
 
-**Jigsaw 1.6** is a strategic planning visualization tool built with Next.js 16 (App Router) + React 19 + TypeScript. It renders interactive Logic Model and Matrix views for organizational strategy systems.
+## Build Methodology
 
-### Data Layer
+CPF uses **BMAD**: Brief → PRD → Architecture → Epics & Sprints → Production.
 
-The app supports two data modes that switch automatically:
+The PRD is the heart of the process — every requirement must be explicit before architecture begins. Do not skip steps. Use the `/bmad-specialist` skill for BMAD workflow guidance.
 
-1. **Convex mode (primary):** When `NEXT_PUBLIC_CONVEX_URL` is set, data is fetched in real-time via Convex hooks in `hooks/convex/`. The `use-convex-system.ts` hook fetches and transforms data into UI types. Mutations in `use-convex-mutations.ts` provide full CRUD with automatic reactivity. Schema defined in `convex/schema.ts`.
+## Repository Structure
 
-2. **JSON mode (fallback):** Static JSON files in `data/` are loaded via `SystemDataAdapter` class (`data/system-adapter.ts`). Each system (MERA, Kiraa, Levur, etc.) has a JSON file following the `SystemJSON` interface. The adapter transforms raw data into UI types (`RowData`, `ContributionMapData`, `DevelopmentPathwaysData`, `ConvergenceMapData`).
+- `discovery/` — Pre-brief research (6 numbered documents covering current workflow, target workflow, technical stack, Martin's questionnaire, Pradeep's tech investigation, deep-dive agenda)
+- `reference/` — ERIC documentation index (placeholder — awaiting Martin's upload)
+- `sessions/` — Session handoff notes and implementation reports
+- `_bmad/docs/` — BMAD outputs (brief, PRD, architecture) — **not yet created**
 
-### Key Patterns
+## Domain Context
 
-- **Main orchestrator:** `app/page.tsx` manages all UI state (active tab, selected system, edit mode, sidebars) and renders the appropriate view.
-- **System selector:** Users switch between demo systems via `components/layout/nav-sidebar.tsx`. Available systems are defined in `data/system-adapter.ts` (`availableSystems` map).
-- **Matrix cell resolution:** All three matrix adapters (Contribution, Development Pathways, Convergence) use a dual lookup strategy: first try `xaxis`/`yaxis` Reference IDs from Azure, then fall back to `order`/`column` as array indices.
-- **Component library:** Uses shadcn/ui (New York style) with 59+ components in `components/ui/`. Config in `components.json`. Add new components with the shadcn CLI.
-- **Styling:** Tailwind CSS 4 with OKLCH color variables defined in `app/globals.css`. Uses `cn()` helper from `lib/utils.ts` (clsx + tailwind-merge).
-- **Flow canvas:** `components/agents-canvas/` uses `@xyflow/react` for interactive agent/command/orchestrator node visualization.
+### ERIC System
+- Algorithm-based reporting using Excel data trees on Azure
+- **Data flow:** Variable File → Data Trees → Input Forms → Report
+- **Report structure:** 4 levels — Dashboard → Management Themes → Variables → Business Unit Drill-down
+- **Baseline system:** Previous period = 100, current period = rate of change
+- **Colour coding:** Green (>=100), Yellow (95-99), Red (<95)
+- **Cell references:** Data uses cell references NOT labels — labels only in graphs. Keep as-is for Phase 1.
+- **Management themes:** Clients, Service Delivery, Management & Governance, People & Culture, Risk
 
-### Core Types (`lib/types.ts`)
+### Three-Tier Permission Model
+- **Administrator** (Bill Batt): manage risks, variables, users; authorise reports
+- **Data Contributors** (MAST staff): input own data only
+- **Board Members**: read-only access to reports
 
-- `NodeData` — Individual element in any view (outcomes, value chain items, resources)
-- `RowData` — A row in the Logic Model grid (purpose, outcomes, value-chain, resources)
-- `ContributionMapData` — Outcomes x Value Chain matrix with KPIs and cells
-- `DevelopmentPathwaysData` — Resources x Value Chain matrix with capabilities
-- `ConvergenceMapData` — Value Chain x External Factors matrix
+## Technical Decisions (Open)
 
-### Adding a New Demo System
+| Decision | Status | Notes |
+|----------|--------|-------|
+| Database | Blocked | Azure vs Supabase AU — awaiting validation |
+| Standalone vs tenant | Open | Discuss at deep-dive |
+| Frontend | Likely React | Team competency |
+| Authentication | Open | Supabase Auth / WorkOS / Custom |
+| Cell references | **Decided** | Keep as-is (Phase 1) |
+| Report generation | Open | Server-side PDF / client export |
+| Domain | Open | Martin to decide |
 
-1. Create a JSON file in `data/` following the `SystemJSON` interface
-2. Import and register it in `data/system-adapter.ts` (`availableSystems`)
-3. The system will appear in the navigation sidebar automatically
+## Infrastructure Requirements
+- **Australian server hosting** — mandatory for government entity
+- **Own domain** — not EricSFM.com, not Jigsaw
+- **Data sovereignty** — all data on Australian servers
 
-## Configuration Notes
+## Team
+- **Nicolas** — Project Manager, PRD author
+- **Martin** — Domain expert, CEO, holds all ERIC documentation
+- **Pradeep** — Backend developer, Azure validation
+- **Tanjim** — Frontend developer
 
-- **Package manager:** pnpm 9.15.0 is required. The `pnpm-lock.yaml` resolves known hoisting issues with `@swc/helpers` and `scheduler`.
-- **Path alias:** `@/*` maps to the project root (configured in `tsconfig.json`).
-- **Deployment:** Vercel with config in `vercel.json`. Build uses `pnpm build`.
-- **Fonts:** Plus Jakarta Sans (sans), Lora (serif), IBM Plex Mono (mono) — loaded in `app/layout.tsx`.
+## Key Blockers (Pre-BMAD)
+1. Martin's MAST workflow document (not yet written)
+2. Pradeep's Azure formula validation (not yet started)
+3. ERIC documentation (only on Martin's machine)
+4. Martin's questionnaire answers (24 questions pending)
+
+## Related Repos
+- **Jigsaw 2.0** (`nicopt-io/Jigsaw-2.0`): Client case files at `OBS_notes/Jigsaw20/clients/mast/`
+- **ERIC 1.5 PRD**: Reference PRD at `_bmad/eric-1.5/docs/prd/PRD.md` in Jigsaw 2.0 repo
+
+## Communication Preferences
+
+- Spanish conversations: Respond in Spanish, technical terms in English
+- English conversations: Respond fully in English
+- Use Australian English spelling (colour, organisation, initialise)
+
+### REGLA CRITICA: Español sin voseo argentino
+**NUNCA usar voseo argentino.** Nicolas habla español neutro/chileno.
+- **PROHIBIDO**: "necesitás", "tenés", "querés", "podés"
+- **CORRECTO**: "necesitas", "tienes", "quieres", "puedes"
